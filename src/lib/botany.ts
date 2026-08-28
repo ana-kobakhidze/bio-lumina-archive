@@ -1,0 +1,86 @@
+export type PartId = "whole" | "flower" | "leaf" | "stem" | "fruit" | "seed";
+
+export interface PartSpec {
+  id: PartId;
+  label: string;
+  term: string;
+  latin: string;
+  note: string;
+  /** camera position for this part */
+  camera: [number, number, number];
+  /** orbit target */
+  target: [number, number, number];
+  fig: string;
+}
+
+export const PARTS: PartSpec[] = [
+  {
+    id: "whole",
+    label: "Whole specimen",
+    term: "Habit",
+    latin: "Astromirabilis grandiflora",
+    note: "Complete preserved individual, scanned at 0.02 mm resolution. Radial symmetry of six recurved tepals above a single fluted scape.",
+    camera: [0.25, 1.2, 6.5],
+    target: [0, 1.0, 0],
+    fig: "FIG. 01",
+  },
+  {
+    id: "flower",
+    label: "Flower",
+    term: "Corolla",
+    latin: "Perianthium radiale",
+    note: "Six translucent tepals surrounding a dense boss of filiform stamens. Tissue refracts incident light, producing the lens effect recorded in the scan.",
+    camera: [0.6, 1.95, 3.1],
+    target: [0, 1.3, 0],
+    fig: "FIG. 02",
+  },
+  {
+    id: "leaf",
+    label: "Leaf",
+    term: "Lamina",
+    latin: "Folium lanceolatum",
+    note: "Lanceolate blade with pinnate venation. Vein walls remain optically dense after clearing, rendering the vascular network legible in transmission.",
+    camera: [1.9, 1.0, -2.2],
+    target: [0.32, 0.3, -0.42],
+    fig: "FIG. 03",
+  },
+  {
+    id: "stem",
+    label: "Stem",
+    term: "Caulis",
+    latin: "Scapus fistulosus",
+    note: "Hollow erect scape, five longitudinal ridges. Internal node partitions are visible as faint transverse bands.",
+    camera: [1.3, 0.6, 2.2],
+    target: [0, 0.5, 0],
+    fig: "FIG. 04",
+  },
+  {
+    id: "fruit",
+    label: "Fruit",
+    term: "Capsula",
+    latin: "Capsula trilocularis",
+    note: "Pendent three-chambered capsule, dehiscing loculicidally. Wall thickness diminishes toward the suture lines.",
+    camera: [-1.35, 1.15, 1.95],
+    target: [-0.24, 0.79, 0.28],
+    fig: "FIG. 05",
+  },
+  {
+    id: "seed",
+    label: "Seed",
+    term: "Semen",
+    latin: "Semen alatum",
+    note: "Winged seed, ferromagnetic trace in the testa. Dispersal is anemochorous, assisted by the residual charge of the parent plant.",
+    camera: [-0.95, 0.62, 1.35],
+    target: [-0.29, 0.37, 0.36],
+    fig: "FIG. 06",
+  },
+];
+
+export const SPECIMEN_META = [
+  ["Kingdom", "Plantae"],
+  ["Clade", "Astrophyta"],
+  ["Family", "Mirabiliaceae"],
+  ["Genus", "Astromirabilis"],
+  ["Collected", "Aurora Z-VIII"],
+  ["Accession", "EXO·2095·0631"],
+];
