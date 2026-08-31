@@ -30,8 +30,8 @@ export const PARTS: PartSpec[] = [
     term: "Corolla",
     latin: "Perianthium radiale",
     note: "Six translucent tepals surrounding a dense boss of filiform stamens. Tissue refracts incident light, producing the lens effect recorded in the scan.",
-    camera: [0.6, 1.95, 3.1],
-    target: [0, 1.3, 0],
+    camera: [0.5, 2.0, 3.7],
+    target: [0, 1.32, 0],
     fig: "FIG. 02",
   },
   {
