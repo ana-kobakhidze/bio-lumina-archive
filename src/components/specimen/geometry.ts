@@ -117,96 +117,108 @@ export const ASTROMIRABILIS: Morphology = {
 
 /* ------------------------------------------------------------------ *
  * Generators
+ *
+ * Every generator takes a quality multiplier `q`:
+ *   q = 1    -> high-resolution render geometry (smooth silhouette)
+ *   q = 0.3  -> coarse twin used only for the faint scan-line overlay
  * ------------------------------------------------------------------ */
 
+const seg = (n: number, q: number) => Math.max(4, Math.round(n * q));
+
+/** Smooth 0..1 ramp, C1-continuous. */
+const smoothstep = (edge0: number, edge1: number, x: number) => {
+  const t = Math.min(1, Math.max(0, (x - edge0) / (edge1 - edge0)));
+  return t * t * (3 - 2 * t);
+};
+
 /** Fluted hollow scape, slightly tapered. */
-export function createStemGeometry(s: Morphology["stem"]) {
+export function createStemGeometry(s: Morphology["stem"], q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const a = v * Math.PI * 2;
-      const flute = 1 + Math.cos(a * s.flutes) * 0.12;
+      const flute = 1 + Math.cos(a * s.flutes) * 0.1;
       const r = s.radius * (1 - s.taper * u) * flute;
       const sway = Math.sin(u * 1.35) * s.sway;
       out.set(Math.cos(a) * r + sway, u * s.height, Math.sin(a) * r);
     },
-    22,
-    14,
+    seg(64, q),
+    seg(40, q),
   );
 }
 
 /** Compact widened receptacle that the tepals grow out of. */
-export function createReceptacleGeometry(r: Morphology["receptacle"]) {
+export function createReceptacleGeometry(r: Morphology["receptacle"], q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const a = v * Math.PI * 2;
       // narrow at the stem, flaring into a shallow cushion
       const prof = Math.pow(Math.sin(Math.PI * (0.12 + u * 0.78)), 0.75);
-      const rad = r.radius * prof * (1 + Math.cos(a * 6) * 0.05);
+      const rad = r.radius * prof * (1 + Math.cos(a * 6) * 0.04);
       out.set(Math.cos(a) * rad, u * r.height, Math.sin(a) * rad);
     },
-    18,
-    22,
+    seg(48, q),
+    seg(56, q),
   );
 }
 
 /**
  * Broad recurved tepal: narrow at the receptacle, widest around 40% of its
- * length, sweeping mostly OUTWARD with a downward turn in the outer third.
+ * length, sweeping mostly OUTWARD with a continuous downward recurve.
  * Local frame: +Z is outward from the flower axis, Y is up, X across the blade.
  */
-export function createTepalGeometry(t: TepalSpec) {
+export function createTepalGeometry(t: TepalSpec, q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const s = (v - 0.5) * 2;
       // outward distance grows nearly linearly, easing near the tip
       const z = t.length * (0.06 + 0.94 * Math.pow(u, 0.92));
-      // midrib height: slight lift, then sag, then a stronger recurve at the tip
-      const outer = Math.max(0, (u - 0.66) / 0.34);
-      const y =
-        t.length *
-        (t.rise * Math.sin(Math.PI * Math.min(u / 0.55, 1) * 0.62) -
-          t.drop * u * u -
-          t.recurve * outer * outer);
-      // width profile: pinched base, widest ~40%, gradual taper to the tip
+      // midrib height: continuous lift -> sag -> recurve, all smooth functions
+      const lift = t.rise * Math.sin(Math.PI * smoothstep(0, 0.6, u) * 0.62);
+      const sag = t.drop * u * u;
+      const curl = t.recurve * Math.pow(smoothstep(0.6, 1, u), 1.6);
+      const y = t.length * (lift - sag - curl);
+      // width profile: pinched base, widest ~40%, smooth convergence at the tip
       const w = t.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.68)), 0.85) * (1 - 0.25 * u);
-      const cupY = -s * s * w * t.cup;
+      // cupping relaxes toward the recurved tip
+      const cupY = -s * s * w * t.cup * (1 - 0.45 * smoothstep(0.55, 1, u));
       const sweepX = t.sweep * t.length * Math.pow(u, 1.6);
       out.set(s * w + sweepX, y + cupY, z + s * s * w * 0.1);
     },
-    30,
-    16,
+    seg(56, q),
+    seg(22, q),
   );
 }
 
 /** Lanceolate blade: narrow at the petiole, widest ~40%, arched and twisted. */
-export function createLeafGeometry(l: LeafSpec) {
+export function createLeafGeometry(l: LeafSpec, q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const s = (v - 0.5) * 2;
-      const w = l.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.9) * (1 - 0.15 * u);
+      // slight asymmetry between the two halves of the blade
+      const asym = 1 + (s > 0 ? 0.06 : -0.05);
+      const w = l.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.9) * (1 - 0.15 * u) * asym;
       const z = u * l.length;
       const y = -l.arch * l.length * Math.pow(u, 1.9);
-      const tw = l.twist * u;
-      // rotate the cross-section around the midrib for a 3D twist
+      const tw = l.twist * smoothstep(0, 1, u);
       const cx = Math.cos(tw) * s * w;
       const cy = Math.sin(tw) * s * w;
-      // shallow V fold along the midrib (keeps the vein legible)
-      const fold = Math.abs(s) * w * 0.3;
+      // shallow, continuously varying lateral fold along the midrib
+      const fold = (s * s) * w * 0.34 * (1 - 0.3 * u);
       out.set(cx, y + cy + fold, z);
     },
-    26,
-    12,
+    seg(52, q),
+    seg(18, q),
   );
 }
 
 /** Central midrib strand for a leaf. */
 export function createMidribGeometry(l: LeafSpec) {
   const pts: THREE.Vector3[] = [];
-  for (let i = 0; i <= 24; i++) {
-    const u = i / 24;
+  for (let i = 0; i <= 32; i++) {
+    const u = i / 32;
     pts.push(new THREE.Vector3(0, -l.arch * l.length * Math.pow(u, 1.9), u * l.length));
   }
-  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, l.width * 0.045, 5, false);
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 40, l.width * 0.04, 14, false);
 }
 
 /** Thin filament + anther positions for the central stamen cluster. */
@@ -226,29 +238,30 @@ export function createStamenGeometry(f: Morphology["flower"]) {
 }
 
 /** Three-chambered pendent capsule. */
-export function createFruitGeometry(size = 0.1) {
+export function createFruitGeometry(size = 0.1, q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const a = v * Math.PI * 2;
-      const lobes = 1 + Math.cos(a * 3) * 0.18;
+      const lobes = 1 + Math.cos(a * 3) * 0.16;
       const prof = Math.sin(u * Math.PI) * (0.55 + 0.45 * Math.sin(u * Math.PI));
       const r = prof * size * lobes;
       out.set(Math.cos(a) * r, (u - 0.5) * size * 2.6, Math.sin(a) * r);
     },
-    24,
-    20,
+    seg(56, q),
+    seg(48, q),
   );
 }
 
 /** Winged seed body (shown as an exploded anatomical detail). */
-export function createSeedGeometry(size = 0.09) {
+export function createSeedGeometry(size = 0.09, q = 1) {
   return parametricGeometry(
     (u, v, out) => {
       const a = v * Math.PI * 2;
       const r = Math.sin(u * Math.PI) * size;
       out.set(Math.cos(a) * r * 0.8, (u - 0.5) * size * 3.1, Math.sin(a) * r);
     },
-    18,
-    18,
+    seg(44, q),
+    seg(44, q),
   );
 }
+
