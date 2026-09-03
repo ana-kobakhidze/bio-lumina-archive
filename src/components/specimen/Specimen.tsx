@@ -21,7 +21,7 @@ const DEEP = new THREE.Color("#5b3df0");
 const EDGE = new THREE.Color("#c9c2ff");
 
 /** Overlay scan-lines are generated at a fraction of the render resolution. */
-const WIRE_Q = 0.26;
+const WIRE_Q = 0.15;
 
 function emphasisOf(active: PartId, id: PartId) {
   if (active === "whole" || active === id) return 1;
@@ -60,7 +60,7 @@ function Tissue({
         <meshPhysicalMaterial
           color={color}
           transparent
-          opacity={0.4 * emphasis + 0.06}
+          opacity={0.48 * emphasis + 0.06}
           transmission={0.85}
           thickness={thickness}
           roughness={0.14}
@@ -80,7 +80,7 @@ function Tissue({
           color={EDGE}
           wireframe
           transparent
-          opacity={(wire ? 0.13 : 0.05) * contour * 2 * emphasis}
+          opacity={(wire ? 0.12 : 0.04) * contour * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
