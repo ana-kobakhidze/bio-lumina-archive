@@ -1,5 +1,5 @@
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { PartId } from "@/lib/botany";
 import {
@@ -21,18 +21,11 @@ const DEEP = new THREE.Color("#5b3df0");
 const EDGE = new THREE.Color("#c9c2ff");
 
 /** Overlay scan-lines are generated at a fraction of the render resolution. */
-const WIRE_Q = 0.15;
+const WIRE_Q = 0.3;
 
 function emphasisOf(active: PartId, id: PartId) {
   if (active === "whole" || active === id) return 1;
   return 0.22;
-}
-
-/** Dispose a set of generated geometries when the component unmounts. */
-function useDispose(geos: (THREE.BufferGeometry | undefined)[]) {
-  const ref = useRef(geos);
-  ref.current = geos;
-  useEffect(() => () => ref.current.forEach((g) => g?.dispose()), []);
 }
 
 /**
@@ -75,12 +68,12 @@ function Tissue({
           depthWrite={false}
         />
       </mesh>
-      <mesh geometry={wire ?? geometry} scale={1.002}>
+      <mesh geometry={wire ?? geometry} scale={1.0005}>
         <meshBasicMaterial
           color={EDGE}
           wireframe
           transparent
-          opacity={(wire ? 0.12 : 0.04) * contour * emphasis}
+          opacity={(wire ? 0.1 : 0.035) * contour * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
@@ -178,8 +171,6 @@ function Flower({ emphasis, morph }: { emphasis: number; morph: Morphology }) {
     return out;
   }, [f]);
 
-  useDispose([...tepals.flatMap((t) => [t.geo, t.wire]), ...inner.flatMap((t) => [t.geo, t.wire])]);
-
   return (
     <group>
       {tepals.map((t, i) => (
@@ -218,8 +209,6 @@ function Leaf({ spec, emphasis, morph }: { spec: LeafSpec; emphasis: number; mor
   const blade = useMemo(() => createLeafGeometry(spec), [spec]);
   const bladeWire = useMemo(() => createLeafGeometry(spec, WIRE_Q), [spec]);
   const midrib = useMemo(() => createMidribGeometry(spec), [spec]);
-  useDispose([blade, bladeWire, midrib]);
-
   const y = spec.node * morph.stem.height;
   const sway = Math.sin(spec.node * 1.35) * morph.stem.sway;
   const nodeR = morph.stem.radius * (1 - morph.stem.taper * spec.node);
@@ -234,7 +223,7 @@ function Leaf({ spec, emphasis, morph }: { spec: LeafSpec; emphasis: number; mor
       {/* petiole rises out of the stem surface and tilts outward */}
       <group rotation={[Math.PI / 2 + spec.tilt, 0, 0]}>
         <mesh position={[0, spec.petiole / 2, 0]}>
-          <cylinderGeometry args={[nodeR * 0.32, nodeR * 0.55, spec.petiole, 20]} />
+          <cylinderGeometry args={[nodeR * 0.32, nodeR * 0.55, spec.petiole, 24, 8]} />
           <meshBasicMaterial
             color={EDGE}
             transparent
@@ -288,8 +277,6 @@ export function Specimen({
   const fruitWire = useMemo(() => createFruitGeometry(morph.fruit.size, WIRE_Q), [morph]);
   const seed = useMemo(() => createSeedGeometry(), []);
   const seedWire = useMemo(() => createSeedGeometry(0.09, WIRE_Q), []);
-  useDispose([stem, stemWire, receptacle, receptacleWire, fruit, fruitWire, seed, seedWire]);
-
   useFrame((state) => {
     if (!root.current) return;
     const t = state.clock.elapsedTime;
@@ -327,7 +314,7 @@ export function Specimen({
       {/* Pendent capsule on a lateral pedicel from an upper node */}
       <group position={[fruitSway, fruitY, 0]} rotation={[0, morph.fruit.around, 0]}>
         <mesh position={[0, 0.02, morph.fruit.pedicel * 0.42]} rotation={[1.05, 0, 0]}>
-          <cylinderGeometry args={[0.005, 0.009, morph.fruit.pedicel, 18]} />
+          <cylinderGeometry args={[0.005, 0.009, morph.fruit.pedicel, 24, 8]} />
           <meshBasicMaterial color={EDGE} transparent opacity={0.5 * eFruit} depthWrite={false} />
         </mesh>
         <group position={[0, -0.11, morph.fruit.pedicel * 0.8]}>
@@ -349,7 +336,7 @@ export function Specimen({
                 contour={0.9}
               />
               <mesh position={[0, 0.2, 0]}>
-                <cylinderGeometry args={[0.0015, 0.0015, 0.34, 8]} />
+                <cylinderGeometry args={[0.0015, 0.0015, 0.34, 16, 4]} />
                 <meshBasicMaterial
                   color={EDGE}
                   transparent

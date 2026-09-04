@@ -167,47 +167,91 @@ export function createReceptacleGeometry(r: Morphology["receptacle"], q = 1) {
  * Local frame: +Z is outward from the flower axis, Y is up, X across the blade.
  */
 export function createTepalGeometry(t: TepalSpec, q = 1) {
-  return parametricGeometry(
-    (u, v, out) => {
-      const s = (v - 0.5) * 2;
-      // outward distance grows nearly linearly, easing near the tip
-      const z = t.length * (0.06 + 0.94 * Math.pow(u, 0.92));
-      // midrib height: continuous lift -> sag -> recurve, all smooth functions
+  const centerline = new THREE.CatmullRomCurve3(
+    Array.from({ length: 9 }, (_, i) => {
+      const u = i / 8;
       const lift = t.rise * Math.sin(Math.PI * smoothstep(0, 0.6, u) * 0.62);
       const sag = t.drop * u * u;
       const curl = t.recurve * Math.pow(smoothstep(0.6, 1, u), 1.6);
-      const y = t.length * (lift - sag - curl);
-      // width profile: pinched base, widest ~40%, smooth convergence at the tip
-      const w = t.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.68)), 0.85) * (1 - 0.25 * u);
-      // cupping relaxes toward the recurved tip
-      const cupY = -s * s * w * t.cup * (1 - 0.45 * smoothstep(0.55, 1, u));
-      const sweepX = t.sweep * t.length * Math.pow(u, 1.6);
-      out.set(s * w + sweepX, y + cupY, z + s * s * w * 0.1);
+      return new THREE.Vector3(
+        t.sweep * t.length * Math.pow(u, 1.6),
+        t.length * (lift - sag - curl),
+        t.length * (0.06 + 0.94 * Math.pow(u, 0.92)),
+      );
+    }),
+    false,
+    "centripetal",
+  );
+  const point = new THREE.Vector3();
+  const tangent = new THREE.Vector3();
+  const side = new THREE.Vector3();
+  const normal = new THREE.Vector3();
+  const up = new THREE.Vector3(0, 1, 0);
+
+  return parametricGeometry(
+    (u, v, out) => {
+      const s = (v - 0.5) * 2;
+      centerline.getPoint(u, point);
+      centerline.getTangent(u, tangent).normalize();
+      side.crossVectors(up, tangent).normalize();
+      normal.crossVectors(tangent, side).normalize();
+
+      // A continuous membrane profile: almost pinched at the attachment and
+      // smoothly convergent at the tip, without polygonal corner transitions.
+      const profile = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.68)), 0.88) * (1 - 0.22 * u);
+      const w = t.width * Math.max(0.002, profile);
+      const cup = -s * s * w * t.cup * (1 - 0.45 * smoothstep(0.55, 1, u));
+      const edgeRoll = s * s * w * 0.08 * Math.sin(Math.PI * u);
+
+      out.copy(point)
+        .addScaledVector(side, s * w)
+        .addScaledVector(normal, cup + edgeRoll);
     },
-    seg(56, q),
-    seg(22, q),
+    seg(64, q),
+    seg(24, q),
   );
 }
 
 /** Lanceolate blade: narrow at the petiole, widest ~40%, arched and twisted. */
 export function createLeafGeometry(l: LeafSpec, q = 1) {
+  const centerline = new THREE.CatmullRomCurve3(
+    Array.from({ length: 8 }, (_, i) => {
+      const u = i / 7;
+      return new THREE.Vector3(0, -l.arch * l.length * Math.pow(u, 1.9), u * l.length);
+    }),
+    false,
+    "centripetal",
+  );
+  const point = new THREE.Vector3();
+  const tangent = new THREE.Vector3();
+  const side = new THREE.Vector3();
+  const normal = new THREE.Vector3();
+  const lateral = new THREE.Vector3();
+  const bladeNormal = new THREE.Vector3();
+  const up = new THREE.Vector3(0, 1, 0);
+
   return parametricGeometry(
     (u, v, out) => {
       const s = (v - 0.5) * 2;
-      // slight asymmetry between the two halves of the blade
-      const asym = 1 + (s > 0 ? 0.06 : -0.05);
-      const w = l.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.9) * (1 - 0.15 * u) * asym;
-      const z = u * l.length;
-      const y = -l.arch * l.length * Math.pow(u, 1.9);
+      centerline.getPoint(u, point);
+      centerline.getTangent(u, tangent).normalize();
+      side.crossVectors(up, tangent).normalize();
+      normal.crossVectors(tangent, side).normalize();
+
+      const asym = 1 + s * 0.045;
+      const profile = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.92) * (1 - 0.13 * u);
+      const w = l.width * Math.max(0.0015, profile) * asym;
       const tw = l.twist * smoothstep(0, 1, u);
-      const cx = Math.cos(tw) * s * w;
-      const cy = Math.sin(tw) * s * w;
-      // shallow, continuously varying lateral fold along the midrib
-      const fold = (s * s) * w * 0.34 * (1 - 0.3 * u);
-      out.set(cx, y + cy + fold, z);
+      lateral.copy(side).multiplyScalar(Math.cos(tw)).addScaledVector(normal, Math.sin(tw));
+      bladeNormal.copy(normal).multiplyScalar(Math.cos(tw)).addScaledVector(side, -Math.sin(tw));
+      const fold = s * s * w * 0.22 * Math.sin(Math.PI * u);
+
+      out.copy(point)
+        .addScaledVector(lateral, s * w)
+        .addScaledVector(bladeNormal, fold);
     },
-    seg(52, q),
-    seg(18, q),
+    seg(60, q),
+    seg(20, q),
   );
 }
 
@@ -218,7 +262,7 @@ export function createMidribGeometry(l: LeafSpec) {
     const u = i / 32;
     pts.push(new THREE.Vector3(0, -l.arch * l.length * Math.pow(u, 1.9), u * l.length));
   }
-  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 40, l.width * 0.04, 14, false);
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, l.width * 0.04, 16, false);
 }
 
 /** Thin filament + anther positions for the central stamen cluster. */
@@ -247,7 +291,7 @@ export function createFruitGeometry(size = 0.1, q = 1) {
       const r = prof * size * lobes;
       out.set(Math.cos(a) * r, (u - 0.5) * size * 2.6, Math.sin(a) * r);
     },
-    seg(56, q),
+    seg(64, q),
     seg(48, q),
   );
 }
