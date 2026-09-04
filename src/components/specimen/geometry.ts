@@ -186,6 +186,8 @@ export function createTepalGeometry(t: TepalSpec, q = 1) {
   const tangent = new THREE.Vector3();
   const side = new THREE.Vector3();
   const normal = new THREE.Vector3();
+  const lateral = new THREE.Vector3();
+  const bladeNormal = new THREE.Vector3();
   const up = new THREE.Vector3(0, 1, 0);
 
   return parametricGeometry(
@@ -240,8 +242,8 @@ export function createLeafGeometry(l: LeafSpec, q = 1) {
       const profile = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.92) * (1 - 0.13 * u);
       const w = l.width * Math.max(0.0015, profile) * asym;
       const tw = l.twist * smoothstep(0, 1, u);
-      const lateral = side.clone().multiplyScalar(Math.cos(tw)).addScaledVector(normal, Math.sin(tw));
-      const bladeNormal = normal.clone().multiplyScalar(Math.cos(tw)).addScaledVector(side, -Math.sin(tw));
+      lateral.copy(side).multiplyScalar(Math.cos(tw)).addScaledVector(normal, Math.sin(tw));
+      bladeNormal.copy(normal).multiplyScalar(Math.cos(tw)).addScaledVector(side, -Math.sin(tw));
       const fold = s * s * w * 0.22 * Math.sin(Math.PI * u);
 
       out.copy(point)
