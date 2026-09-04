@@ -186,8 +186,6 @@ export function createTepalGeometry(t: TepalSpec, q = 1) {
   const tangent = new THREE.Vector3();
   const side = new THREE.Vector3();
   const normal = new THREE.Vector3();
-  const lateral = new THREE.Vector3();
-  const bladeNormal = new THREE.Vector3();
   const up = new THREE.Vector3(0, 1, 0);
 
   return parametricGeometry(
@@ -228,6 +226,8 @@ export function createLeafGeometry(l: LeafSpec, q = 1) {
   const tangent = new THREE.Vector3();
   const side = new THREE.Vector3();
   const normal = new THREE.Vector3();
+  const lateral = new THREE.Vector3();
+  const bladeNormal = new THREE.Vector3();
   const up = new THREE.Vector3(0, 1, 0);
 
   return parametricGeometry(
