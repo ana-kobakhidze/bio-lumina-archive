@@ -73,7 +73,7 @@ function Tissue({
           color={EDGE}
           wireframe
           transparent
-          opacity={(wire ? 0.1 : 0.035) * contour * emphasis}
+          opacity={0}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
