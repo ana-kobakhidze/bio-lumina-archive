@@ -57,17 +57,19 @@ export function SpecimenViewer({
     <Canvas
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0.25, 1.2, 6.5], fov: 26 }}
+      camera={{ position: [0.35, 1.5, 6.85], fov: 26 }}
       onPointerDown={() => {
         setIdle(false);
         onUserInteract?.();
       }}
       onWheel={() => setIdle(false)}
     >
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 6, 4]} intensity={1.1} color="#ffffff" />
-      <directionalLight position={[-5, 2, -3]} intensity={0.8} color="#8f7bff" />
-      <pointLight position={[0, 1.5, -4]} intensity={12} distance={14} color="#ff5a1f" />
+      {/* controlled studio lighting: soft key, weak fill, strong rim */}
+      <ambientLight intensity={0.28} />
+      <directionalLight position={[2.5, 4, 5]} intensity={0.85} color="#eef0ff" />
+      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.35} color="#9d8cff" />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.1} color="#cfd6ff" />
+      <pointLight position={[0, 0.6, -3.5]} intensity={9} distance={12} color="#ff5a1f" />
       <Suspense fallback={null}>
         <Specimen active={active} />
       </Suspense>
@@ -81,12 +83,13 @@ export function SpecimenViewer({
         rotateSpeed={0.35}
         zoomSpeed={0.5}
         panSpeed={0.4}
-        minDistance={1.4}
-        maxDistance={11}
+        minDistance={0.8}
+        maxDistance={14}
         autoRotate={idle && active === "whole"}
         autoRotateSpeed={0.22}
-        target={[0, 1.0, 0]}
+        target={[0, 0.3, 0]}
       />
+
     </Canvas>
   );
 }
