@@ -57,7 +57,7 @@ export function SpecimenViewer({
     <Canvas
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0.35, 1.5, 6.85], fov: 26 }}
+      camera={{ position: [0.3, 1.25, 5.3], fov: 26 }}
       onPointerDown={() => {
         setIdle(false);
         onUserInteract?.();
@@ -87,7 +87,7 @@ export function SpecimenViewer({
         maxDistance={14}
         autoRotate={idle && active === "whole"}
         autoRotateSpeed={0.22}
-        target={[0, 0.3, 0]}
+        target={[0, 0.33, 0]}
       />
 
     </Canvas>
