@@ -148,24 +148,23 @@ const smoothstep = (e0: number, e1: number, x: number) => {
 };
 
 /**
- * Deep-water archive palette. Dense indigo base -> mid blue body -> almost
- * clear tips, with a luminous violet margin.
+ * HEBRA palette. Ultraviolet petal body, cobalt depth in dense regions,
+ * deep indigo at the base, pale ultraviolet margins, teal as a signal.
  */
 export const PALETTE = {
-  dense: "#14194D",
-  mid: "#25387A",
-  pale: "#5950B8",
-  rim: "#5950B8",
-  accent: "#1EA598",
-  ink: "#CBE7E4",
-  ground: "#0C0827",
+  void: "#0C0827",
+  deep: "#14194D",
+  cobalt: "#25387A",
+  bloom: "#5950B8",
+  bio: "#1EA598",
+  mesh: "#8C85E8",
+  ink: "#E8E5F7",
 } as const;
 
-const DENSE = new THREE.Color(PALETTE.dense);
-const MID = new THREE.Color(PALETTE.mid);
-const PALE = new THREE.Color(PALETTE.pale);
-const RIM = new THREE.Color(PALETTE.rim);
-const GROUND = new THREE.Color(PALETTE.ground);
+const BASE = new THREE.Color(PALETTE.deep);
+const DENSE = new THREE.Color(PALETTE.cobalt);
+const BODY = new THREE.Color(PALETTE.bloom);
+const MARGIN = new THREE.Color(PALETTE.mesh);
 
 function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
@@ -174,11 +173,9 @@ function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    // Pigment is bottom-heavy: dense indigo at the base, dissolving toward
-    // the ground colour at the tip so the blade reads as clear glass there.
-    c.copy(DENSE).lerp(MID, smoothstep(0, 0.3, u));
-    c.lerp(GROUND, smoothstep(0.28, 1, u) * 0.72);
-    c.lerp(PALE, Math.pow(s, 3) * 0.7);
+    // deep indigo base -> cobalt depth -> ultraviolet body -> pale margins
+    c.copy(BASE).lerp(DENSE, smoothstep(0, 0.22, u)).lerp(BODY, smoothstep(0.12, 0.62, u));
+    c.lerp(MARGIN, Math.pow(s, 2.4) * 0.5 + smoothstep(0.82, 1, u) * 0.25);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
@@ -186,6 +183,7 @@ function tint(geo: THREE.BufferGeometry) {
   geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
   return geo;
 }
+
 
 
 /**

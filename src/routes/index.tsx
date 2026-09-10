@@ -8,22 +8,22 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Astromirabilis grandiflora — Exoplantae Specimen Archive" },
+      { title: "HEBRA — Digital Herbarium · Astromirabilis grandiflora" },
       {
         name: "description",
         content:
-          "An interactive x-ray specimen viewer from the Exoplantae digital herbarium: rotate, zoom and explore the botanical structure of Astromirabilis grandiflora.",
+          "HEBRA is a digital herbarium for exploring plant species through form, structure and place. Rotate, zoom and examine interactive translucent specimens.",
       },
-      { property: "og:title", content: "Astromirabilis grandiflora — Exoplantae Specimen Archive" },
+      { property: "og:title", content: "HEBRA — Digital Herbarium" },
       {
         property: "og:description",
-        content:
-          "Interactive translucent 3D specimen from a speculative digital botanical library.",
+        content: "Flora, reconstructed. Explore plant species as interactive digital specimens.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+
   component: SpecimenPage,
 });
 
@@ -59,18 +59,19 @@ function SpecimenPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="flex items-start justify-between px-6 pt-6 md:px-10 md:pt-8">
         <div>
-          <p className="label-micro">Fiction / Future</p>
-          <h1 className="mt-1 font-display text-3xl leading-none tracking-tight md:text-4xl">
-            <span className="italic">exo</span>plantae
+          <p className="label-micro">Flora, reconstructed</p>
+          <h1 className="mt-1 text-3xl font-medium leading-none tracking-[0.34em] md:text-4xl">
+            HEBRA
           </h1>
-          <p className="label-micro mt-1">Generative · Botany · Encyclopedia 2095</p>
+          <p className="label-micro mt-2">ჰებრა · Digital Herbarium</p>
         </div>
         <p className="label-micro hidden text-right md:block">
-          Specimen 0631
+          HEBRA / 000001
           <br />
-          Digital herbarium
+          Founded in Georgia
         </p>
       </header>
+
 
       <main className="grid gap-6 px-6 pb-12 pt-6 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-10 md:px-10">
         {/* Specimen stage */}
@@ -154,9 +155,10 @@ function SpecimenPage() {
           </div>
 
           <p className="max-w-xs text-[11px] leading-relaxed opacity-75">
-            Dark-field transmission scan. Tissue densities are mapped to refractive index; only the
-            pigment retained at the base of each tepal registers against the plate.
+            A digital record of plant form. Tissue densities are mapped to refractive index and
+            rendered without colour correction.
           </p>
+
 
         </aside>
       </main>

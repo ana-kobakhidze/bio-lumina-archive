@@ -13,63 +13,63 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const EDGE = new THREE.Color("#5950B8");
-const CONTOUR = new THREE.Color("#5950B8");
+const MESH = new THREE.Color("#8C85E8");
+const CONTOUR = new THREE.Color("#8C85E8");
 const ATTEN = new THREE.Color("#25387A");
-
+const EMISSIVE = new THREE.Color("#25387A");
+const BIO = new THREE.Color("#1EA598");
 
 /**
- * Thin translucent botanical membrane: an almost fully transmissive surface
- * whose colour only accumulates where blades overlap, plus a continuous
- * contour drawn along the whole boundary of the blade.
+ * Translucent botanical tissue: a physically transmissive surface that still
+ * reads as a body — dense where blades overlap — with a delicate contour and
+ * a barely-there technical mesh over it.
  */
 function Membrane({
   geometry,
   wire,
   outline,
   emphasis,
-  thickness = 0.12,
-  opacity = 0.22,
-
+  thickness = 0.25,
+  transmission = 0.62,
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
   outline?: THREE.BufferGeometry;
   emphasis: number;
   thickness?: number;
-  opacity?: number;
+  transmission?: number;
 }) {
+  const dim = 0.45 + 0.55 * emphasis;
   return (
     <group>
       <mesh geometry={geometry}>
         <meshPhysicalMaterial
           vertexColors
           transparent
-          opacity={opacity * emphasis + 0.04}
-          transmission={0.98}
+          opacity={1}
+          transmission={transmission}
           thickness={thickness}
-          roughness={0.08}
+          roughness={0.22}
           metalness={0}
-          ior={1.36}
-          clearcoat={0.6}
-          clearcoatRoughness={0.12}
-          iridescence={0.15}
-          iridescenceIOR={1.25}
-          specularIntensity={1}
+          ior={1.35}
+          clearcoat={0.35}
+          clearcoatRoughness={0.2}
+          specularIntensity={0.8}
+          emissive={EMISSIVE}
+          emissiveIntensity={0.14 * dim}
           attenuationColor={ATTEN}
-          attenuationDistance={0.12}
-
+          attenuationDistance={0.5}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite={false}
+          depthWrite
         />
       </mesh>
       <mesh geometry={wire} scale={1.0015}>
         <meshBasicMaterial
-          color={EDGE}
+          color={MESH}
           wireframe
           transparent
-          opacity={0.035 * emphasis}
+          opacity={0.07 * dim}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
@@ -79,7 +79,7 @@ function Membrane({
           <lineBasicMaterial
             color={CONTOUR}
             transparent
-            opacity={0.85 * emphasis}
+            opacity={0.24 * dim}
             depthWrite={false}
           />
         </lineSegments>
@@ -87,6 +87,7 @@ function Membrane({
     </group>
   );
 }
+
 
 function Tepal({ spec, emphasis }: { spec: TepalSpec2; emphasis: number }) {
   const geo = useMemo(() => createTepalGeometry(spec), [spec]);
@@ -100,8 +101,9 @@ function Tepal({ spec, emphasis }: { spec: TepalSpec2; emphasis: number }) {
           wire={wire}
           outline={outline}
           emphasis={emphasis}
-          thickness={0.1}
+          thickness={0.22}
         />
+
       </group>
     </group>
   );
@@ -116,11 +118,12 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
           <mesh position={[0, s.len / 2, 0]}>
             <cylinderGeometry args={[0.0028, 0.0042, s.len, 20, 6]} />
             <meshBasicMaterial
-              color={EDGE}
+              color={BIO}
               transparent
-              opacity={0.5 * emphasis}
+              opacity={0.6 * emphasis}
               depthWrite={false}
             />
+
           </mesh>
           <mesh position={[0, s.len, 0]}>
             <sphereGeometry args={[0.0155, 32, 22]} />
@@ -172,16 +175,17 @@ export function ProceduralFlower({
         geometry={stem}
         wire={stemWire}
         emphasis={stemEmphasis}
-        thickness={0.3}
-        opacity={0.6}
+        thickness={0.4}
+        transmission={0.3}
       />
       <Membrane
         geometry={receptacle}
         wire={receptacleWire}
         emphasis={stemEmphasis * 0.4 + emphasis * 0.6}
-        thickness={0.36}
-        opacity={0.66}
+        thickness={0.45}
+        transmission={0.28}
       />
+
       <group position={[0, top * 0.9, 0]}>
         {morph.basal.map((t, i) => (
           <Tepal key={`b-${i}`} spec={t} emphasis={emphasis} />
