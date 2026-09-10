@@ -147,22 +147,24 @@ const smoothstep = (e0: number, e1: number, x: number) => {
 };
 
 /**
- * Archive palette. Dense base -> periwinkle body -> pale lavender tips,
- * with a brighter cobalt margin.
+ * Deep-water archive palette. Dense indigo base -> mid blue body -> almost
+ * clear tips, with a luminous violet margin.
  */
 export const PALETTE = {
-  dense: "#598FFD",
-  mid: "#8987EC",
-  pale: "#F0EDFA",
-  rim: "#3f6fd8",
-  ink: "#5E4C3C",
-  ground: "#F0EDFA",
+  dense: "#14194D",
+  mid: "#25387A",
+  pale: "#5950B8",
+  rim: "#5950B8",
+  accent: "#1EA598",
+  ink: "#CBE7E4",
+  ground: "#0C0827",
 } as const;
 
 const DENSE = new THREE.Color(PALETTE.dense);
 const MID = new THREE.Color(PALETTE.mid);
 const PALE = new THREE.Color(PALETTE.pale);
 const RIM = new THREE.Color(PALETTE.rim);
+const GROUND = new THREE.Color(PALETTE.ground);
 
 function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
@@ -171,10 +173,11 @@ function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    // Interior stays near-neutral so the blade reads as clear glass; the
-    // saturated cobalt collects at the base and along the two margins.
-    c.copy(DENSE).lerp(MID, smoothstep(0, 0.28, u)).lerp(PALE, smoothstep(0.05, 0.75, u));
-    c.lerp(RIM, Math.pow(s, 3.2) * 0.85);
+    // Pigment is bottom-heavy: dense indigo at the base, dissolving toward
+    // the ground colour at the tip so the blade reads as clear glass there.
+    c.copy(DENSE).lerp(MID, smoothstep(0, 0.3, u));
+    c.lerp(GROUND, smoothstep(0.28, 1, u) * 0.72);
+    c.lerp(PALE, Math.pow(s, 3) * 0.7);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
@@ -182,6 +185,7 @@ function tint(geo: THREE.BufferGeometry) {
   geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
   return geo;
 }
+
 
 /**
  * A single tepal: a dense parametric membrane swept along a smooth
