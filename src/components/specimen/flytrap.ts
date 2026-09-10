@@ -179,9 +179,13 @@ export function createPetioleGeometry(p: PetioleSpec, q = 1) {
         side.crossVectors(up, tangent).normalize();
         normal.crossVectors(tangent, side).normalize();
         // narrow at the rhizome, widest around two thirds, narrowing into the trap
-        const prof = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.8) * (0.35 + 0.65 * u);
-        const w = p.width * Math.max(0.004, prof);
+        // narrow stalk at the rhizome, broadening into a spatulate wing, then
+        // pinching in just before the trap
+        const wing = Math.pow(u, 1.5) * (1 - 0.55 * Math.pow(u, 6));
+        const prof = 0.18 + 1.5 * wing;
+        const w = p.width * Math.max(0.02, prof);
         const cup = -s * s * w * p.cup * 6;
+
         out.copy(point).addScaledVector(side, s * w).addScaledVector(normal, cup);
       },
       seg(80, q),
