@@ -71,17 +71,18 @@ export const FLYTRAP: FlytrapMorphology = {
 
 /** Flowering scape: a tall bare stalk carrying a small umbel of flowers. */
 export const SCAPE = {
-  stem: { length: 1.75, radius: 0.012, flare: 1.15, flutes: 5 },
+  stem: { length: 1.18, radius: 0.011, flare: 1.15, flutes: 5 },
   flowers: [
-    { pos: [0.14, 1.72, 0.06], tilt: 0.5, spin: 0.3, scale: 1 },
-    { pos: [-0.16, 1.64, -0.05], tilt: -0.55, spin: 1.4, scale: 0.9 },
-    { pos: [0.02, 1.86, -0.12], tilt: 0.15, spin: 2.5, scale: 0.82 },
+    { pos: [0.12, 1.15, 0.05], tilt: 0.5, spin: 0.3, scale: 1 },
+    { pos: [-0.13, 1.08, -0.04], tilt: -0.55, spin: 1.4, scale: 0.9 },
+    { pos: [0.02, 1.26, -0.1], tilt: 0.15, spin: 2.5, scale: 0.82 },
   ] as { pos: [number, number, number]; tilt: number; spin: number; scale: number }[],
   buds: [
-    { pos: [-0.1, 1.8, 0.1] as [number, number, number], scale: 0.9 },
-    { pos: [0.17, 1.56, -0.08] as [number, number, number], scale: 0.75 },
-    { pos: [-0.04, 1.9, 0.02] as [number, number, number], scale: 0.6 },
+    { pos: [-0.08, 1.21, 0.08] as [number, number, number], scale: 0.9 },
+    { pos: [0.14, 1.02, -0.06] as [number, number, number], scale: 0.75 },
+    { pos: [-0.03, 1.3, 0.02] as [number, number, number], scale: 0.6 },
   ],
+
 };
 
 /** Five flat spreading petals of one scape flower. */
