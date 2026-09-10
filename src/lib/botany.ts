@@ -323,7 +323,7 @@ export const SPECIES: Species[] = [
     common: "Green snowdrop",
     home: [0, -0.05, 0],
     nod: Math.PI,
-    scale: 1.35,
+    scale: 1.08,
     parts: flowerParts({
       latin: "Galanthus woronowii",
       whole: "Single pendulous flower on a slender scape between two bright, glossy, strap-shaped leaves.",
@@ -340,7 +340,7 @@ export const SPECIES: Species[] = [
         latin: "Scapus bulbosus",
         note: "Slender scape from a small tunicate bulb, arching at the apex so the flower hangs clear of the spathe.",
       },
-      camera: [0.2, 0.1, 2.5],
+      camera: [0.2, 0.05, 2.6],
       target: [0, -0.05, 0],
     }),
     record: {
