@@ -59,8 +59,8 @@ export function outlineGeometry(geo: THREE.BufferGeometry): THREE.BufferGeometry
 
   const out: number[] = [];
   for (let k = 0; k < loop.length; k++) {
-    const a = loop[k];
-    const b = loop[(k + 1) % loop.length];
+    const a = loop[k] as number;
+    const b = loop[(k + 1) % loop.length] as number;
     out.push(pos.getX(a), pos.getY(a), pos.getZ(a));
     out.push(pos.getX(b), pos.getY(b), pos.getZ(b));
   }
