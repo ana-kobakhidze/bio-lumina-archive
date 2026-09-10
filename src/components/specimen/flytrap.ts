@@ -54,17 +54,54 @@ export const FLYTRAP: FlytrapMorphology = {
     open: 0.62,
     cilia: { count: 16, length: 0.115 },
   },
-  petiole: { reach: 0.66, rise: 0.16, width: 0.15, cup: 0.05 },
+  petiole: { reach: 0.62, rise: 0.11, width: 0.185, cup: 0.045 },
   rhizome: { length: 0.16, radius: 0.017, flare: 1.0, flutes: 6 },
 
   traps: [
-    { angle: 0.15, tilt: 0.34, scale: 1, roll: 0.05 },
-    { angle: 1.32, tilt: 0.2, scale: 0.86, roll: -0.1 },
-    { angle: 2.46, tilt: 0.42, scale: 0.95, roll: 0.12 },
-    { angle: 3.62, tilt: 0.26, scale: 0.8, roll: -0.06 },
-    { angle: 4.8, tilt: 0.38, scale: 0.9, roll: 0.09 },
+    { angle: 0.12, tilt: 0.3, scale: 1, roll: 0.05 },
+    { angle: 0.92, tilt: 0.16, scale: 0.84, roll: -0.12 },
+    { angle: 1.78, tilt: 0.38, scale: 0.95, roll: 0.1 },
+    { angle: 2.62, tilt: 0.12, scale: 0.78, roll: -0.05 },
+    { angle: 3.42, tilt: 0.34, scale: 0.92, roll: 0.13 },
+    { angle: 4.26, tilt: 0.2, scale: 0.86, roll: -0.09 },
+    { angle: 5.12, tilt: 0.4, scale: 0.98, roll: 0.06 },
+    { angle: 5.78, tilt: 0.1, scale: 0.74, roll: -0.14 },
   ],
 };
+
+/** Flowering scape: a tall bare stalk carrying a small umbel of flowers. */
+export const SCAPE = {
+  stem: { length: 1.75, radius: 0.012, flare: 1.15, flutes: 5 },
+  flowers: [
+    { pos: [0.14, 1.72, 0.06], tilt: 0.5, spin: 0.3, scale: 1 },
+    { pos: [-0.16, 1.64, -0.05], tilt: -0.55, spin: 1.4, scale: 0.9 },
+    { pos: [0.02, 1.86, -0.12], tilt: 0.15, spin: 2.5, scale: 0.82 },
+  ] as { pos: [number, number, number]; tilt: number; spin: number; scale: number }[],
+  buds: [
+    { pos: [-0.1, 1.8, 0.1] as [number, number, number], scale: 0.9 },
+    { pos: [0.17, 1.56, -0.08] as [number, number, number], scale: 0.75 },
+    { pos: [-0.04, 1.9, 0.02] as [number, number, number], scale: 0.6 },
+  ],
+};
+
+/** Five flat spreading petals of one scape flower. */
+export function scapeFlowerTepals() {
+  return Array.from({ length: 5 }, (_, i) => ({
+    length: 0.115,
+    width: 0.062,
+    out: 0.92,
+    rise: 0.2,
+    curl: 0.05,
+    cup: 0.18,
+    twist: 0.04,
+    sweep: 0.02,
+    tipRound: 0.42,
+    angle: (i / 5) * Math.PI * 2,
+    attach: 0.012,
+    tilt: 0.1,
+  }));
+}
+
 
 const seg = (n: number, q: number) => Math.max(5, Math.round(n * q));
 
