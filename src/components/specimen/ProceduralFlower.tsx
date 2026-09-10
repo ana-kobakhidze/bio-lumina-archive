@@ -11,8 +11,9 @@ import {
 } from "./flower";
 
 /** Coarse twin used only for the faint scan overlay. */
-const WIRE_Q = 0.26;
-const EDGE = new THREE.Color("#cfd6ff");
+const WIRE_Q = 0.3;
+const EDGE = new THREE.Color("#F0EDFA");
+const ATTEN = new THREE.Color("#3f4fd8");
 
 /**
  * Thin translucent botanical membrane. The smooth high-resolution surface
@@ -22,8 +23,8 @@ function Membrane({
   geometry,
   wire,
   emphasis,
-  thickness = 0.28,
-  opacity = 0.54,
+  thickness = 0.4,
+  opacity = 0.92,
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
@@ -37,29 +38,30 @@ function Membrane({
         <meshPhysicalMaterial
           vertexColors
           transparent
-          opacity={opacity * emphasis + 0.04}
-          transmission={0.42}
+          opacity={opacity * emphasis + 0.06}
+          transmission={0.9}
           thickness={thickness}
-          roughness={0.22}
+          roughness={0.12}
           metalness={0}
-          ior={1.35}
-          clearcoat={0.35}
-          clearcoatRoughness={0.3}
-          iridescence={0.28}
-          iridescenceIOR={1.22}
-          attenuationColor={new THREE.Color("#2a1ce0")}
-          attenuationDistance={1.1}
+          ior={1.4}
+          clearcoat={0.5}
+          clearcoatRoughness={0.18}
+          iridescence={0.2}
+          iridescenceIOR={1.25}
+          specularIntensity={1}
+          attenuationColor={ATTEN}
+          attenuationDistance={0.9}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite={false}
+          depthWrite={emphasis > 0.5}
         />
       </mesh>
-      <mesh geometry={wire} scale={1.001}>
+      <mesh geometry={wire} scale={1.0015}>
         <meshBasicMaterial
           color={EDGE}
           wireframe
           transparent
-          opacity={0.035 * emphasis}
+          opacity={0.09 * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
