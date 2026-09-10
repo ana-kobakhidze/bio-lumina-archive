@@ -54,18 +54,18 @@ function outerRing(count: number): TepalSpec2[] {
   return Array.from({ length: count }, (_, i) => {
     const a = (i / count) * Math.PI * 2 + vary(i, 3) * 0.09;
     return {
-      length: 0.66 * (1 + vary(i, 1) * 0.05),
-      width: 0.3 * (1 + vary(i, 2) * 0.05),
-      out: 0.82,
-      rise: 0.5 + vary(i, 4) * 0.06,
-      curl: 0.36 * (1 + vary(i, 5) * 0.08),
-      cup: 0.38 + vary(i, 6) * 0.06,
-      twist: 0.16 * (i % 2 === 0 ? 1 : -1) + vary(i, 7) * 0.06,
-      sweep: 0.07 * (i % 2 === 0 ? 1 : -1),
+      length: 0.64 * (1 + vary(i, 1) * 0.05),
+      width: 0.27 * (1 + vary(i, 2) * 0.05),
+      out: 0.72,
+      rise: 0.56 + vary(i, 4) * 0.05,
+      curl: 0.3 * (1 + vary(i, 5) * 0.08),
+      cup: 0.36 + vary(i, 6) * 0.05,
+      twist: 0.13 * (i % 2 === 0 ? 1 : -1) + vary(i, 7) * 0.05,
+      sweep: 0.06 * (i % 2 === 0 ? 1 : -1),
       tipRound: 0.58,
       angle: a,
       attach: 0.07,
-      tilt: 0.05 + vary(i, 8) * 0.06,
+      tilt: 0.04 + vary(i, 8) * 0.05,
     };
   });
 }
@@ -74,18 +74,18 @@ function innerRing(count: number): TepalSpec2[] {
   return Array.from({ length: count }, (_, i) => {
     const a = (i / count) * Math.PI * 2 + 0.62 + vary(i, 11) * 0.08;
     return {
-      length: 0.52 * (1 + vary(i, 12) * 0.06),
-      width: 0.225 * (1 + vary(i, 13) * 0.06),
-      out: 0.44,
-      rise: 0.9,
-      curl: 0.3,
-      cup: 0.42,
-      twist: 0.1 * (i % 2 === 0 ? 1 : -1),
-      sweep: 0.05 * vary(i, 14),
+      length: 0.5 * (1 + vary(i, 12) * 0.06),
+      width: 0.2 * (1 + vary(i, 13) * 0.06),
+      out: 0.36,
+      rise: 0.94,
+      curl: 0.26,
+      cup: 0.4,
+      twist: 0.09 * (i % 2 === 0 ? 1 : -1),
+      sweep: 0.04 * vary(i, 14),
       tipRound: 0.62,
       angle: a,
-      attach: 0.045,
-      tilt: -0.16 + vary(i, 15) * 0.05,
+      attach: 0.04,
+      tilt: -0.12 + vary(i, 15) * 0.04,
     };
   });
 }
@@ -94,35 +94,35 @@ function basalRing(count: number): TepalSpec2[] {
   return Array.from({ length: count }, (_, i) => {
     const a = (i / count) * Math.PI * 2 + 1.15;
     return {
-      length: 0.3 * (1 + vary(i, 21) * 0.08),
-      width: 0.11,
-      out: 0.9,
-      rise: 0.06,
-      curl: 0.72,
-      cup: 0.3,
-      twist: 0.2 * vary(i, 22),
-      sweep: 0.08 * vary(i, 23),
+      length: 0.24 * (1 + vary(i, 21) * 0.08),
+      width: 0.095,
+      out: 0.7,
+      rise: 0.05,
+      curl: 0.6,
+      cup: 0.28,
+      twist: 0.16 * vary(i, 22),
+      sweep: 0.06 * vary(i, 23),
       tipRound: 0.6,
       angle: a,
-      attach: 0.085,
-      tilt: 0.5 + vary(i, 24) * 0.1,
+      attach: 0.075,
+      tilt: 0.62 + vary(i, 24) * 0.08,
     };
   });
 }
 
 export const FLOWER: FlowerMorphology = {
   receptacle: { radius: 0.115, height: 0.13 },
-  stem: { length: 1.9, radius: 0.017, flare: 1.3, flutes: 5 },
+  stem: { length: 0.85, radius: 0.017, flare: 1.3, flutes: 5 },
   central: {
-    length: 0.72,
-    width: 0.17,
-    out: 0.26,
+    length: 0.68,
+    width: 0.15,
+    out: 0.24,
     rise: 1.0,
-    curl: 0.26,
-    cup: 0.26,
-    twist: 0.16,
+    curl: 0.22,
+    cup: 0.28,
+    twist: 0.14,
     sweep: 0.05,
-    tipRound: 0.95,
+    tipRound: 0.9,
     angle: 0.32,
     attach: 0.012,
     tilt: -0.05,
@@ -132,6 +132,7 @@ export const FLOWER: FlowerMorphology = {
   basal: basalRing(4),
   stamens: { count: 14, height: 0.2, spread: 0.06 },
 };
+
 
 /* ------------------------------------------------------------------ *
  * Generators
