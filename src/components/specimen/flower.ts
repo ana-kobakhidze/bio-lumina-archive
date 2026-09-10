@@ -58,8 +58,8 @@ function outerRing(count: number): TepalSpec2[] {
       width: 0.3 * (1 + vary(i, 2) * 0.05),
       out: 0.82,
       rise: 0.5 + vary(i, 4) * 0.06,
-      curl: 0.34 * (1 + vary(i, 5) * 0.08),
-      cup: 0.5 + vary(i, 6) * 0.06,
+      curl: 0.36 * (1 + vary(i, 5) * 0.08),
+      cup: 0.38 + vary(i, 6) * 0.06,
       twist: 0.16 * (i % 2 === 0 ? 1 : -1) + vary(i, 7) * 0.06,
       sweep: 0.07 * (i % 2 === 0 ? 1 : -1),
       tipRound: 0.58,
@@ -76,10 +76,10 @@ function innerRing(count: number): TepalSpec2[] {
     return {
       length: 0.52 * (1 + vary(i, 12) * 0.06),
       width: 0.225 * (1 + vary(i, 13) * 0.06),
-      out: 0.36,
-      rise: 0.96,
-      curl: 0.16,
-      cup: 0.8,
+      out: 0.44,
+      rise: 0.9,
+      curl: 0.3,
+      cup: 0.42,
       twist: 0.1 * (i % 2 === 0 ? 1 : -1),
       sweep: 0.05 * vary(i, 14),
       tipRound: 0.62,
@@ -114,15 +114,15 @@ export const FLOWER: FlowerMorphology = {
   receptacle: { radius: 0.115, height: 0.13 },
   stem: { length: 1.9, radius: 0.017, flare: 1.3, flutes: 5 },
   central: {
-    length: 0.8,
-    width: 0.27,
-    out: 0.14,
+    length: 0.72,
+    width: 0.17,
+    out: 0.26,
     rise: 1.0,
-    curl: 0.06,
-    cup: 0.95,
-    twist: 0.06,
-    sweep: 0.03,
-    tipRound: 0.66,
+    curl: 0.26,
+    cup: 0.26,
+    twist: 0.16,
+    sweep: 0.05,
+    tipRound: 0.95,
     angle: 0.32,
     attach: 0.012,
     tilt: -0.05,
@@ -224,7 +224,7 @@ export function createTepalGeometry(t: TepalSpec2, q = 1) {
       // base and the tip softly rounded instead of collapsing to a flat cut
       // or a triangular point.
       const shape = Math.sin(Math.PI * Math.pow(u, 0.72));
-      const prof = Math.pow(Math.max(0, shape), t.tipRound * 0.62) * (1 - 0.08 * u);
+      const prof = Math.pow(Math.max(0, shape), t.tipRound * 1.35) * (1 - 0.08 * u);
       // organic asymmetry: the two halves of the blade are never identical
       const asym = 1 + s * (0.07 + 0.05 * Math.sin(u * 3.1 + t.angle * 2.3));
       const w = t.width * Math.max(0.0015, prof) * asym;

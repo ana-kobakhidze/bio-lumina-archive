@@ -23,7 +23,7 @@ function Membrane({
   geometry,
   wire,
   emphasis,
-  thickness = 0.4,
+  thickness = 0.5,
   opacity = 0.92,
 }: {
   geometry: THREE.BufferGeometry;
@@ -39,7 +39,7 @@ function Membrane({
           vertexColors
           transparent
           opacity={opacity * emphasis + 0.06}
-          transmission={0.9}
+          transmission={0.7}
           thickness={thickness}
           roughness={0.12}
           metalness={0}
@@ -50,7 +50,7 @@ function Membrane({
           iridescenceIOR={1.25}
           specularIntensity={1}
           attenuationColor={ATTEN}
-          attenuationDistance={0.9}
+          attenuationDistance={0.35}
           side={THREE.DoubleSide}
           flatShading={false}
           depthWrite={emphasis > 0.5}
@@ -61,7 +61,7 @@ function Membrane({
           color={EDGE}
           wireframe
           transparent
-          opacity={0.09 * emphasis}
+          opacity={0.07 * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
