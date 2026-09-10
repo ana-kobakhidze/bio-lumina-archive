@@ -2,16 +2,19 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import {
   FLYTRAP,
+  SCAPE,
   createCiliaLayout,
   createLobeGeometry,
   createPetioleGeometry,
   createTriggerLayout,
   petioleTip,
+  scapeFlowerTepals,
   type FlytrapMorphology,
   type TrapPlacement,
   type TrapSpec,
 } from "./flytrap";
-import { createStemGeometry } from "./flower";
+import { createStemGeometry, createTepalGeometry } from "./flower";
+
 import { outlineGeometry } from "./geometry";
 import { Membrane } from "./ProceduralFlower";
 
