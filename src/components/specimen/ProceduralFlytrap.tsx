@@ -39,7 +39,7 @@ function Lobe({ trap, sign, emphasis }: { trap: TrapSpec; sign: 1 | -1; emphasis
 
       {cilia.map((c, i) => (
         <mesh key={`c-${i}`} position={c.pos} quaternion={c.quat}>
-          <cylinderGeometry args={[0.0012, 0.0034, c.len, 14, 4]} />
+          <cylinderGeometry args={[0.0007, 0.0026, c.len, 12, 3]} />
           <meshBasicMaterial
             color={GLOW}
             transparent
