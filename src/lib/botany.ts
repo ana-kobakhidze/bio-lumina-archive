@@ -40,8 +40,8 @@ export const PARTS: PartSpec[] = [
     term: "Lamina",
     latin: "Folium lanceolatum",
     note: "Lanceolate blade with pinnate venation. Vein walls remain optically dense after clearing, rendering the vascular network legible in transmission.",
-    camera: [1.6, -1.0, 3.2],
-    target: [0.2, -1.1, 0],
+    camera: [1.2, -0.25, 2.2],
+    target: [0.15, -0.42, 0],
     fig: "FIG. 03",
   },
   {
@@ -50,10 +50,11 @@ export const PARTS: PartSpec[] = [
     term: "Caulis",
     latin: "Scapus fistulosus",
     note: "Hollow erect scape, five longitudinal ridges. Internal node partitions are visible as faint transverse bands.",
-    camera: [1.0, -0.5, 3.4],
-    target: [0, -0.7, 0],
+    camera: [0.8, -0.1, 2.3],
+    target: [0, -0.34, 0],
     fig: "FIG. 04",
   },
+
   {
     id: "fruit",
     label: "Fruit",

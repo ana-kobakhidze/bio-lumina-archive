@@ -13,9 +13,10 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const EDGE = new THREE.Color("#598FFD");
-const CONTOUR = new THREE.Color("#3f6fd8");
-const ATTEN = new THREE.Color("#598FFD");
+const EDGE = new THREE.Color("#5950B8");
+const CONTOUR = new THREE.Color("#5950B8");
+const ATTEN = new THREE.Color("#25387A");
+
 
 /**
  * Thin translucent botanical membrane: an almost fully transmissive surface
@@ -28,7 +29,8 @@ function Membrane({
   outline,
   emphasis,
   thickness = 0.12,
-  opacity = 0.34,
+  opacity = 0.22,
+
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
@@ -55,7 +57,8 @@ function Membrane({
           iridescenceIOR={1.25}
           specularIntensity={1}
           attenuationColor={ATTEN}
-          attenuationDistance={0.18}
+          attenuationDistance={0.12}
+
           side={THREE.DoubleSide}
           flatShading={false}
           depthWrite={false}
@@ -122,10 +125,11 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
           <mesh position={[0, s.len, 0]}>
             <sphereGeometry args={[0.0155, 32, 22]} />
             <meshPhysicalMaterial
-              color="#598FFD"
+              color="#1EA598"
               transparent
-              opacity={0.72 * emphasis}
-              transmission={0.5}
+              opacity={0.85 * emphasis}
+              transmission={0.4}
+
               thickness={0.06}
               roughness={0.16}
               flatShading={false}

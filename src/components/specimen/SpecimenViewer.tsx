@@ -5,8 +5,9 @@ import * as THREE from "three";
 import { PARTS, type PartId } from "@/lib/botany";
 import { Specimen } from "./Specimen";
 
-/** olive-yellow archive ground — the scene owns it so glass can transmit it */
-const GROUND = "#F0EDFA";
+/** deep-water archive ground — the scene owns it so glass can transmit it */
+const GROUND = "#0C0827";
+
 
 function CameraRig({
   active,
@@ -71,29 +72,30 @@ export function SpecimenViewer({
       <color attach="background" args={[GROUND]} />
 
       {/* controlled studio lighting: soft key, weak fill, strong rim */}
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[2.5, 4, 5]} intensity={0.7} color="#F0EDFA" />
-      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.3} color="#8987EC" />
-      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.2} color="#598FFD" />
+      <ambientLight intensity={0.22} />
+      <directionalLight position={[2.5, 4, 5]} intensity={0.6} color="#5950B8" />
+      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.35} color="#25387A" />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={3.2} color="#1EA598" />
 
       {/* small studio reflection rig — no HDRI, no ground plane */}
       <Environment resolution={256}>
-        <Lightformer intensity={2.2} position={[0, 4, 2]} scale={[8, 8, 1]} color="#F0EDFA" />
+        <Lightformer intensity={1.8} position={[0, 4, 2]} scale={[8, 8, 1]} color="#5950B8" />
         <Lightformer
-          intensity={2}
+          intensity={2.4}
           position={[-4, 1, -2]}
           rotation-y={Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#598FFD"
+          color="#1EA598"
         />
         <Lightformer
           intensity={1.4}
           position={[4, 0.5, -2]}
           rotation-y={-Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#8987EC"
+          color="#25387A"
         />
       </Environment>
+
 
       <Suspense fallback={null}>
         <Specimen active={active} />

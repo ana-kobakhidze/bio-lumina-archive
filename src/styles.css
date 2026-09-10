@@ -66,11 +66,12 @@
 
 :root {
   --radius: 0rem;
-  /* bone ground (#F0EDFA) */
-  --background: oklch(0.945 0.017 300);
-  /* deep brown ink (#5E4C3C) */
-  --foreground: oklch(0.430 0.035 63.3);
-  --specimen: oklch(0.430 0.035 63.3);
+  /* deep-water ground (#0C0827) */
+  --background: oklch(0.153 0.055 291);
+  /* pale teal ink (#CBE7E4) */
+  --foreground: oklch(0.900 0.028 187);
+  --specimen: oklch(0.900 0.028 187);
+
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
