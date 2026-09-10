@@ -73,10 +73,10 @@ export function SpecimenViewer({
 
       {/* museum scanner lighting: violet key, cobalt fill, teal rim */}
       <ambientLight intensity={0.5} />
-      <directionalLight position={[2.5, 3.5, 5]} intensity={2.2} color="#8C85E8" />
+      <directionalLight position={[2.5, 3.5, 5]} intensity={1.7} color="#8C85E8" />
       <directionalLight position={[-4.5, 1.2, 2.5]} intensity={1.1} color="#25387A" />
       <directionalLight position={[-1.5, 3.5, -6]} intensity={2.6} color="#1EA598" />
-      <pointLight position={[0, 0.7, 0.9]} intensity={1.6} distance={4} color="#5950B8" />
+      <pointLight position={[0, 0.7, 0.9]} intensity={1.1} distance={4} color="#5950B8" />
 
       {/* small studio reflection rig — no HDRI, no ground plane */}
       <Environment resolution={256}>

@@ -30,7 +30,7 @@ function Membrane({
   outline,
   emphasis,
   thickness = 0.25,
-  transmission = 0.45,
+  transmission = 0.62,
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
@@ -49,14 +49,14 @@ function Membrane({
           opacity={1}
           transmission={transmission}
           thickness={thickness}
-          roughness={0.18}
+          roughness={0.22}
           metalness={0}
           ior={1.35}
           clearcoat={0.35}
           clearcoatRoughness={0.2}
           specularIntensity={0.8}
           emissive={EMISSIVE}
-          emissiveIntensity={0.24 * dim}
+          emissiveIntensity={0.14 * dim}
           attenuationColor={ATTEN}
           attenuationDistance={0.5}
           side={THREE.DoubleSide}
@@ -69,7 +69,7 @@ function Membrane({
           color={MESH}
           wireframe
           transparent
-          opacity={0.1 * dim}
+          opacity={0.07 * dim}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
@@ -79,7 +79,7 @@ function Membrane({
           <lineBasicMaterial
             color={CONTOUR}
             transparent
-            opacity={0.3 * dim}
+            opacity={0.24 * dim}
             depthWrite={false}
           />
         </lineSegments>
