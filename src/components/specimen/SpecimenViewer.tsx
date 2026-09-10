@@ -1,9 +1,12 @@
-import { OrbitControls } from "@react-three/drei";
+import { Environment, Lightformer, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { PARTS, type PartId } from "@/lib/botany";
 import { Specimen } from "./Specimen";
+
+/** olive-yellow archive ground — the scene owns it so glass can transmit it */
+const GROUND = "#C7CC10";
 
 function CameraRig({
   active,
