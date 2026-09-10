@@ -37,7 +37,7 @@ export interface TepalSpec2 {
 export interface FlowerMorphology {
   receptacle: { radius: number; height: number };
   stem: { length: number; radius: number; flare: number; flutes: number };
-  central: TepalSpec2;
+  central?: TepalSpec2;
   inner: TepalSpec2[];
   outer: TepalSpec2[];
   basal: TepalSpec2[];

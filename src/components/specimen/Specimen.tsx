@@ -1,7 +1,9 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import type { PartId, SpeciesId } from "@/lib/botany";
+import { SPECIES, type PartId, type SpeciesId } from "@/lib/botany";
+import { MORPHOLOGY } from "./species-morphology";
+
 import { FLOWER } from "./flower";
 import {
   createFruitGeometry,
@@ -142,9 +144,15 @@ export function Specimen({ species, active }: { species: SpeciesId; active: Part
     );
   }
 
+  const sp = SPECIES.find((s) => s.id === species);
+  const morph = MORPHOLOGY[species as keyof typeof MORPHOLOGY] ?? MORPHOLOGY.astromirabilis;
+
   return (
     <group ref={root}>
-      <ProceduralFlower emphasis={eFlower} stemEmphasis={eStem} />
+      <group rotation={[sp?.nod ?? 0, 0, 0]} scale={sp?.scale ?? 1}>
+        <ProceduralFlower morph={morph} emphasis={eFlower} stemEmphasis={eStem} />
+      </group>
+
 
       {showLeaves && LEAVES.map((l, i) => <Leaf key={i} spec={l} emphasis={eLeaf} />)}
 

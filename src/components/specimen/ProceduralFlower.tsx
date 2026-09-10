@@ -196,7 +196,7 @@ export function ProceduralFlower({
         {morph.inner.map((t, i) => (
           <Tepal key={`i-${i}`} spec={t} emphasis={emphasis} />
         ))}
-        <Tepal spec={morph.central} emphasis={emphasis} />
+        {morph.central ? <Tepal spec={morph.central} emphasis={emphasis} /> : null}
         <Stamens emphasis={emphasis} morph={morph} />
       </group>
     </group>

@@ -1,61 +1,37 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Maximize2, Minimize2, Move3d, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
-import { SpecimenViewer } from "@/components/specimen/SpecimenViewer";
-import { SPECIES, type PartId, type SpeciesId } from "@/lib/botany";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { SpecimenCard } from "@/components/hebra/SpecimenCard";
+import { SpecimenStage } from "@/components/specimen/SpecimenStage";
+import { recordRows, SPECIES, type PartId, type SpeciesId } from "@/lib/botany";
 
 export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "HEBRA — Digital Herbarium · Astromirabilis grandiflora" },
+      { title: "HEBRA — The living digital herbarium" },
       {
         name: "description",
         content:
-          "HEBRA is a digital herbarium for exploring plant species through form, structure and place. Rotate, zoom and examine interactive translucent specimens.",
+          "HEBRA reconstructs plants as interactive translucent specimens. Rotate, dissect and compare Lilium martagon, Galanthus woronowii, Papaver rhoeas and Dionaea muscipula.",
       },
-      { property: "og:title", content: "HEBRA — Digital Herbarium" },
+      { property: "og:title", content: "HEBRA — The living digital herbarium" },
       {
         property: "og:description",
-        content: "Flora, reconstructed. Explore plant species as interactive digital specimens.",
+        content:
+          "Flora, reconstructed. A digital herbarium of interactive 3D specimens with full scientific records.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-
   component: SpecimenPage,
 });
 
 function SpecimenPage() {
   const [speciesId, setSpeciesId] = useState<SpeciesId>("astromirabilis");
   const [active, setActive] = useState<PartId>("whole");
-  const [nonce, setNonce] = useState(0);
-  const [full, setFull] = useState(false);
-  const stage = useRef<HTMLDivElement>(null);
 
   const species = SPECIES.find((s) => s.id === speciesId)!;
-  const part = species.parts.find((p) => p.id === active) ?? species.parts[0]!;
-
-  const toggleFull = useCallback(() => {
-    const el = stage.current;
-    if (!el) return;
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-      setFull(false);
-    } else {
-      el.requestFullscreen?.();
-      setFull(true);
-    }
-  }, []);
-
-  const zoom = (dir: 1 | -1) => {
-    stage.current
-      ?.querySelector("canvas")
-      ?.dispatchEvent(
-        new WheelEvent("wheel", { deltaY: dir * 220, bubbles: true, cancelable: true }),
-      );
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -65,146 +41,110 @@ function SpecimenPage() {
           <h1 className="mt-1 text-3xl font-medium leading-none tracking-[0.34em] md:text-4xl">
             HEBRA
           </h1>
-          <p className="label-micro mt-2">ჰებრა · Digital Herbarium</p>
+          <p className="label-micro mt-2">ჰებრა · The living digital herbarium</p>
         </div>
-        <p className="label-micro hidden text-right md:block">
-          HEBRA / 000001
-          <br />
-          Founded in Georgia
-        </p>
+        <div className="hidden text-right md:block">
+          <p className="label-micro">
+            {SPECIES.length} specimens · est. Georgia
+            <br />
+            Global collection
+          </p>
+          <Link to="/identity" className="label-micro mt-2 inline-block underline opacity-70 hover:opacity-100">
+            Identity board
+          </Link>
+        </div>
       </header>
 
+      <main className="px-6 pb-16 md:px-10">
+        <section className="grid gap-6 pt-6 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-10">
+          <SpecimenStage
+            species={species}
+            active={active}
+            className="min-h-[62vh] md:min-h-[76vh]"
+          />
 
-      <main className="grid gap-6 px-6 pb-12 pt-6 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-10 md:px-10">
-        {/* Specimen stage */}
-        <section
-          ref={stage}
-          className="relative min-h-[62vh] bg-background md:min-h-[76vh]"
-          aria-label="3D specimen viewer"
-        >
-          <div className="absolute inset-0">
-            <SpecimenViewer key={species.id} species={species} active={part.id} resetNonce={nonce} />
-          </div>
+          <aside className="flex flex-col gap-8">
+            <nav aria-label="Collection">
+              <p className="label-micro mb-2">Collection</p>
+              <ul className="border-t border-specimen/25">
+                {SPECIES.map((sp) => (
+                  <li key={sp.id}>
+                    <button
+                      onClick={() => {
+                        setSpeciesId(sp.id);
+                        setActive("whole");
+                      }}
+                      aria-current={sp.id === speciesId}
+                      className={`flex w-full items-baseline justify-between gap-3 border-b border-specimen/25 py-2 text-left transition-opacity ${
+                        sp.id === speciesId ? "opacity-100" : "opacity-55 hover:opacity-85"
+                      }`}
+                    >
+                      <span className="font-display text-base italic leading-tight">{sp.name}</span>
+                      <span className="label-micro shrink-0">{sp.common}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          {/* Corner registration marks */}
-          <span className="pointer-events-none absolute left-0 top-0 h-4 w-4 border-l border-t border-specimen/40" />
-          <span className="pointer-events-none absolute right-0 top-0 h-4 w-4 border-r border-t border-specimen/40" />
-          <span className="pointer-events-none absolute bottom-0 left-0 h-4 w-4 border-b border-l border-specimen/40" />
-          <span className="pointer-events-none absolute bottom-0 right-0 h-4 w-4 border-b border-r border-specimen/40" />
+            <nav aria-label="Botanical parts">
+              <p className="label-micro mb-2">Structure</p>
+              <ul className="border-t border-specimen/25">
+                {species.parts.map((p) => (
+                  <li key={p.id}>
+                    <button
+                      onClick={() => setActive(p.id)}
+                      aria-current={active === p.id}
+                      className={`flex w-full items-baseline justify-between border-b border-specimen/25 py-2 text-left text-sm transition-opacity ${
+                        active === p.id ? "opacity-100" : "opacity-55 hover:opacity-85"
+                      }`}
+                    >
+                      <span className={active === p.id ? "italic" : ""}>{p.label}</span>
+                      <span className="label-micro">{p.fig.replace("FIG. ", "")}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          {/* Discreet controls */}
-          <div className="absolute bottom-3 right-3 flex flex-col gap-2">
-            <IconBtn label="Zoom in" onClick={() => zoom(-1)}>
-              <ZoomIn className="size-3.5" />
-            </IconBtn>
-            <IconBtn label="Zoom out" onClick={() => zoom(1)}>
-              <ZoomOut className="size-3.5" />
-            </IconBtn>
-            <IconBtn label="Reset view" onClick={() => setNonce((n) => n + 1)}>
-              <RotateCcw className="size-3.5" />
-            </IconBtn>
-            <IconBtn label="Fullscreen" onClick={toggleFull}>
-              {full ? <Minimize2 className="size-3.5" /> : <Maximize2 className="size-3.5" />}
-            </IconBtn>
-          </div>
+            <div>
+              <p className="label-micro mb-2">Record</p>
+              <dl className="grid grid-cols-[6rem_1fr] gap-y-1 text-[11px]">
+                {recordRows(species).map(([k, v]) => (
+                  <div key={k} className="contents">
+                    <dt className="label-micro">{k}</dt>
+                    <dd className="opacity-85">{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <Link
+                to="/specimen/$slug"
+                params={{ slug: species.slug }}
+                className="label-micro mt-3 inline-block border-b border-specimen/50 pb-0.5 hover:opacity-100"
+              >
+                Full record →
+              </Link>
+            </div>
 
-          <p className="label-micro pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5">
-            <Move3d className="size-3" /> drag to rotate · scroll to zoom
-          </p>
-
-          {/* Museum label */}
-          <figure className="pointer-events-none absolute left-3 top-3 max-w-[17rem] border-l border-specimen/50 pl-3">
-            <figcaption className="label-micro">
-              {part.fig} — {part.term}
-            </figcaption>
-            <p className="mt-1 font-display text-xl italic leading-tight">{part.latin}</p>
-            <p className="mt-2 text-[11px] leading-relaxed text-foreground/80">{part.note}</p>
-          </figure>
+            <p className="max-w-xs text-[11px] leading-relaxed opacity-75">{species.caption}</p>
+          </aside>
         </section>
 
-        {/* Secondary matter */}
-        <aside className="flex flex-col gap-8">
-          <nav aria-label="Collection">
-            <p className="label-micro mb-2">Collection</p>
-            <ul className="border-t border-specimen/25">
-              {SPECIES.map((sp) => (
-                <li key={sp.id}>
-                  <button
-                    onClick={() => {
-                      setSpeciesId(sp.id);
-                      setActive("whole");
-                      setNonce((n) => n + 1);
-                    }}
-                    aria-current={sp.id === speciesId}
-                    className={`flex w-full items-baseline justify-between gap-3 border-b border-specimen/25 py-2 text-left transition-opacity ${
-                      sp.id === speciesId ? "opacity-100" : "opacity-55 hover:opacity-85"
-                    }`}
-                  >
-                    <span className="font-display text-base italic leading-tight">{sp.name}</span>
-                    <span className="label-micro shrink-0">{sp.common}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <nav aria-label="Botanical parts">
-            <p className="label-micro mb-2">Structure</p>
-            <ul className="border-t border-specimen/25">
-              {species.parts.map((p) => (
-                <li key={p.id}>
-                  <button
-                    onClick={() => setActive(p.id)}
-                    aria-current={active === p.id}
-                    className={`flex w-full items-baseline justify-between border-b border-specimen/25 py-2 text-left text-sm transition-opacity ${
-                      active === p.id ? "opacity-100" : "opacity-55 hover:opacity-85"
-                    }`}
-                  >
-                    <span className={active === p.id ? "italic" : ""}>{p.label}</span>
-                    <span className="label-micro">{p.fig.replace("FIG. ", "")}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div>
-            <p className="label-micro mb-2">Record</p>
-            <dl className="grid grid-cols-[7rem_1fr] gap-y-1 text-[11px]">
-              {species.meta.map(([k, v]) => (
-                <div key={k} className="contents">
-                  <dt className="label-micro">{k}</dt>
-                  <dd className="opacity-85">{v}</dd>
-                </div>
-              ))}
-            </dl>
+        {/* Collection index */}
+        <section className="mt-16" aria-labelledby="index-heading">
+          <div className="flex items-baseline justify-between border-b border-specimen/25 pb-2">
+            <h2 id="index-heading" className="label-micro">
+              Collection index
+            </h2>
+            <p className="label-micro">Side by side</p>
           </div>
-
-          <p className="max-w-xs text-[11px] leading-relaxed opacity-75">{species.caption}</p>
-
-
-        </aside>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {SPECIES.map((sp) => (
+              <SpecimenCard key={sp.id} species={sp} />
+            ))}
+          </div>
+        </section>
       </main>
     </div>
-  );
-}
-
-function IconBtn({
-  label,
-  onClick,
-  children,
-}: {
-  label: string;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      aria-label={label}
-      onClick={onClick}
-      className="flex size-8 items-center justify-center border border-specimen/40 text-specimen/90 transition-colors hover:bg-specimen hover:text-background"
-    >
-      {children}
-    </button>
   );
 }
