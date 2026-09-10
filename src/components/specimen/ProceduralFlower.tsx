@@ -13,9 +13,10 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const EDGE = new THREE.Color("#598FFD");
-const CONTOUR = new THREE.Color("#3f6fd8");
-const ATTEN = new THREE.Color("#598FFD");
+const EDGE = new THREE.Color("#5950B8");
+const CONTOUR = new THREE.Color("#5950B8");
+const ATTEN = new THREE.Color("#25387A");
+
 
 /**
  * Thin translucent botanical membrane: an almost fully transmissive surface
