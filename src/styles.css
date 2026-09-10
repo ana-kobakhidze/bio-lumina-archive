@@ -66,11 +66,12 @@
 
 :root {
   --radius: 0rem;
-  /* deep-water ground (#0C0827) */
+  /* HEBRA void (#0C0827) */
   --background: oklch(0.153 0.055 291);
-  /* pale teal ink (#CBE7E4) */
-  --foreground: oklch(0.900 0.028 187);
-  --specimen: oklch(0.900 0.028 187);
+  /* pale lavender ink (#E8E5F7) */
+  --foreground: oklch(0.925 0.019 300);
+  --specimen: oklch(0.925 0.019 300);
+
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);

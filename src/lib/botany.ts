@@ -19,9 +19,9 @@ export const PARTS: PartSpec[] = [
     label: "Whole specimen",
     term: "Habit",
     latin: "Astromirabilis grandiflora",
-    note: "Complete preserved individual, scanned at 0.02 mm resolution. Radial symmetry of six recurved tepals above a single fluted scape.",
-    camera: [0.22, 0.92, 2.95],
-    target: [0, 0.44, 0],
+    note: "Complete preserved individual, reconstructed at 0.02 mm resolution. Radial symmetry of six recurved tepals above a single fluted scape.",
+    camera: [0.16, 0.66, 2.15],
+    target: [0, 0.42, 0],
     fig: "FIG. 01",
   },
   {
@@ -30,10 +30,11 @@ export const PARTS: PartSpec[] = [
     term: "Corolla",
     latin: "Perianthium radiale",
     note: "Six translucent tepals surrounding a dense boss of filiform stamens. Tissue refracts incident light, producing the lens effect recorded in the scan.",
-    camera: [0.18, 0.78, 2.55],
-    target: [0, 0.46, 0],
+    camera: [0.13, 0.58, 1.9],
+    target: [0, 0.44, 0],
     fig: "FIG. 02",
   },
+
   {
     id: "leaf",
     label: "Leaf",
@@ -78,10 +79,11 @@ export const PARTS: PartSpec[] = [
 ];
 
 export const SPECIMEN_META = [
-  ["Kingdom", "Plantae"],
-  ["Clade", "Astrophyta"],
-  ["Family", "Mirabiliaceae"],
-  ["Genus", "Astromirabilis"],
-  ["Collected", "Aurora Z-VIII"],
-  ["Accession", "EXO·2095·0631"],
+  ["Hebra", "HEBRA / 000001"],
+  ["Family", "ASTROMIRABILACEAE"],
+  ["Genus", "ASTROMIRABILIS"],
+  ["Origin", "SPECIMEN ARCHIVE"],
+  ["Model", "03"],
+  ["Scan", "DIGITAL RECONSTRUCTION"],
 ];
+
