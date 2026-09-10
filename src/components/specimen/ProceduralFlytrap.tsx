@@ -95,7 +95,8 @@ function TrapLeaf({
           <Lobe trap={morph.trap} sign={-1} emphasis={trapEmphasis} />
           {/* midrib along the hinge */}
           <mesh position={[0, 0, morph.trap.length / 2]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.006, 0.009, morph.trap.length, 20, 6]} />
+            <cylinderGeometry args={[0.004, 0.006, morph.trap.length * 1.02, 18, 4]} />
+
             <meshBasicMaterial
               color={GLOW}
               transparent
