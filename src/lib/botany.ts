@@ -96,8 +96,9 @@ const DIONAEA_PARTS: PartSpec[] = [
     term: "Habit",
     latin: "Dionaea muscipula",
     note: "Low rosette of winged petioles, each terminating in an open two-valved snap trap. Carnivorous perennial of the Carolina wet savannas.",
-    camera: [0.4, 1.05, 3.05],
-    target: [0, 0.3, 0],
+    camera: [0.45, 1.35, 3.6],
+    target: [0, 0.72, 0],
+
     fig: "FIG. 01",
   },
   {
@@ -154,7 +155,7 @@ export const SPECIES: Species[] = [
     id: "dionaea",
     name: "Dionaea muscipula",
     common: "Venus flytrap",
-    home: [0, 0.3, 0],
+    home: [0, 0.72, 0],
     parts: DIONAEA_PARTS,
     meta: [
       ["Hebra", "HEBRA / 000002"],

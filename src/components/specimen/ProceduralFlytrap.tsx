@@ -2,16 +2,19 @@ import { useMemo } from "react";
 import * as THREE from "three";
 import {
   FLYTRAP,
+  SCAPE,
   createCiliaLayout,
   createLobeGeometry,
   createPetioleGeometry,
   createTriggerLayout,
   petioleTip,
+  scapeFlowerTepals,
   type FlytrapMorphology,
   type TrapPlacement,
   type TrapSpec,
 } from "./flytrap";
-import { createStemGeometry } from "./flower";
+import { createStemGeometry, createTepalGeometry } from "./flower";
+
 import { outlineGeometry } from "./geometry";
 import { Membrane } from "./ProceduralFlower";
 
@@ -110,9 +113,59 @@ function TrapLeaf({
   );
 }
 
+/** The flowering scape: a tall bare stalk with a small umbel of flowers and buds. */
+function Scape({ emphasis }: { emphasis: number }) {
+  const stem = useMemo(() => createStemGeometry(SCAPE.stem), []);
+  const stemWire = useMemo(() => createStemGeometry(SCAPE.stem, WIRE_Q), []);
+  const specs = useMemo(() => scapeFlowerTepals(), []);
+  const petals = useMemo(() => specs.map((s) => createTepalGeometry(s)), [specs]);
+  const petalWires = useMemo(() => specs.map((s) => createTepalGeometry(s, WIRE_Q)), [specs]);
+
+  return (
+    <group>
+      {/* the stem generator grows downward; flip it so the scape rises */}
+      <group rotation={[Math.PI, 0, 0]}>
+        <Membrane
+          geometry={stem}
+          wire={stemWire}
+          emphasis={emphasis}
+          thickness={0.3}
+          transmission={0.45}
+        />
+      </group>
+
+      {SCAPE.flowers.map((f, i) => (
+        <group key={`f-${i}`} position={f.pos} rotation={[f.tilt, f.spin, 0]} scale={f.scale}>
+          {petals.map((g, j) => (
+            <Membrane
+              key={j}
+              geometry={g}
+              wire={petalWires[j]!}
+              emphasis={emphasis}
+              thickness={0.16}
+              transmission={0.6}
+            />
+          ))}
+          <mesh>
+            <sphereGeometry args={[0.014, 18, 14]} />
+            <meshBasicMaterial color={GLOW} transparent opacity={0.7 * emphasis} depthWrite={false} />
+          </mesh>
+        </group>
+      ))}
+      {SCAPE.buds.map((b, i) => (
+        <mesh key={`b-${i}`} position={b.pos} scale={[b.scale, b.scale * 1.7, b.scale]}>
+          <sphereGeometry args={[0.026, 24, 18]} />
+          <meshBasicMaterial color={GLOW} transparent opacity={0.35 * emphasis} depthWrite={false} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 /**
- * Dionaea muscipula: a rosette of winged petioles, each terminating in an
- * open two-valved snap trap fringed with marginal cilia, over a short rhizome.
+ * Dionaea muscipula: a low rosette of flat winged petioles, each terminating in
+ * an open two-valved snap trap fringed with marginal cilia, with a tall
+ * flowering scape rising from the centre.
  */
 export function ProceduralFlytrap({
   morph = FLYTRAP,
@@ -137,6 +190,7 @@ export function ProceduralFlytrap({
         thickness={0.4}
         transmission={0.3}
       />
+      <Scape emphasis={stemEmphasis} />
       {morph.traps.map((p, i) => (
         <TrapLeaf
           key={i}
@@ -149,3 +203,4 @@ export function ProceduralFlytrap({
     </group>
   );
 }
+
