@@ -13,7 +13,20 @@ export interface PartSpec {
   fig: string;
 }
 
-export const PARTS: PartSpec[] = [
+export type SpeciesId = "astromirabilis" | "dionaea";
+
+export interface Species {
+  id: SpeciesId;
+  name: string;
+  common: string;
+  /** default orbit target for the idle view */
+  home: [number, number, number];
+  parts: PartSpec[];
+  meta: string[][];
+  caption: string;
+}
+
+const ASTRO_PARTS: PartSpec[] = [
   {
     id: "whole",
     label: "Whole specimen",
@@ -34,7 +47,6 @@ export const PARTS: PartSpec[] = [
     target: [0, 0.44, 0],
     fig: "FIG. 02",
   },
-
   {
     id: "leaf",
     label: "Leaf",
@@ -55,7 +67,6 @@ export const PARTS: PartSpec[] = [
     target: [0, -0.34, 0],
     fig: "FIG. 04",
   },
-
   {
     id: "fruit",
     label: "Fruit",
@@ -78,12 +89,84 @@ export const PARTS: PartSpec[] = [
   },
 ];
 
-export const SPECIMEN_META = [
-  ["Hebra", "HEBRA / 000001"],
-  ["Family", "ASTROMIRABILACEAE"],
-  ["Genus", "ASTROMIRABILIS"],
-  ["Origin", "SPECIMEN ARCHIVE"],
-  ["Model", "03"],
-  ["Scan", "DIGITAL RECONSTRUCTION"],
+const DIONAEA_PARTS: PartSpec[] = [
+  {
+    id: "whole",
+    label: "Whole specimen",
+    term: "Habit",
+    latin: "Dionaea muscipula",
+    note: "Low rosette of winged petioles, each terminating in an open two-valved snap trap. Carnivorous perennial of the Carolina wet savannas.",
+    camera: [0.4, 1.05, 3.05],
+    target: [0, 0.3, 0],
+    fig: "FIG. 01",
+  },
+  {
+    id: "flower",
+    label: "Trap",
+    term: "Folium bilobatum",
+    latin: "Lamina biloba",
+    note: "Two hinged lobes fringed with interlocking marginal cilia. Three trigger hairs on each inner face; two touches within twenty seconds close the valves.",
+    camera: [0.5, 0.85, 2.1],
+    target: [0.1, 0.38, 0.55],
+    fig: "FIG. 02",
+  },
+  {
+    id: "leaf",
+    label: "Petiole",
+    term: "Petiolus alatus",
+    latin: "Lamina petiolaris",
+    note: "Flattened photosynthetic petiole. The winged blade performs the plant's ordinary leaf work while the trap handles capture.",
+    camera: [1.0, 0.7, 2.5],
+    target: [0.05, 0.2, 0.22],
+    fig: "FIG. 03",
+  },
+  {
+    id: "stem",
+    label: "Rhizome",
+    term: "Rhizoma",
+    latin: "Caudex bulbiformis",
+    note: "Short subterranean stem storing reserves between growth cycles. Fibrous roots absorb water; nitrogen arrives through the traps instead.",
+    camera: [0.7, 0.1, 2.3],
+    target: [0, -0.22, 0],
+    fig: "FIG. 04",
+  },
 ];
 
+export const SPECIES: Species[] = [
+  {
+    id: "astromirabilis",
+    name: "Astromirabilis grandiflora",
+    common: "Star mirabilis",
+    home: [0, 0.33, 0],
+    parts: ASTRO_PARTS,
+    meta: [
+      ["Hebra", "HEBRA / 000001"],
+      ["Family", "ASTROMIRABILACEAE"],
+      ["Genus", "ASTROMIRABILIS"],
+      ["Origin", "SPECIMEN ARCHIVE"],
+      ["Model", "03"],
+      ["Scan", "DIGITAL RECONSTRUCTION"],
+    ],
+    caption:
+      "A digital record of plant form. Tissue densities are mapped to refractive index and rendered without colour correction.",
+  },
+  {
+    id: "dionaea",
+    name: "Dionaea muscipula",
+    common: "Venus flytrap",
+    home: [0, 0.3, 0],
+    parts: DIONAEA_PARTS,
+    meta: [
+      ["Hebra", "HEBRA / 000002"],
+      ["Family", "DROSERACEAE"],
+      ["Genus", "DIONAEA"],
+      ["Origin", "CAROLINA SAVANNA"],
+      ["Model", "01"],
+      ["Scan", "DIGITAL RECONSTRUCTION"],
+    ],
+    caption:
+      "Motion recorded at rest. The trap is modelled open; marginal cilia and trigger hairs are reconstructed at full density.",
+  },
+];
+
+export const PARTS = ASTRO_PARTS;

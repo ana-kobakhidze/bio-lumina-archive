@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Maximize2, Minimize2, Move3d, RotateCcw, ZoomIn, ZoomOut } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { SpecimenViewer } from "@/components/specimen/SpecimenViewer";
-import { PARTS, SPECIMEN_META, type PartId } from "@/lib/botany";
+import { SPECIES, type PartId, type SpeciesId } from "@/lib/botany";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -28,12 +28,14 @@ export const Route = createFileRoute("/")({
 });
 
 function SpecimenPage() {
+  const [speciesId, setSpeciesId] = useState<SpeciesId>("astromirabilis");
   const [active, setActive] = useState<PartId>("whole");
   const [nonce, setNonce] = useState(0);
   const [full, setFull] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
 
-  const part = PARTS.find((p) => p.id === active)!;
+  const species = SPECIES.find((s) => s.id === speciesId)!;
+  const part = species.parts.find((p) => p.id === active) ?? species.parts[0]!;
 
   const toggleFull = useCallback(() => {
     const el = stage.current;
@@ -81,7 +83,7 @@ function SpecimenPage() {
           aria-label="3D specimen viewer"
         >
           <div className="absolute inset-0">
-            <SpecimenViewer active={active} resetNonce={nonce} />
+            <SpecimenViewer key={species.id} species={species} active={part.id} resetNonce={nonce} />
           </div>
 
           {/* Corner registration marks */}
@@ -122,10 +124,34 @@ function SpecimenPage() {
 
         {/* Secondary matter */}
         <aside className="flex flex-col gap-8">
+          <nav aria-label="Collection">
+            <p className="label-micro mb-2">Collection</p>
+            <ul className="border-t border-specimen/25">
+              {SPECIES.map((sp) => (
+                <li key={sp.id}>
+                  <button
+                    onClick={() => {
+                      setSpeciesId(sp.id);
+                      setActive("whole");
+                      setNonce((n) => n + 1);
+                    }}
+                    aria-current={sp.id === speciesId}
+                    className={`flex w-full items-baseline justify-between gap-3 border-b border-specimen/25 py-2 text-left transition-opacity ${
+                      sp.id === speciesId ? "opacity-100" : "opacity-55 hover:opacity-85"
+                    }`}
+                  >
+                    <span className="font-display text-base italic leading-tight">{sp.name}</span>
+                    <span className="label-micro shrink-0">{sp.common}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
           <nav aria-label="Botanical parts">
             <p className="label-micro mb-2">Structure</p>
             <ul className="border-t border-specimen/25">
-              {PARTS.map((p) => (
+              {species.parts.map((p) => (
                 <li key={p.id}>
                   <button
                     onClick={() => setActive(p.id)}
@@ -145,7 +171,7 @@ function SpecimenPage() {
           <div>
             <p className="label-micro mb-2">Record</p>
             <dl className="grid grid-cols-[7rem_1fr] gap-y-1 text-[11px]">
-              {SPECIMEN_META.map(([k, v]) => (
+              {species.meta.map(([k, v]) => (
                 <div key={k} className="contents">
                   <dt className="label-micro">{k}</dt>
                   <dd className="opacity-85">{v}</dd>
@@ -154,10 +180,7 @@ function SpecimenPage() {
             </dl>
           </div>
 
-          <p className="max-w-xs text-[11px] leading-relaxed opacity-75">
-            A digital record of plant form. Tissue densities are mapped to refractive index and
-            rendered without colour correction.
-          </p>
+          <p className="max-w-xs text-[11px] leading-relaxed opacity-75">{species.caption}</p>
 
 
         </aside>
