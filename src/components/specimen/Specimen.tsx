@@ -1,7 +1,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
-import type { PartId } from "@/lib/botany";
+import type { PartId, SpeciesId } from "@/lib/botany";
 import { FLOWER } from "./flower";
 import {
   createFruitGeometry,
@@ -11,8 +11,9 @@ import {
   type LeafSpec,
 } from "./geometry";
 import { ProceduralFlower } from "./ProceduralFlower";
+import { ProceduralFlytrap } from "./ProceduralFlytrap";
 
-const EDGE = new THREE.Color("#1EA598");
+const EDGE = new THREE.Color("#3FE7BE");
 const DEEP = new THREE.Color("#25387A");
 
 
@@ -109,7 +110,7 @@ function Leaf({ spec, emphasis }: { spec: LeafSpec; emphasis: number }) {
   );
 }
 
-export function Specimen({ active }: { active: PartId }) {
+export function Specimen({ species, active }: { species: SpeciesId; active: PartId }) {
   const root = useRef<THREE.Group>(null);
 
   const fruit = useMemo(() => createFruitGeometry(0.1), []);
@@ -132,6 +133,14 @@ export function Specimen({ active }: { active: PartId }) {
 
   const showLeaves = active === "leaf";
   const showFruit = active === "fruit" || active === "seed";
+
+  if (species === "dionaea") {
+    return (
+      <group ref={root}>
+        <ProceduralFlytrap emphasis={eFlower} stemEmphasis={eStem} leafEmphasis={eLeaf} />
+      </group>
+    );
+  }
 
   return (
     <group ref={root}>

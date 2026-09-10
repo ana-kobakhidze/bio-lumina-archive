@@ -158,6 +158,7 @@ export const PALETTE = {
   bloom: "#5950B8",
   bio: "#1EA598",
   mesh: "#8C85E8",
+  glow: "#3FE7BE",
   ink: "#E8E5F7",
 } as const;
 
@@ -165,8 +166,9 @@ const BASE = new THREE.Color(PALETTE.deep);
 const DENSE = new THREE.Color(PALETTE.cobalt);
 const BODY = new THREE.Color(PALETTE.bloom);
 const MARGIN = new THREE.Color(PALETTE.mesh);
+const GLOW = new THREE.Color(PALETTE.glow);
 
-function tint(geo: THREE.BufferGeometry) {
+export function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
   const colors = new Float32Array(uv.count * 3);
   const c = new THREE.Color();
@@ -175,7 +177,9 @@ function tint(geo: THREE.BufferGeometry) {
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
     // deep indigo base -> cobalt depth -> ultraviolet body -> pale margins
     c.copy(BASE).lerp(DENSE, smoothstep(0, 0.22, u)).lerp(BODY, smoothstep(0.12, 0.62, u));
-    c.lerp(MARGIN, Math.pow(s, 2.4) * 0.5 + smoothstep(0.82, 1, u) * 0.25);
+    c.lerp(MARGIN, Math.pow(s, 2.4) * 0.42 + smoothstep(0.82, 1, u) * 0.2);
+    // green-teal bio-luminescence carried on the highlights and margins
+    c.lerp(GLOW, Math.pow(s, 5) * 0.5 + smoothstep(0.9, 1, u) * 0.32);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;

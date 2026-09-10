@@ -13,18 +13,18 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const MESH = new THREE.Color("#8C85E8");
-const CONTOUR = new THREE.Color("#8C85E8");
+const MESH = new THREE.Color("#7FD9C6");
+const CONTOUR = new THREE.Color("#57E3BC");
 const ATTEN = new THREE.Color("#25387A");
 const EMISSIVE = new THREE.Color("#25387A");
-const BIO = new THREE.Color("#1EA598");
+const BIO = new THREE.Color("#3FE7BE");
 
 /**
  * Translucent botanical tissue: a physically transmissive surface that still
  * reads as a body — dense where blades overlap — with a delicate contour and
  * a barely-there technical mesh over it.
  */
-function Membrane({
+export function Membrane({
   geometry,
   wire,
   outline,
@@ -128,7 +128,7 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
           <mesh position={[0, s.len, 0]}>
             <sphereGeometry args={[0.0155, 32, 22]} />
             <meshPhysicalMaterial
-              color="#1EA598"
+              color="#3FE7BE"
               transparent
               opacity={0.85 * emphasis}
               transmission={0.4}

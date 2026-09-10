@@ -2,7 +2,7 @@ import { Environment, Lightformer, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { PARTS, type PartId } from "@/lib/botany";
+import { type PartId, type Species } from "@/lib/botany";
 import { Specimen } from "./Specimen";
 
 /** deep-water archive ground — the scene owns it so glass can transmit it */
@@ -10,10 +10,12 @@ const GROUND = "#0C0827";
 
 
 function CameraRig({
+  species,
   active,
   controls,
   nonce,
 }: {
+  species: Species;
   active: PartId;
   controls: React.RefObject<any>;
   nonce: number;
@@ -24,11 +26,11 @@ function CameraRig({
   const flying = useRef(false);
 
   useEffect(() => {
-    const spec = (PARTS.find((p) => p.id === active) ?? PARTS[0])!;
+    const spec = (species.parts.find((p) => p.id === active) ?? species.parts[0])!;
     goal.current.set(...spec.camera);
     look.current.set(...spec.target);
     flying.current = true;
-  }, [active, nonce]);
+  }, [species, active, nonce]);
 
   useFrame((_, delta) => {
     if (!flying.current) return;
@@ -46,10 +48,12 @@ function CameraRig({
 }
 
 export function SpecimenViewer({
+  species,
   active,
   resetNonce,
   onUserInteract,
 }: {
+  species: Species;
   active: PartId;
   resetNonce: number;
   onUserInteract?: () => void;
@@ -61,7 +65,7 @@ export function SpecimenViewer({
     <Canvas
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: false }}
-      camera={{ position: [0.22, 0.92, 2.95], fov: 26 }}
+      camera={{ position: [...species.parts[0]!.camera], fov: 26 }}
       onPointerDown={() => {
         setIdle(false);
         onUserInteract?.();
@@ -75,7 +79,7 @@ export function SpecimenViewer({
       <ambientLight intensity={0.5} />
       <directionalLight position={[2.5, 3.5, 5]} intensity={1.7} color="#8C85E8" />
       <directionalLight position={[-4.5, 1.2, 2.5]} intensity={1.1} color="#25387A" />
-      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.6} color="#1EA598" />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.6} color="#2FE3B0" />
       <pointLight position={[0, 0.7, 0.9]} intensity={1.1} distance={4} color="#5950B8" />
 
       {/* small studio reflection rig — no HDRI, no ground plane */}
@@ -86,7 +90,7 @@ export function SpecimenViewer({
           position={[-4, 1, -2]}
           rotation-y={Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#1EA598"
+          color="#2FE3B0"
         />
         <Lightformer
           intensity={1.8}
@@ -100,9 +104,9 @@ export function SpecimenViewer({
 
 
       <Suspense fallback={null}>
-        <Specimen active={active} />
+        <Specimen species={species.id} active={active} />
       </Suspense>
-      <CameraRig active={active} controls={controls} nonce={resetNonce} />
+      <CameraRig species={species} active={active} controls={controls} nonce={resetNonce} />
       <OrbitControls
         ref={controls}
         makeDefault
@@ -116,7 +120,7 @@ export function SpecimenViewer({
         maxDistance={14}
         autoRotate={idle && active === "whole"}
         autoRotateSpeed={0.22}
-        target={[0, 0.33, 0]}
+        target={species.home}
       />
 
     </Canvas>
