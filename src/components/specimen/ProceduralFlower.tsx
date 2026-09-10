@@ -13,63 +13,63 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const EDGE = new THREE.Color("#5950B8");
-const CONTOUR = new THREE.Color("#5950B8");
+const MESH = new THREE.Color("#8C85E8");
+const CONTOUR = new THREE.Color("#8C85E8");
 const ATTEN = new THREE.Color("#25387A");
-
+const EMISSIVE = new THREE.Color("#25387A");
+const BIO = new THREE.Color("#1EA598");
 
 /**
- * Thin translucent botanical membrane: an almost fully transmissive surface
- * whose colour only accumulates where blades overlap, plus a continuous
- * contour drawn along the whole boundary of the blade.
+ * Translucent botanical tissue: a physically transmissive surface that still
+ * reads as a body — dense where blades overlap — with a delicate contour and
+ * a barely-there technical mesh over it.
  */
 function Membrane({
   geometry,
   wire,
   outline,
   emphasis,
-  thickness = 0.12,
-  opacity = 0.22,
-
+  thickness = 0.25,
+  transmission = 0.45,
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
   outline?: THREE.BufferGeometry;
   emphasis: number;
   thickness?: number;
-  opacity?: number;
+  transmission?: number;
 }) {
+  const dim = 0.45 + 0.55 * emphasis;
   return (
     <group>
       <mesh geometry={geometry}>
         <meshPhysicalMaterial
           vertexColors
           transparent
-          opacity={opacity * emphasis + 0.04}
-          transmission={0.98}
+          opacity={1}
+          transmission={transmission}
           thickness={thickness}
-          roughness={0.08}
+          roughness={0.18}
           metalness={0}
-          ior={1.36}
-          clearcoat={0.6}
-          clearcoatRoughness={0.12}
-          iridescence={0.15}
-          iridescenceIOR={1.25}
-          specularIntensity={1}
+          ior={1.35}
+          clearcoat={0.35}
+          clearcoatRoughness={0.2}
+          specularIntensity={0.8}
+          emissive={EMISSIVE}
+          emissiveIntensity={0.24 * dim}
           attenuationColor={ATTEN}
-          attenuationDistance={0.12}
-
+          attenuationDistance={0.5}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite={false}
+          depthWrite
         />
       </mesh>
       <mesh geometry={wire} scale={1.0015}>
         <meshBasicMaterial
-          color={EDGE}
+          color={MESH}
           wireframe
           transparent
-          opacity={0.035 * emphasis}
+          opacity={0.1 * dim}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
@@ -79,7 +79,7 @@ function Membrane({
           <lineBasicMaterial
             color={CONTOUR}
             transparent
-            opacity={0.85 * emphasis}
+            opacity={0.3 * dim}
             depthWrite={false}
           />
         </lineSegments>
@@ -87,6 +87,7 @@ function Membrane({
     </group>
   );
 }
+
 
 function Tepal({ spec, emphasis }: { spec: TepalSpec2; emphasis: number }) {
   const geo = useMemo(() => createTepalGeometry(spec), [spec]);
