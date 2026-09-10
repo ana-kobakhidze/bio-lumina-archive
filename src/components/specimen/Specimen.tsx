@@ -12,8 +12,8 @@ import {
 } from "./geometry";
 import { ProceduralFlower } from "./ProceduralFlower";
 
-const EDGE = new THREE.Color("#F0EDFA");
-const DEEP = new THREE.Color("#3f4fd8");
+const EDGE = new THREE.Color("#3f6fd8");
+const DEEP = new THREE.Color("#598FFD");
 const WIRE_Q = 0.26;
 
 function emphasisOf(active: PartId, id: PartId) {

@@ -6,7 +6,7 @@ import { PARTS, type PartId } from "@/lib/botany";
 import { Specimen } from "./Specimen";
 
 /** olive-yellow archive ground — the scene owns it so glass can transmit it */
-const GROUND = "#C7CC10";
+const GROUND = "#F0EDFA";
 
 function CameraRig({
   active,

@@ -67,7 +67,7 @@
 :root {
   --radius: 0rem;
   /* olive-yellow archive ground (#C7CC10) */
-  --background: oklch(0.814 0.177 111.5);
+  --background: oklch(0.945 0.017 300);
   /* deep brown ink (#5E4C3C) */
   --foreground: oklch(0.430 0.035 63.3);
   --specimen: oklch(0.430 0.035 63.3);
