@@ -155,7 +155,7 @@ export const SPECIES: Species[] = [
     id: "dionaea",
     name: "Dionaea muscipula",
     common: "Venus flytrap",
-    home: [0, 0.3, 0],
+    home: [0, 0.72, 0],
     parts: DIONAEA_PARTS,
     meta: [
       ["Hebra", "HEBRA / 000002"],
