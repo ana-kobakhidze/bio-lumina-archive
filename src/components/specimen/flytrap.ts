@@ -143,7 +143,10 @@ function petioleCurve(p: PetioleSpec) {
   return new THREE.CatmullRomCurve3(
     Array.from({ length: 9 }, (_, i) => {
       const u = i / 8;
-      return new THREE.Vector3(0, p.rise * Math.sin(Math.PI * 0.5 * Math.pow(u, 0.85)), p.reach * Math.pow(u, 1.04));
+      // steep out of the rhizome, then flattening into a low outward arc
+      const y = p.rise * (Math.sin(Math.PI * 0.5 * Math.pow(u, 0.5)) - 0.25 * u * u);
+      return new THREE.Vector3(0, y, p.reach * Math.pow(u, 1.12));
+
     }),
     false,
     "centripetal",
