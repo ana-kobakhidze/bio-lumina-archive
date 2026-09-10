@@ -39,7 +39,7 @@ function Lobe({ trap, sign, emphasis }: { trap: TrapSpec; sign: 1 | -1; emphasis
 
       {cilia.map((c, i) => (
         <mesh key={`c-${i}`} position={c.pos} quaternion={c.quat}>
-          <cylinderGeometry args={[0.0012, 0.0034, c.len, 14, 4]} />
+          <cylinderGeometry args={[0.0007, 0.0026, c.len, 12, 3]} />
           <meshBasicMaterial
             color={GLOW}
             transparent
@@ -95,7 +95,8 @@ function TrapLeaf({
           <Lobe trap={morph.trap} sign={-1} emphasis={trapEmphasis} />
           {/* midrib along the hinge */}
           <mesh position={[0, 0, morph.trap.length / 2]} rotation={[Math.PI / 2, 0, 0]}>
-            <cylinderGeometry args={[0.006, 0.009, morph.trap.length, 20, 6]} />
+            <cylinderGeometry args={[0.004, 0.006, morph.trap.length * 1.02, 18, 4]} />
+
             <meshBasicMaterial
               color={GLOW}
               transparent

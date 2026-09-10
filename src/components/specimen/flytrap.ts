@@ -48,41 +48,46 @@ export interface FlytrapMorphology {
 
 export const FLYTRAP: FlytrapMorphology = {
   trap: {
-    length: 0.4,
-    width: 0.24,
-    cup: 0.13,
+    length: 0.33,
+    width: 0.25,
+    cup: 0.055,
     open: 0.62,
-    cilia: { count: 17, length: 0.085 },
+    cilia: { count: 16, length: 0.115 },
   },
-  petiole: { reach: 0.64, rise: 0.42, width: 0.115, cup: 0.06 },
-  rhizome: { length: 0.34, radius: 0.019, flare: 1.35, flutes: 6 },
+  petiole: { reach: 0.66, rise: 0.16, width: 0.15, cup: 0.05 },
+  rhizome: { length: 0.16, radius: 0.017, flare: 1.0, flutes: 6 },
+
   traps: [
-    { angle: 0.2, tilt: -0.12, scale: 1, roll: 0.08 },
-    { angle: 1.78, tilt: 0.04, scale: 0.86, roll: -0.14 },
-    { angle: 3.34, tilt: -0.2, scale: 0.94, roll: 0.16 },
-    { angle: 4.86, tilt: 0.12, scale: 0.78, roll: -0.1 },
+    { angle: 0.15, tilt: 0.34, scale: 1, roll: 0.05 },
+    { angle: 1.32, tilt: 0.2, scale: 0.86, roll: -0.1 },
+    { angle: 2.46, tilt: 0.42, scale: 0.95, roll: 0.12 },
+    { angle: 3.62, tilt: 0.26, scale: 0.8, roll: -0.06 },
+    { angle: 4.8, tilt: 0.38, scale: 0.9, roll: 0.09 },
   ],
 };
 
 const seg = (n: number, q: number) => Math.max(5, Math.round(n * q));
 
-/** Half-width of a lobe at parameter u — rounded at both the hinge and the tip. */
+/** Lateral extent of a lobe at parameter u — kidney shaped, rounded at both ends. */
 function lobeWidth(t: TrapSpec, u: number) {
-  return t.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.86)), 0.7);
+  return t.width * Math.pow(Math.sin(Math.PI * Math.pow(u, 0.78)), 0.5);
 }
 
-/** A point on one lobe. sign = +1 / -1 selects the lobe. */
+/**
+ * A point on one lobe. The lobe is a flat kidney-shaped blade attached along
+ * the midrib (the Z axis) and rotated about it by the gape half-angle, so the
+ * two valves open like a book. sign = +1 / -1 selects the valve.
+ */
 export function lobePoint(t: TrapSpec, sign: 1 | -1, u: number, v: number, out: THREE.Vector3) {
-  const w = lobeWidth(t, u);
-  const r = v * w;
-  const bulge = t.cup * Math.pow(Math.sin(Math.PI * Math.pow(v, 0.85)), 1.1) * Math.sin(Math.PI * u);
-  // the gape is widest across the middle of the trap and closes toward the tip
-  const th = t.open * (0.5 + 0.5 * Math.sin(Math.PI * Math.pow(u, 0.9)));
-  const lx = Math.cos(th) * sign;
-  const ly = Math.sin(th);
-  const nx = -Math.sin(th) * sign;
-  const ny = Math.cos(th);
-  return out.set(lx * r + nx * bulge, ly * r + ny * bulge, t.length * u);
+  const r = v * lobeWidth(t, u);
+  // outward convexity of the valve, strongest across the middle of the blade
+  const bulge = -t.cup * Math.pow(Math.sin(Math.PI * Math.pow(v, 0.9)), 1.05) * Math.sin(Math.PI * u);
+  const th = t.open;
+  const c = Math.cos(th);
+  const s = Math.sin(th);
+  const x = (r * c - bulge * s) * sign;
+  const y = r * s + bulge * c + 0.03 * Math.sin(Math.PI * u);
+  return out.set(x, y, t.length * u);
 }
 
 /** Smooth high-resolution lobe surface. */
@@ -92,7 +97,7 @@ export function createLobeGeometry(t: TrapSpec, sign: 1 | -1, q = 1) {
   );
 }
 
-/** Marginal teeth: thin tapering cilia continuing the lobe plane outward. */
+/** Marginal teeth: long thin cilia continuing the lobe plane radially outward. */
 export function createCiliaLayout(t: TrapSpec, sign: 1 | -1) {
   const a = new THREE.Vector3();
   const b = new THREE.Vector3();
@@ -101,15 +106,17 @@ export function createCiliaLayout(t: TrapSpec, sign: 1 | -1) {
   const q = new THREE.Quaternion();
 
   return Array.from({ length: t.cilia.count }, (_, i) => {
-    const u = 0.08 + (i / (t.cilia.count - 1)) * 0.84;
+    const u = 0.07 + (i / (t.cilia.count - 1)) * 0.86;
     lobePoint(t, sign, u, 1, a);
-    lobePoint(t, sign, u, 0.86, b);
+    lobePoint(t, sign, u, 0.9, b);
     dir.copy(a).sub(b).normalize();
-    // splay the teeth slightly apart, as in a closed interlocking trap
-    dir.y += 0.22;
+    // fan the teeth apart following the outline of the margin
+    const spread = (u - 0.5) * 1.1;
+    dir.z += spread;
+    dir.y += 0.16;
     dir.normalize();
     q.setFromUnitVectors(up, dir);
-    const len = t.cilia.length * (0.45 + 0.55 * Math.sin(Math.PI * u));
+    const len = t.cilia.length * (0.5 + 0.5 * Math.sin(Math.PI * Math.pow(u, 0.9)));
     return {
       pos: [a.x, a.y, a.z] as [number, number, number],
       quat: [q.x, q.y, q.z, q.w] as [number, number, number, number],
@@ -117,6 +124,7 @@ export function createCiliaLayout(t: TrapSpec, sign: 1 | -1) {
     };
   });
 }
+
 
 /** Three trigger hairs on the inner face of each lobe. */
 export function createTriggerLayout(t: TrapSpec, sign: 1 | -1) {
@@ -136,7 +144,10 @@ function petioleCurve(p: PetioleSpec) {
   return new THREE.CatmullRomCurve3(
     Array.from({ length: 9 }, (_, i) => {
       const u = i / 8;
-      return new THREE.Vector3(0, p.rise * Math.sin(Math.PI * 0.5 * Math.pow(u, 0.85)), p.reach * Math.pow(u, 1.04));
+      // steep out of the rhizome, then flattening into a low outward arc
+      const y = p.rise * (Math.sin(Math.PI * 0.5 * Math.pow(u, 0.5)) - 0.25 * u * u);
+      return new THREE.Vector3(0, y, p.reach * Math.pow(u, 1.12));
+
     }),
     false,
     "centripetal",
@@ -169,9 +180,13 @@ export function createPetioleGeometry(p: PetioleSpec, q = 1) {
         side.crossVectors(up, tangent).normalize();
         normal.crossVectors(tangent, side).normalize();
         // narrow at the rhizome, widest around two thirds, narrowing into the trap
-        const prof = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.62)), 0.8) * (0.35 + 0.65 * u);
-        const w = p.width * Math.max(0.004, prof);
+        // narrow stalk at the rhizome, broadening into a spatulate wing, then
+        // pinching in just before the trap
+        const wing = Math.pow(u, 1.5) * (1 - 0.55 * Math.pow(u, 6));
+        const prof = 0.18 + 1.5 * wing;
+        const w = p.width * Math.max(0.02, prof);
         const cup = -s * s * w * p.cup * 6;
+
         out.copy(point).addScaledVector(side, s * w).addScaledVector(normal, cup);
       },
       seg(80, q),
