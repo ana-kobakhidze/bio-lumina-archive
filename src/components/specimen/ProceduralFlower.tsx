@@ -101,8 +101,9 @@ function Tepal({ spec, emphasis }: { spec: TepalSpec2; emphasis: number }) {
           wire={wire}
           outline={outline}
           emphasis={emphasis}
-          thickness={0.1}
+          thickness={0.22}
         />
+
       </group>
     </group>
   );
@@ -117,11 +118,12 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
           <mesh position={[0, s.len / 2, 0]}>
             <cylinderGeometry args={[0.0028, 0.0042, s.len, 20, 6]} />
             <meshBasicMaterial
-              color={EDGE}
+              color={BIO}
               transparent
-              opacity={0.5 * emphasis}
+              opacity={0.6 * emphasis}
               depthWrite={false}
             />
+
           </mesh>
           <mesh position={[0, s.len, 0]}>
             <sphereGeometry args={[0.0155, 32, 22]} />
@@ -173,16 +175,17 @@ export function ProceduralFlower({
         geometry={stem}
         wire={stemWire}
         emphasis={stemEmphasis}
-        thickness={0.3}
-        opacity={0.6}
+        thickness={0.4}
+        transmission={0.3}
       />
       <Membrane
         geometry={receptacle}
         wire={receptacleWire}
         emphasis={stemEmphasis * 0.4 + emphasis * 0.6}
-        thickness={0.36}
-        opacity={0.66}
+        thickness={0.45}
+        transmission={0.28}
       />
+
       <group position={[0, top * 0.9, 0]}>
         {morph.basal.map((t, i) => (
           <Tepal key={`b-${i}`} spec={t} emphasis={emphasis} />
