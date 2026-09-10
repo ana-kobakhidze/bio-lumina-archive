@@ -321,8 +321,9 @@ export const SPECIES: Species[] = [
     slug: "galanthus-woronowii",
     name: "Galanthus woronowii",
     common: "Green snowdrop",
-    home: [0, 0.25, 0],
-    nod: 0.9,
+    home: [0, -0.05, 0],
+    nod: Math.PI,
+    scale: 1.35,
     parts: flowerParts({
       latin: "Galanthus woronowii",
       whole: "Single pendulous flower on a slender scape between two bright, glossy, strap-shaped leaves.",
@@ -339,8 +340,8 @@ export const SPECIES: Species[] = [
         latin: "Scapus bulbosus",
         note: "Slender scape from a small tunicate bulb, arching at the apex so the flower hangs clear of the spathe.",
       },
-      camera: [0.2, 0.45, 2.6],
-      target: [0, 0.25, 0],
+      camera: [0.2, 0.1, 2.5],
+      target: [0, -0.05, 0],
     }),
     record: {
       hebra: "HEBRA / 000004",
