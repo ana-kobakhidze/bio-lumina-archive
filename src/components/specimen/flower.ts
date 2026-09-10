@@ -145,11 +145,23 @@ const smoothstep = (e0: number, e1: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-/** Deep base -> lavender tip -> brighter cobalt along the margins. */
-const DENSE = new THREE.Color("#1b13c8");
-const MID = new THREE.Color("#4a34ee");
-const PALE = new THREE.Color("#b9aeff");
-const RIM = new THREE.Color("#6f8dff");
+/**
+ * Archive palette. Dense base -> periwinkle body -> pale lavender tips,
+ * with a brighter cobalt margin.
+ */
+export const PALETTE = {
+  dense: "#2b3f9e",
+  mid: "#8987EC",
+  pale: "#F0EDFA",
+  rim: "#598FFD",
+  ink: "#5E4C3C",
+  ground: "#C7CC10",
+} as const;
+
+const DENSE = new THREE.Color(PALETTE.dense);
+const MID = new THREE.Color(PALETTE.mid);
+const PALE = new THREE.Color(PALETTE.pale);
+const RIM = new THREE.Color(PALETTE.rim);
 
 function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
@@ -158,8 +170,8 @@ function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    c.copy(DENSE).lerp(MID, smoothstep(0, 0.45, u)).lerp(PALE, smoothstep(0.35, 1, u) * 0.85);
-    c.lerp(RIM, Math.pow(s, 3) * 0.55);
+    c.copy(DENSE).lerp(MID, smoothstep(0, 0.4, u)).lerp(PALE, smoothstep(0.3, 1, u) * 0.8);
+    c.lerp(RIM, Math.pow(s, 2.4) * 0.6);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
