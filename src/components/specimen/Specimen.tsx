@@ -12,8 +12,9 @@ import {
 } from "./geometry";
 import { ProceduralFlower } from "./ProceduralFlower";
 
-const EDGE = new THREE.Color("#3f6fd8");
-const DEEP = new THREE.Color("#598FFD");
+const EDGE = new THREE.Color("#5950B8");
+const DEEP = new THREE.Color("#25387A");
+
 const WIRE_Q = 0.26;
 
 function emphasisOf(active: PartId, id: PartId) {
@@ -36,7 +37,7 @@ function Tissue({
     <group>
       <mesh geometry={geometry}>
         <meshPhysicalMaterial
-          color="#8987EC"
+          color="#25387A"
           transparent
           opacity={0.5 * emphasis + 0.05}
           transmission={0.45}
