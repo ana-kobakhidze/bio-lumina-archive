@@ -123,13 +123,17 @@ function Scape({ emphasis }: { emphasis: number }) {
 
   return (
     <group>
-      <Membrane
-        geometry={stem}
-        wire={stemWire}
-        emphasis={emphasis}
-        thickness={0.3}
-        transmission={0.45}
-      />
+      {/* the stem generator grows downward; flip it so the scape rises */}
+      <group rotation={[Math.PI, 0, 0]}>
+        <Membrane
+          geometry={stem}
+          wire={stemWire}
+          emphasis={emphasis}
+          thickness={0.3}
+          transmission={0.45}
+        />
+      </group>
+
       {SCAPE.flowers.map((f, i) => (
         <group key={`f-${i}`} position={f.pos} rotation={[f.tilt, f.spin, 0]} scale={f.scale}>
           {petals.map((g, j) => (
