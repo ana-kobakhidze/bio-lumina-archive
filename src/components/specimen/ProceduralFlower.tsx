@@ -61,7 +61,7 @@ function Membrane({
           color={EDGE}
           wireframe
           transparent
-          opacity={0.09 * emphasis}
+          opacity={0.07 * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
