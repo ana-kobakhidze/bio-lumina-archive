@@ -54,7 +54,7 @@ export const FLYTRAP: FlytrapMorphology = {
     open: 0.62,
     cilia: { count: 17, length: 0.085 },
   },
-  petiole: { reach: 0.52, rise: 0.4, width: 0.12, cup: 0.06 },
+  petiole: { reach: 0.64, rise: 0.42, width: 0.115, cup: 0.06 },
   rhizome: { length: 0.34, radius: 0.019, flare: 1.35, flutes: 6 },
   traps: [
     { angle: 0.2, tilt: -0.12, scale: 1, roll: 0.08 },
