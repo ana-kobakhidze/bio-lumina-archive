@@ -1,42 +1,48 @@
-# Match the glass look of the reference render
+# Rebuild the flower to match the reference — glass look + new palette
 
-## What the two images actually differ on
-
-Side-by-side of your reference and the current preview:
+## What's wrong today (from comparing your reference with the live preview)
 
 | | Your reference | Current |
 |---|---|---|
-| Mesh lines | Bright white, dense, clearly visible over every surface — this is what reads as "glass" | Almost invisible (very faint, very coarse) |
-| Red showing through petals | Yes — petals glow pink/magenta where the background shows through | No — petals stay flat blue |
-| Highlights | Crisp light streaks on the curved edges | Almost none |
-| Layering | Overlapping petals get denser and darker where they stack | All parts equally see-through, no stacking depth |
-| Top structure | Tall curved membrane | Reads as a flat boxy slab with hard cut edges |
-| Framing | Flower fills the frame, stem cropped short | Flower small, long thick stem dominates the lower half |
+| Surfaces | Smooth, rounded, membrane-like | Faceted, folded, straight-edged silhouettes |
+| Glass | Petals glow warm where the background shows through | Flat blue, nothing shows through |
+| Mesh lines | Fine white lattice sitting lightly over a smooth form | Coarse, geometry-first, no smooth surface underneath |
+| Highlights | Crisp light along curved edges | Almost none |
+| Layering | Overlaps get denser | All parts equally see-through |
+| Framing | Bloom fills the frame, stem cropped | Small bloom, long dominant stem |
 
-## Why the glass effect is missing (root causes)
+### Root causes of the missing glass
 
-1. **The see-through effect has nothing to see through.** The 3D scene has no background of its own — the red comes from the page behind the canvas. Glass materials sample the *scene* behind them, so they sample emptiness and turn flat. This is the single biggest cause of the difference.
-2. **No reflective environment.** Glass needs something to reflect; the scene only has plain lights, so there are no bright specular streaks.
-3. **Every surface is set to not write depth**, so overlapping petals never build up density — the reference clearly gets darker/denser where petals stack.
-4. **The mesh overlay is turned down to near zero** and is generated at a quarter density, so the signature white lattice is gone.
-5. **The central membrane's edges are cut square**, which is what makes it look like a broken slab instead of a leaf.
+1. The 3D scene has no background of its own — the colour comes from the page behind the canvas. Glass materials sample the scene behind them, so they sample emptiness and go flat. This is the single biggest cause.
+2. No reflective environment, so no specular streaks on the edges.
+3. Surfaces don't write depth, so stacked petals never build density.
+4. Tepal outlines still collapse to straight cuts at base and tip, which reads as folded paper.
 
-## The fix
+## The rebuild
 
-1. Give the 3D scene its own vermilion background so the glass has red to transmit, and keep the page colour identical so nothing visually shifts.
-2. Add a small studio reflection environment (soft bright panels, no landscape imagery) so edges catch light the way the reference does.
-3. Rework the glass material: higher transmission, real thickness, low roughness, warm attenuation so thick regions read pink-violet like the reference, depth writing enabled on the solid membranes so overlaps stack.
-4. Bring back the white lattice: raise overlay density and opacity to reference level, pale-blue/white, drawn over the surface.
-5. Close the central membrane: round its outline at base and tip so it no longer terminates in a flat cut, and soften its silhouette.
-6. Re-frame the default view: flower larger in frame, stem cropped near the bottom edge.
-7. Verify by rendering and comparing against your reference; iterate on transmission/lattice balance until the two match.
+1. **Geometry** — regenerate every tepal as a dense parametric membrane (64 x 28 grid): CatmullRom centerline, continuous width / bend / curl / cup / twist, softly rounded at both base and tip so nothing terminates in a point or a flat cut. Central structure: tallest and widest, broad rounded body, max width upper-middle, rounded top. Outer tepals: asymmetric, overlapping, individually varied rather than six identical blades. Receptacle: deformed high-res dome. Stem: thin, smooth, flowing continuously out of the receptacle.
+2. **Glass material** — give the 3D scene its own background colour so transmission has something to transmit; add a small studio reflection environment (soft light panels, no HDRI file); MeshPhysicalMaterial with real transmission, thickness, low roughness, ior ~1.35, double-sided, depth-writing on the membranes so overlaps stack.
+3. **Colour depth** — vertex-graded: dense deep tone at base, pale translucent tone at the thin tips, brighter edge colour along the margins, near-white speculars.
+4. **Scan overlay** — separate low-density twin at ~0.06–0.10 opacity, pale, so it only shows on close inspection.
+5. **Composition** — bloom fills ~65–75% of the viewer width, camera slightly above and front-facing, stem cropped near the bottom edge; leaves, fruit and seed hidden in the default view.
+6. **Acceptance check** — render with the overlay off, screenshot, compare against your reference for silhouette, rounded edges, overlap depth, proportions, translucency and absence of facets; raise resolution until it passes; then re-enable the subtle overlay.
+
+## New colour palette
+
+From your swatch image:
+
+- `#C7CC10` olive-yellow — canvas background (replacing vermilion)
+- `#598FFD` cobalt — specimen edges and bright margins
+- `#8987EC` periwinkle — translucent mid-tones
+- `#F0EDFA` near-white lavender — highlights, mesh lines, text
+- `#5E4C3C` deep brown — dense base regions and secondary text
+
+If you'd rather keep the vermilion background and only recolour the specimen, say so and I'll swap that one decision.
 
 ## Technical notes
 
-- `SpecimenViewer.tsx`: `gl={{ alpha: false }}` + `<color attach="background">` in the scene colour token; add `<Environment>` (drei, lightformer-based, no HDRI file).
-- `ProceduralFlower.tsx` / `Specimen.tsx`: `meshPhysicalMaterial` with `transmission ~0.9`, `thickness 0.3–0.8`, `roughness ~0.12`, `ior 1.4`, `attenuationColor` warm-violet, `depthWrite` true on membranes; wireframe twin `WIRE_Q` ~0.5 and opacity ~0.35.
-- `flower.ts`: adjust the central tepal profile exponents/`tipRound` so width goes smoothly to zero at both ends.
-- `botany.ts`: tighten the `whole` camera position/target for the closer crop.
-- Transmission is expensive: keep `dpr` capped and the wire twin coarse.
-
-Untouched: page layout, typography, palette, controls, part selection, annotations.
+- `flower.ts`: rewrite the tepal/receptacle/stem generators and the `FLOWER` morphology data; palette constants for the vertex tint.
+- `ProceduralFlower.tsx` / `Specimen.tsx`: physical material with `transmission ~0.9`, `thickness 0.3–0.8`, `roughness ~0.12`, `ior 1.4`, `depthWrite` on membranes; wire twin `WIRE_Q ~0.3`, opacity ~0.08.
+- `SpecimenViewer.tsx`: `gl={{ alpha: false }}` + `<color attach="background">`, drei `<Environment>` with `<Lightformer>`s (no CDN preset), key/fill/rim lights, `dpr` capped for transmission cost.
+- `botany.ts`: tighter `whole`/flower camera + target for the closer crop.
+- `styles.css`: swap the palette tokens; page layout, typography, controls, part selection and annotations stay as they are.
