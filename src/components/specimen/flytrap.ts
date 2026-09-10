@@ -48,14 +48,15 @@ export interface FlytrapMorphology {
 
 export const FLYTRAP: FlytrapMorphology = {
   trap: {
-    length: 0.3,
-    width: 0.23,
+    length: 0.33,
+    width: 0.25,
     cup: 0.055,
     open: 0.62,
-    cilia: { count: 16, length: 0.11 },
+    cilia: { count: 16, length: 0.115 },
   },
   petiole: { reach: 0.66, rise: 0.16, width: 0.15, cup: 0.05 },
-  rhizome: { length: 0.2, radius: 0.024, flare: 1.2, flutes: 6 },
+  rhizome: { length: 0.16, radius: 0.017, flare: 1.0, flutes: 6 },
+
   traps: [
     { angle: 0.15, tilt: 0.34, scale: 1, roll: 0.05 },
     { angle: 1.32, tilt: 0.2, scale: 0.86, roll: -0.1 },
