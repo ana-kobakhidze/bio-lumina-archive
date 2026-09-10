@@ -145,11 +145,23 @@ const smoothstep = (e0: number, e1: number, x: number) => {
   return t * t * (3 - 2 * t);
 };
 
-/** Deep base -> lavender tip -> brighter cobalt along the margins. */
-const DENSE = new THREE.Color("#1b13c8");
-const MID = new THREE.Color("#4a34ee");
-const PALE = new THREE.Color("#b9aeff");
-const RIM = new THREE.Color("#6f8dff");
+/**
+ * Archive palette. Dense base -> periwinkle body -> pale lavender tips,
+ * with a brighter cobalt margin.
+ */
+export const PALETTE = {
+  dense: "#2b3f9e",
+  mid: "#8987EC",
+  pale: "#F0EDFA",
+  rim: "#598FFD",
+  ink: "#5E4C3C",
+  ground: "#C7CC10",
+} as const;
+
+const DENSE = new THREE.Color(PALETTE.dense);
+const MID = new THREE.Color(PALETTE.mid);
+const PALE = new THREE.Color(PALETTE.pale);
+const RIM = new THREE.Color(PALETTE.rim);
 
 function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
@@ -158,8 +170,8 @@ function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    c.copy(DENSE).lerp(MID, smoothstep(0, 0.45, u)).lerp(PALE, smoothstep(0.35, 1, u) * 0.85);
-    c.lerp(RIM, Math.pow(s, 3) * 0.55);
+    c.copy(DENSE).lerp(MID, smoothstep(0, 0.4, u)).lerp(PALE, smoothstep(0.3, 1, u) * 0.8);
+    c.lerp(RIM, Math.pow(s, 2.4) * 0.6);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
@@ -208,10 +220,14 @@ export function createTepalGeometry(t: TepalSpec2, q = 1) {
       side.crossVectors(ref, tangent).normalize();
       normal.crossVectors(tangent, side).normalize();
 
-      // Broad rounded outline: low exponent keeps the tip full rather than
-      // collapsing into a triangular point.
-      const prof = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.78)), t.tipRound) * (1 - 0.1 * u);
-      const w = t.width * Math.max(0.0015, prof);
+      // Broad rounded outline, full at BOTH ends: the low exponent keeps the
+      // base and the tip softly rounded instead of collapsing to a flat cut
+      // or a triangular point.
+      const shape = Math.sin(Math.PI * Math.pow(u, 0.72));
+      const prof = Math.pow(Math.max(0, shape), t.tipRound * 0.62) * (1 - 0.08 * u);
+      // organic asymmetry: the two halves of the blade are never identical
+      const asym = 1 + s * (0.07 + 0.05 * Math.sin(u * 3.1 + t.angle * 2.3));
+      const w = t.width * Math.max(0.0015, prof) * asym;
 
       const tw = t.twist * smoothstep(0, 1, u);
       lateral.copy(side).multiplyScalar(Math.cos(tw)).addScaledVector(normal, Math.sin(tw));
@@ -224,8 +240,8 @@ export function createTepalGeometry(t: TepalSpec2, q = 1) {
         .addScaledVector(lateral, s * w)
         .addScaledVector(face, cup + roll);
     },
-    seg(72, q),
-    seg(30, q),
+    seg(96, q),
+    seg(34, q),
   );
   return tint(geo);
 }
