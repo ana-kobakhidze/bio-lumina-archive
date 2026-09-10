@@ -58,21 +58,43 @@ export function SpecimenViewer({
 
   return (
     <Canvas
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0.3, 1.25, 5.3], fov: 26 }}
+      dpr={[1, 1.75]}
+      gl={{ antialias: true, alpha: false }}
+      camera={{ position: [0.22, 0.92, 2.95], fov: 26 }}
       onPointerDown={() => {
         setIdle(false);
         onUserInteract?.();
       }}
       onWheel={() => setIdle(false)}
     >
+      {/* the scene owns its ground colour so transmissive tissue transmits it */}
+      <color attach="background" args={[GROUND]} />
+
       {/* controlled studio lighting: soft key, weak fill, strong rim */}
-      <ambientLight intensity={0.28} />
-      <directionalLight position={[2.5, 4, 5]} intensity={0.85} color="#eef0ff" />
-      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.35} color="#9d8cff" />
-      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.1} color="#cfd6ff" />
-      <pointLight position={[0, 0.6, -3.5]} intensity={9} distance={12} color="#ff5a1f" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[2.5, 4, 5]} intensity={1.1} color="#F0EDFA" />
+      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.4} color="#8987EC" />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.4} color="#F0EDFA" />
+
+      {/* small studio reflection rig — no HDRI, no ground plane */}
+      <Environment resolution={256}>
+        <Lightformer intensity={3} position={[0, 4, 2]} scale={[8, 8, 1]} color="#F0EDFA" />
+        <Lightformer
+          intensity={2}
+          position={[-4, 1, -2]}
+          rotation-y={Math.PI / 2}
+          scale={[10, 2, 1]}
+          color="#598FFD"
+        />
+        <Lightformer
+          intensity={1.6}
+          position={[4, 0.5, -2]}
+          rotation-y={-Math.PI / 2}
+          scale={[10, 2, 1]}
+          color="#C7CC10"
+        />
+      </Environment>
+
       <Suspense fallback={null}>
         <Specimen active={active} />
       </Suspense>
