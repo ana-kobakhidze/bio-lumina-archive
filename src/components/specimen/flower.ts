@@ -150,12 +150,12 @@ const smoothstep = (e0: number, e1: number, x: number) => {
  * with a brighter cobalt margin.
  */
 export const PALETTE = {
-  dense: "#2b3f9e",
+  dense: "#598FFD",
   mid: "#8987EC",
   pale: "#F0EDFA",
-  rim: "#598FFD",
+  rim: "#3f6fd8",
   ink: "#5E4C3C",
-  ground: "#C7CC10",
+  ground: "#F0EDFA",
 } as const;
 
 const DENSE = new THREE.Color(PALETTE.dense);
