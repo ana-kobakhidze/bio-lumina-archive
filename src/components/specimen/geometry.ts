@@ -37,6 +37,38 @@ export function parametricGeometry(
   return g;
 }
 
+/**
+ * Continuous contour of a parametric surface: the closed boundary loop of the
+ * (u,v) grid, returned as line-segment positions. Drawing this over a nearly
+ * invisible membrane gives the reference's "ends like contours" edge.
+ */
+export function outlineGeometry(geo: THREE.BufferGeometry): THREE.BufferGeometry {
+  const uv = geo.getAttribute("uv");
+  const pos = geo.getAttribute("position");
+  let rowLen = 0;
+  for (let i = 0; i < uv.count; i++) if (uv.getX(i) === 0) rowLen++;
+  const segV = rowLen - 1;
+  const segU = pos.count / rowLen - 1;
+  const at = (i: number, j: number) => i * rowLen + j;
+
+  const loop: number[] = [];
+  for (let i = 0; i <= segU; i++) loop.push(at(i, 0));
+  for (let j = 1; j <= segV; j++) loop.push(at(segU, j));
+  for (let i = segU - 1; i >= 0; i--) loop.push(at(i, segV));
+  for (let j = segV - 1; j >= 1; j--) loop.push(at(0, j));
+
+  const out: number[] = [];
+  for (let k = 0; k < loop.length; k++) {
+    const a = loop[k];
+    const b = loop[(k + 1) % loop.length];
+    out.push(pos.getX(a), pos.getY(a), pos.getZ(a));
+    out.push(pos.getX(b), pos.getY(b), pos.getZ(b));
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.Float32BufferAttribute(out, 3));
+  return g;
+}
+
 /* ------------------------------------------------------------------ *
  * Morphology description — one species = one config object.
  * ------------------------------------------------------------------ */
