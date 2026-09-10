@@ -154,9 +154,10 @@ function SpecimenPage() {
           </div>
 
           <p className="max-w-xs text-[11px] leading-relaxed opacity-75">
-            Optical scan cleared and stained for transmission. Tissue densities are mapped to
-            refractive index; the archive renders them without colour correction.
+            Dark-field transmission scan. Tissue densities are mapped to refractive index; only the
+            pigment retained at the base of each tepal registers against the plate.
           </p>
+
         </aside>
       </main>
     </div>
