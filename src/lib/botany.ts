@@ -20,8 +20,8 @@ export const PARTS: PartSpec[] = [
     term: "Habit",
     latin: "Astromirabilis grandiflora",
     note: "Complete preserved individual, scanned at 0.02 mm resolution. Radial symmetry of six recurved tepals above a single fluted scape.",
-    camera: [0.3, 1.25, 5.3],
-    target: [0, 0.33, 0],
+    camera: [0.22, 0.92, 2.95],
+    target: [0, 0.44, 0],
     fig: "FIG. 01",
   },
   {
@@ -30,8 +30,8 @@ export const PARTS: PartSpec[] = [
     term: "Corolla",
     latin: "Perianthium radiale",
     note: "Six translucent tepals surrounding a dense boss of filiform stamens. Tissue refracts incident light, producing the lens effect recorded in the scan.",
-    camera: [0.28, 1.0, 4.5],
-    target: [0, 0.34, 0],
+    camera: [0.18, 0.78, 2.55],
+    target: [0, 0.46, 0],
     fig: "FIG. 02",
   },
   {
