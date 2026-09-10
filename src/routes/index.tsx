@@ -8,22 +8,22 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Astromirabilis grandiflora — Exoplantae Specimen Archive" },
+      { title: "HEBRA — Digital Herbarium · Astromirabilis grandiflora" },
       {
         name: "description",
         content:
-          "An interactive x-ray specimen viewer from the Exoplantae digital herbarium: rotate, zoom and explore the botanical structure of Astromirabilis grandiflora.",
+          "HEBRA is a digital herbarium for exploring plant species through form, structure and place. Rotate, zoom and examine interactive translucent specimens.",
       },
-      { property: "og:title", content: "Astromirabilis grandiflora — Exoplantae Specimen Archive" },
+      { property: "og:title", content: "HEBRA — Digital Herbarium" },
       {
         property: "og:description",
-        content:
-          "Interactive translucent 3D specimen from a speculative digital botanical library.",
+        content: "Flora, reconstructed. Explore plant species as interactive digital specimens.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+
   component: SpecimenPage,
 });
 
@@ -155,9 +155,10 @@ function SpecimenPage() {
           </div>
 
           <p className="max-w-xs text-[11px] leading-relaxed opacity-75">
-            Dark-field transmission scan. Tissue densities are mapped to refractive index; only the
-            pigment retained at the base of each tepal registers against the plate.
+            A digital record of plant form. Tissue densities are mapped to refractive index and
+            rendered without colour correction.
           </p>
+
 
         </aside>
       </main>
