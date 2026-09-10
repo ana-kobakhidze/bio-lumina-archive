@@ -12,8 +12,9 @@ import {
 } from "./geometry";
 import { ProceduralFlower } from "./ProceduralFlower";
 
-const EDGE = new THREE.Color("#5950B8");
+const EDGE = new THREE.Color("#1EA598");
 const DEEP = new THREE.Color("#25387A");
+
 
 const WIRE_Q = 0.26;
 
@@ -37,22 +38,24 @@ function Tissue({
     <group>
       <mesh geometry={geometry}>
         <meshPhysicalMaterial
-          color="#25387A"
+          color="#5950B8"
           transparent
-          opacity={0.5 * emphasis + 0.05}
-          transmission={0.45}
+          opacity={1}
+          transmission={0.42}
           thickness={thickness}
-          roughness={0.22}
+          roughness={0.2}
           metalness={0}
           ior={1.35}
+          emissive={DEEP}
+          emissiveIntensity={0.2 * emphasis}
           attenuationColor={DEEP}
-          attenuationDistance={1.2}
-          iridescence={0.28}
+          attenuationDistance={0.9}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite={false}
+          depthWrite
         />
       </mesh>
+
       <mesh geometry={wire ?? geometry} scale={1.001}>
         <meshBasicMaterial
           color={EDGE}
