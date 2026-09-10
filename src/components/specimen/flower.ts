@@ -220,10 +220,14 @@ export function createTepalGeometry(t: TepalSpec2, q = 1) {
       side.crossVectors(ref, tangent).normalize();
       normal.crossVectors(tangent, side).normalize();
 
-      // Broad rounded outline: low exponent keeps the tip full rather than
-      // collapsing into a triangular point.
-      const prof = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.78)), t.tipRound) * (1 - 0.1 * u);
-      const w = t.width * Math.max(0.0015, prof);
+      // Broad rounded outline, full at BOTH ends: the low exponent keeps the
+      // base and the tip softly rounded instead of collapsing to a flat cut
+      // or a triangular point.
+      const shape = Math.sin(Math.PI * Math.pow(u, 0.72));
+      const prof = Math.pow(Math.max(0, shape), t.tipRound * 0.62) * (1 - 0.08 * u);
+      // organic asymmetry: the two halves of the blade are never identical
+      const asym = 1 + s * (0.07 + 0.05 * Math.sin(u * 3.1 + t.angle * 2.3));
+      const w = t.width * Math.max(0.0015, prof) * asym;
 
       const tw = t.twist * smoothstep(0, 1, u);
       lateral.copy(side).multiplyScalar(Math.cos(tw)).addScaledVector(normal, Math.sin(tw));
@@ -236,8 +240,8 @@ export function createTepalGeometry(t: TepalSpec2, q = 1) {
         .addScaledVector(lateral, s * w)
         .addScaledVector(face, cup + roll);
     },
-    seg(72, q),
-    seg(30, q),
+    seg(96, q),
+    seg(34, q),
   );
   return tint(geo);
 }
