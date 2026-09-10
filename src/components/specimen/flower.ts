@@ -150,12 +150,12 @@ const smoothstep = (e0: number, e1: number, x: number) => {
  * with a brighter cobalt margin.
  */
 export const PALETTE = {
-  dense: "#2b3f9e",
+  dense: "#598FFD",
   mid: "#8987EC",
   pale: "#F0EDFA",
-  rim: "#598FFD",
+  rim: "#3f6fd8",
   ink: "#5E4C3C",
-  ground: "#C7CC10",
+  ground: "#F0EDFA",
 } as const;
 
 const DENSE = new THREE.Color(PALETTE.dense);
@@ -170,8 +170,10 @@ function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    c.copy(DENSE).lerp(MID, smoothstep(0, 0.4, u)).lerp(PALE, smoothstep(0.3, 1, u) * 0.8);
-    c.lerp(RIM, Math.pow(s, 2.4) * 0.6);
+    // Interior stays near-neutral so the blade reads as clear glass; the
+    // saturated cobalt collects at the base and along the two margins.
+    c.copy(DENSE).lerp(MID, smoothstep(0, 0.28, u)).lerp(PALE, smoothstep(0.05, 0.75, u));
+    c.lerp(RIM, Math.pow(s, 3.2) * 0.85);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;

@@ -6,7 +6,7 @@ import { PARTS, type PartId } from "@/lib/botany";
 import { Specimen } from "./Specimen";
 
 /** olive-yellow archive ground — the scene owns it so glass can transmit it */
-const GROUND = "#C7CC10";
+const GROUND = "#F0EDFA";
 
 function CameraRig({
   active,
@@ -71,14 +71,14 @@ export function SpecimenViewer({
       <color attach="background" args={[GROUND]} />
 
       {/* controlled studio lighting: soft key, weak fill, strong rim */}
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[2.5, 4, 5]} intensity={1.1} color="#F0EDFA" />
-      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.4} color="#8987EC" />
-      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.4} color="#F0EDFA" />
+      <ambientLight intensity={0.35} />
+      <directionalLight position={[2.5, 4, 5]} intensity={0.7} color="#F0EDFA" />
+      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={0.3} color="#8987EC" />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.2} color="#598FFD" />
 
       {/* small studio reflection rig — no HDRI, no ground plane */}
       <Environment resolution={256}>
-        <Lightformer intensity={3} position={[0, 4, 2]} scale={[8, 8, 1]} color="#F0EDFA" />
+        <Lightformer intensity={2.2} position={[0, 4, 2]} scale={[8, 8, 1]} color="#F0EDFA" />
         <Lightformer
           intensity={2}
           position={[-4, 1, -2]}
@@ -87,11 +87,11 @@ export function SpecimenViewer({
           color="#598FFD"
         />
         <Lightformer
-          intensity={1.6}
+          intensity={1.4}
           position={[4, 0.5, -2]}
           rotation-y={-Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#C7CC10"
+          color="#8987EC"
         />
       </Environment>
 
