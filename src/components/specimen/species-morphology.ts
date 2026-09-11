@@ -168,7 +168,7 @@ export const PAPAVER: FlowerMorphology = {
  */
 export const GENTIANA: FlowerMorphology = {
   receptacle: { radius: 0.055, height: 0.16 },
-  stem: { length: 0.5, radius: 0.012, flare: 1.15, flutes: 4 },
+  stem: { length: 0.3, radius: 0.013, flare: 1.15, flutes: 4 },
   inner: [],
   outer: whorl(
     5,
@@ -245,7 +245,7 @@ export const CROCUS: FlowerMorphology = {
  */
 export const FRITILLARIA: FlowerMorphology = {
   receptacle: { radius: 0.06, height: 0.08 },
-  stem: { length: 0.95, radius: 0.012, flare: 1.2, flutes: 4 },
+  stem: { length: 0.45, radius: 0.013, flare: 1.2, flutes: 4 },
   inner: whorl(
     3,
     {

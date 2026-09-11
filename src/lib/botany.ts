@@ -535,7 +535,7 @@ export const SPECIES: Species[] = [
     slug: "fritillaria-meleagris",
     name: "Fritillaria meleagris",
     common: "Snake's-head fritillary",
-    home: [0, 0.28, 0],
+    home: [0, 0.16, 0],
     nod: Math.PI * 0.92,
     parts: flowerParts({
       latin: "Fritillaria meleagris",
@@ -553,8 +553,8 @@ export const SPECIES: Species[] = [
         latin: "Caulis nutans",
         note: "Thin unbranched stem from a small bulb of two fleshy scales, arching sharply near the apex so the flower hangs mouth-down.",
       },
-      camera: [0.22, 0.5, 3.0],
-      target: [0, 0.28, 0],
+      camera: [0.22, 0.36, 2.5],
+      target: [0, 0.16, 0],
     }),
     record: {
       hebra: "HEBRA / 000008",
