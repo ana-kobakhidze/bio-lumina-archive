@@ -3,10 +3,9 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { type PartId, type Species } from "@/lib/botany";
+import { useHebraTheme } from "@/components/hebra/ThemeProvider";
 import { Specimen } from "./Specimen";
 
-/** deep-water archive ground — the scene owns it so glass can transmit it */
-const GROUND = "#0C0827";
 
 
 function CameraRig({
@@ -59,6 +58,8 @@ export function SpecimenViewer({
   onUserInteract?: () => void;
 }) {
   const controls = useRef<any>(null);
+  const { theme } = useHebraTheme();
+  const sc = theme.scene;
   const [idle, setIdle] = useState(true);
 
   return (
@@ -73,31 +74,31 @@ export function SpecimenViewer({
       onWheel={() => setIdle(false)}
     >
       {/* the scene owns its ground colour so transmissive tissue transmits it */}
-      <color attach="background" args={[GROUND]} />
+      <color attach="background" args={[sc.ground]} />
 
       {/* museum scanner lighting: violet key, cobalt fill, teal rim */}
       <ambientLight intensity={0.5} />
-      <directionalLight position={[2.5, 3.5, 5]} intensity={1.7} color="#8C85E8" />
-      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={1.1} color="#25387A" />
-      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.6} color="#2FE3B0" />
-      <pointLight position={[0, 0.7, 0.9]} intensity={1.1} distance={4} color="#5950B8" />
+      <directionalLight position={[2.5, 3.5, 5]} intensity={1.7} color={sc.key} />
+      <directionalLight position={[-4.5, 1.2, 2.5]} intensity={1.1} color={sc.fill} />
+      <directionalLight position={[-1.5, 3.5, -6]} intensity={2.6} color={sc.rim} />
+      <pointLight position={[0, 0.7, 0.9]} intensity={1.1} distance={4} color={sc.point} />
 
       {/* small studio reflection rig — no HDRI, no ground plane */}
       <Environment resolution={256}>
-        <Lightformer intensity={2.6} position={[0, 4, 2]} scale={[8, 8, 1]} color="#8C85E8" />
+        <Lightformer intensity={2.6} position={[0, 4, 2]} scale={[8, 8, 1]} color={sc.key} />
         <Lightformer
           intensity={2.2}
           position={[-4, 1, -2]}
           rotation-y={Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#2FE3B0"
+          color={sc.rim}
         />
         <Lightformer
           intensity={1.8}
           position={[4, 0.5, -2]}
           rotation-y={-Math.PI / 2}
           scale={[10, 2, 1]}
-          color="#25387A"
+          color={sc.fill}
         />
       </Environment>
 

@@ -18,7 +18,10 @@ export type SpeciesId =
   | "dionaea"
   | "lilium"
   | "galanthus"
-  | "papaver";
+  | "papaver"
+  | "gentiana"
+  | "crocus"
+  | "fritillaria";
 
 export interface SpeciesRecord {
   hebra: string;
@@ -421,6 +424,164 @@ export const SPECIES: Species[] = [
       "Arable field margins, roadsides, fallow ground and any recently disturbed soil, from sea level to about 1,800 m. Populations appear in quantity the first season after ground is broken and thin out as the sward closes.",
     caption:
       "Petal surface modelled thin enough to transmit; the crumple of the opening bud is retained.",
+  },
+  {
+    id: "gentiana",
+    slug: "gentiana-verna",
+    name: "Gentiana verna",
+    common: "Spring gentian",
+    home: [0, 0.1, 0],
+    scale: 1.15,
+    parts: flowerParts({
+      latin: "Gentiana verna",
+      whole: "A short tube opening into five flat lobes, held just above a tight basal rosette on alpine turf.",
+      flower: {
+        latin: "Corolla hypocrateriformis",
+        note: "Salverform corolla: a narrow tube abruptly expanding into five broadly ovate lobes, with small paired folds between them.",
+      },
+      leaf: {
+        latin: "Folia rosulata",
+        note: "Ovate to lanceolate leaves in a dense ground-hugging rosette, with a smaller opposite pair on the flowering shoot.",
+      },
+      stem: {
+        term: "Caulis",
+        latin: "Caulis brevis",
+        note: "Very short four-angled shoot, rarely more than 6 cm, keeping the flower within the shelter of the turf.",
+      },
+      camera: [0.18, 0.32, 2.4],
+      target: [0, 0.12, 0],
+    }),
+    record: {
+      hebra: "HEBRA / 000006",
+      family: "Gentianaceae",
+      genus: "Gentiana",
+      authority: "L., 1753",
+      origin: "Greater Caucasus, Georgia",
+      range: "Europe, Anatolia, Caucasus, Central Asia",
+      altitude: "1,500–3,000 m",
+      habit: "Cushion-forming perennial, 2–10 cm",
+      flowering: "May – August",
+      collected: "2024-06-29",
+      collector: "HEBRA field survey · Kazbegi",
+      coordinates: "42.6890 N, 44.5147 E",
+      conservation: "Least Concern (IUCN)",
+      scan: "Photogrammetry + procedural reconstruction",
+    },
+    summary:
+      "The alpine gentian: a five-lobed disc of intense blue held centimetres above short calcareous turf.",
+    description: [
+      "Gentiana verna is a small perennial forming loose mats of leaf rosettes. Each flowering shoot carries a single terminal flower with a narrow corolla tube abruptly opening into five spreading lobes, giving the flower the appearance of a flat disc.",
+      "The calyx is sharply four- to five-angled, and small pleats sit between the corolla lobes. Flowers open only in full sun and close as cloud passes, which is what keeps the species restricted to open, unshaded alpine turf.",
+    ],
+    habitat:
+      "Short calcareous alpine and subalpine grassland, stony pasture and snow-bed margins, mostly between 1,500 and 3,000 m. In Georgia it is frequent across the Greater Caucasus meadows above the treeline.",
+    caption:
+      "Recorded fully open; the corolla tube is reconstructed to its full depth beneath the lobes.",
+  },
+  {
+    id: "crocus",
+    slug: "crocus-speciosus",
+    name: "Crocus speciosus",
+    common: "Bieberstein's crocus",
+    home: [0, 0.2, 0],
+    parts: flowerParts({
+      latin: "Crocus speciosus",
+      whole: "A goblet of six upright tepals rising straight from the ground on a long perianth tube, before the leaves appear.",
+      flower: {
+        latin: "Perianthium hexamerum",
+        note: "Six tepals in two whorls of three, the outer slightly larger, veined and net-marked; three branched orange styles project beyond the anthers.",
+      },
+      leaf: {
+        latin: "Folia linearia",
+        note: "Narrow linear leaves with a white central stripe, appearing after flowering and persisting through winter into spring.",
+      },
+      stem: {
+        term: "Tubus",
+        latin: "Tubus perianthii",
+        note: "There is no true aerial stem: the flower is carried on an elongated perianth tube arising directly from a corm below ground.",
+      },
+      camera: [0.2, 0.42, 2.5],
+      target: [0, 0.22, 0],
+    }),
+    record: {
+      hebra: "HEBRA / 000007",
+      family: "Iridaceae",
+      genus: "Crocus",
+      authority: "M.Bieb., 1800",
+      origin: "Lesser Caucasus, Georgia",
+      range: "Caucasus, northern Iran, Anatolia, Crimea",
+      altitude: "500–2,000 m",
+      habit: "Cormous perennial, 10–25 cm",
+      flowering: "September – October",
+      collected: "2024-10-02",
+      collector: "HEBRA field survey · Borjomi",
+      coordinates: "41.8392 N, 43.3833 E",
+      conservation: "Least Concern (IUCN)",
+      scan: "Photogrammetry + procedural reconstruction",
+    },
+    summary:
+      "An autumn-flowering crocus that blooms leafless, its net-veined tepals opening on bare woodland floor.",
+    description: [
+      "Crocus speciosus grows from a flattened corm and flowers in autumn, before its leaves emerge. Each corm produces one to four flowers, carried on a long white perianth tube rather than a stem, so the goblet appears to rise straight out of the soil.",
+      "The six tepals are strongly net-veined, and the style divides into three long, finely branched orange arms that overtop the anthers. Linear white-striped leaves follow the flowers and remain green through the winter.",
+    ],
+    habitat:
+      "Open deciduous woodland, forest clearings, scrub and subalpine meadow from about 500 to 2,000 m, on humus-rich soils that dry out in summer. Widespread through the Caucasus and northern Iran.",
+    caption:
+      "Flower recorded leafless, as it occurs in autumn; the perianth tube is preserved to soil level.",
+  },
+  {
+    id: "fritillaria",
+    slug: "fritillaria-meleagris",
+    name: "Fritillaria meleagris",
+    common: "Snake's-head fritillary",
+    home: [0, 0.16, 0],
+    nod: Math.PI * 0.92,
+    parts: flowerParts({
+      latin: "Fritillaria meleagris",
+      whole: "A slender arching stem carrying one nodding bell of six tepals above a few grass-like leaves.",
+      flower: {
+        latin: "Perianthium campanulatum",
+        note: "Six broad tepals forming a bell, barely flared at the mouth and marked with the chequered tessellation that names the species.",
+      },
+      leaf: {
+        latin: "Folia linearia",
+        note: "Three to six narrow, grey-green, grass-like leaves scattered alternately along the stem, channelled along the midline.",
+      },
+      stem: {
+        term: "Caulis",
+        latin: "Caulis nutans",
+        note: "Thin unbranched stem from a small bulb of two fleshy scales, arching sharply near the apex so the flower hangs mouth-down.",
+      },
+      camera: [0.22, 0.36, 2.5],
+      target: [0, 0.16, 0],
+    }),
+    record: {
+      hebra: "HEBRA / 000008",
+      family: "Liliaceae",
+      genus: "Fritillaria",
+      authority: "L., 1753",
+      origin: "Central Europe · cultivated stock",
+      range: "Europe from Britain and France to western Russia",
+      altitude: "0–1,000 m",
+      habit: "Bulbous perennial, 15–40 cm",
+      flowering: "April – May",
+      collected: "2025-04-24",
+      collector: "HEBRA loan · cultivated stock",
+      coordinates: "—",
+      conservation: "Least Concern (IUCN) · declining in the wild",
+      scan: "Photogrammetry + procedural reconstruction",
+    },
+    summary:
+      "A nodding chequered bell of damp river meadow, now scarce wherever those meadows have been drained.",
+    description: [
+      "Fritillaria meleagris is a bulbous perennial of 15–40 cm with a slender stem, few narrow grass-like leaves and, usually, a single pendulous bell-shaped flower.",
+      "The six tepals carry a distinctive chequered pattern of dark and pale purple squares; white-flowered plants occur regularly in wild populations. The flower nods until the capsule sets, after which the stem straightens to release seed.",
+    ],
+    habitat:
+      "Damp, unimproved flood meadow and river floodplain grassland on neutral soils, below about 1,000 m. The species has declined sharply across Europe as such meadows were drained or fertilised.",
+    caption:
+      "Recorded nodding; the tessellation is carried as tissue density rather than surface pattern.",
   },
   {
     id: "dionaea",

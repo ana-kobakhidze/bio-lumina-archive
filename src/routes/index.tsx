@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { SpecimenCard } from "@/components/hebra/SpecimenCard";
+import { ThemeSwitch } from "@/components/hebra/ThemeProvider";
 import { SpecimenStage } from "@/components/specimen/SpecimenStage";
 import { recordRows, SPECIES, type PartId, type SpeciesId } from "@/lib/botany";
 
@@ -52,6 +53,7 @@ function SpecimenPage() {
           <Link to="/identity" className="label-micro mt-2 inline-block underline opacity-70 hover:opacity-100">
             Identity board
           </Link>
+          <ThemeSwitch className="mt-3 justify-end" />
         </div>
       </header>
 
