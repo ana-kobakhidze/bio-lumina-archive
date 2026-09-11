@@ -120,7 +120,7 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
             <meshBasicMaterial
               color={BIO}
               transparent
-              opacity={0.6 * emphasis}
+              opacity={0.34 * emphasis}
               depthWrite={false}
             />
 
@@ -128,13 +128,14 @@ function Stamens({ emphasis, morph }: { emphasis: number; morph: FlowerMorpholog
           <mesh position={[0, s.len, 0]}>
             <sphereGeometry args={[0.0155, 32, 22]} />
             <meshPhysicalMaterial
-              color="#3FE7BE"
+              color="#CFF7EC"
               transparent
-              opacity={0.85 * emphasis}
-              transmission={0.4}
+              opacity={0.7 * emphasis}
+              transmission={0.85}
 
-              thickness={0.06}
-              roughness={0.16}
+              thickness={0.04}
+              roughness={0.06}
+              ior={1.45}
               flatShading={false}
               depthWrite={false}
             />
