@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { SpecimenStage } from "@/components/specimen/SpecimenStage";
 import { speciesBySlug, SPECIES, type PartId } from "@/lib/botany";
@@ -69,9 +69,9 @@ function SpecimenRecordPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="flex items-start justify-between border-b border-specimen/20 px-6 py-5 md:px-10">
-        <Link to="/" className="label-micro">
-          ← HEBRA · Digital herbarium
-        </Link>
+        <button onClick={() => router.history.back()} className="label-micro">
+          ← Back to the archive
+        </button>
         <p className="label-micro text-right">{r.hebra}</p>
       </header>
 
@@ -140,7 +140,10 @@ function SpecimenRecordPage() {
 
             <div>
               <p className="label-micro mb-2 border-b border-specimen/25 pb-2">Viewer</p>
-              <Link to="/" className="font-display text-xl italic underline decoration-specimen/40">
+              <Link
+                to="/viewer"
+                className="font-display text-xl italic underline decoration-specimen/40"
+              >
                 Open in the HEBRA viewer →
               </Link>
               <p className="mt-2 text-[11px] leading-relaxed opacity-70">
