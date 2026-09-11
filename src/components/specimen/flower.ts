@@ -114,15 +114,15 @@ export const FLOWER: FlowerMorphology = {
   receptacle: { radius: 0.115, height: 0.13 },
   stem: { length: 0.85, radius: 0.017, flare: 1.3, flutes: 5 },
   central: {
-    length: 0.62,
-    width: 0.13,
-    out: 0.24,
+    length: 0.6,
+    width: 0.115,
+    out: 0.22,
     rise: 1.0,
-    curl: 0.24,
-    cup: 0.4,
-    twist: 0.2,
-    sweep: 0.06,
-    tipRound: 0.72,
+    curl: 0.3,
+    cup: 0.78,
+    twist: 0.12,
+    sweep: 0.05,
+    tipRound: 0.96,
     angle: 0.32,
     attach: 0.012,
     tilt: -0.05,
@@ -162,11 +162,11 @@ export const PALETTE = {
   ink: "#E8E5F7",
 } as const;
 
-const BASE = new THREE.Color(PALETTE.deep);
-const DENSE = new THREE.Color(PALETTE.cobalt);
-const BODY = new THREE.Color(PALETTE.bloom);
-const MARGIN = new THREE.Color(PALETTE.mesh);
-const GLOW = new THREE.Color(PALETTE.glow);
+const BASE = new THREE.Color("#7E86E8");
+const DENSE = new THREE.Color("#A8AEF5");
+const BODY = new THREE.Color("#DCDCFB");
+const MARGIN = new THREE.Color("#F2F0FF");
+const GLOW = new THREE.Color("#B7F5E4");
 
 export function tint(geo: THREE.BufferGeometry) {
   const uv = geo.getAttribute("uv");
@@ -175,11 +175,11 @@ export function tint(geo: THREE.BufferGeometry) {
   for (let i = 0; i < uv.count; i++) {
     const u = uv.getX(i);
     const s = Math.abs(uv.getY(i) - 0.5) * 2;
-    // deep indigo base -> cobalt depth -> ultraviolet body -> pale margins
-    c.copy(BASE).lerp(DENSE, smoothstep(0, 0.22, u)).lerp(BODY, smoothstep(0.12, 0.62, u));
-    c.lerp(MARGIN, Math.pow(s, 2.4) * 0.42 + smoothstep(0.82, 1, u) * 0.2);
-    // green-teal bio-luminescence carried on the highlights and margins
-    c.lerp(GLOW, Math.pow(s, 5) * 0.5 + smoothstep(0.9, 1, u) * 0.32);
+    // glass reads pale; depth comes from absorption where blades overlap
+    c.copy(BASE).lerp(DENSE, smoothstep(0, 0.24, u)).lerp(BODY, smoothstep(0.1, 0.6, u));
+    c.lerp(MARGIN, Math.pow(s, 2.2) * 0.6 + smoothstep(0.78, 1, u) * 0.3);
+    // faint green-teal signal on the very edges only
+    c.lerp(GLOW, Math.pow(s, 6) * 0.35 + smoothstep(0.94, 1, u) * 0.2);
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;

@@ -41,21 +41,22 @@ function Tissue({
     <group>
       <mesh geometry={geometry}>
         <meshPhysicalMaterial
-          color="#5950B8"
+          color="#D8DAFB"
           transparent
           opacity={1}
-          transmission={0.42}
-          thickness={thickness}
-          roughness={0.2}
+          transmission={0.94}
+          thickness={thickness * 0.5}
+          roughness={0.08}
           metalness={0}
-          ior={1.35}
-          emissive={DEEP}
-          emissiveIntensity={0.2 * emphasis}
+          ior={1.45}
+          clearcoat={0.7}
+          clearcoatRoughness={0.06}
+          specularIntensity={1}
           attenuationColor={DEEP}
-          attenuationDistance={0.9}
+          attenuationDistance={0.35}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite
+          depthWrite={false}
         />
       </mesh>
 
@@ -64,7 +65,7 @@ function Tissue({
           color={EDGE}
           wireframe
           transparent
-          opacity={0.04 * emphasis}
+          opacity={0.015 * emphasis}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
