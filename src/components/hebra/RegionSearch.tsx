@@ -36,7 +36,11 @@ export function RegionSearch({
     setOpen(false);
     setQ("");
     onSelected?.(region);
-    navigate({ to: "/archive/$regionId", params: { regionId: region.id } });
+    navigate({
+      to: "/archive/$regionId",
+      params: { regionId: region.id },
+      search: { q: "", form: "all", family: "all", status: "all" },
+    });
   };
 
   return (

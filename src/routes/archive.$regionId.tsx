@@ -20,12 +20,15 @@ interface ArchiveSearch {
 }
 
 export const Route = createFileRoute("/archive/$regionId")({
-  validateSearch: (search: Record<string, unknown>): ArchiveSearch => ({
-    q: typeof search.q === "string" ? search.q : "",
-    form: typeof search.form === "string" ? search.form : "all",
-    family: typeof search.family === "string" ? search.family : "all",
-    status: typeof search.status === "string" ? search.status : "all",
-  }),
+  validateSearch: (search: Record<string, unknown>): ArchiveSearch => {
+    const str = (v: unknown, fallback: string) => (typeof v === "string" ? v : fallback);
+    return {
+      q: str(search["q"], ""),
+      form: str(search["form"], "all"),
+      family: str(search["family"], "all"),
+      status: str(search["status"], "all"),
+    };
+  },
   loader: ({ params }) => {
     if (!regionById(params.regionId)) throw notFound();
     return null;
