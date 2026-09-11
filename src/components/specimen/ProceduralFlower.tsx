@@ -57,6 +57,8 @@ export function Membrane({
           specularIntensity={1}
           iridescence={0.22}
           iridescenceIOR={1.3}
+          emissive={MESH}
+          emissiveIntensity={0.06 * dim}
           attenuationColor={ATTEN}
           attenuationDistance={0.28}
           side={THREE.DoubleSide}
@@ -64,22 +66,12 @@ export function Membrane({
           depthWrite={false}
         />
       </mesh>
-      <mesh geometry={wire} scale={1.0015}>
-        <meshBasicMaterial
-          color={MESH}
-          wireframe
-          transparent
-          opacity={0.022 * dim}
-          depthWrite={false}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
       {outline ? (
         <lineSegments geometry={outline}>
           <lineBasicMaterial
             color={CONTOUR}
             transparent
-            opacity={0.1 * dim}
+            opacity={0.16 * dim}
             depthWrite={false}
           />
         </lineSegments>
