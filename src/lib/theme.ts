@@ -6,7 +6,7 @@
  * and the scanner lighting), so the page and the specimen never drift apart.
  */
 
-export type ThemeId = "void" | "vermilion" | "bone" | "umber";
+export type ThemeId = "void" | "vermilion" | "bone" | "umber" | "velvet";
 
 export interface HebraTheme {
   id: ThemeId;
@@ -91,6 +91,23 @@ export const THEMES: HebraTheme[] = [
       fill: "#3026F4",
       rim: "#3FE7BE",
       point: "#5950B8",
+    },
+  },
+  {
+    id: "velvet",
+    label: "Velvet",
+    swatch: "#4E0722",
+    css: {
+      background: "oklch(0.296 0.116 351.2)",
+      foreground: "oklch(0.920 0.045 345)",
+      specimen: "oklch(0.920 0.045 345)",
+    },
+    scene: {
+      ground: "#4E0722",
+      key: "#9D2A80",
+      fill: "#155D84",
+      rim: "#D03F37",
+      point: "#9D2A80",
     },
   },
 ];
