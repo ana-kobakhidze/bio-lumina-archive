@@ -13,24 +13,24 @@ import { outlineGeometry } from "./geometry";
 
 /** Coarse twin used only for the faint interior scan grid. */
 const WIRE_Q = 0.26;
-const MESH = new THREE.Color("#7FD9C6");
-const CONTOUR = new THREE.Color("#57E3BC");
-const ATTEN = new THREE.Color("#25387A");
-const EMISSIVE = new THREE.Color("#25387A");
+const MESH = new THREE.Color("#BFC4FF");
+const CONTOUR = new THREE.Color("#9FF0DA");
+const ATTEN = new THREE.Color("#4A44D6");
 const BIO = new THREE.Color("#3FE7BE");
 
 /**
- * Translucent botanical tissue: a physically transmissive surface that still
- * reads as a body — dense where blades overlap — with a delicate contour and
- * a barely-there technical mesh over it.
+ * Blown-glass botanical tissue: a thin, strongly transmissive membrane whose
+ * colour comes from absorption through overlapping layers rather than from a
+ * heavy tinted body. Edges catch the rim light; the technical mesh is almost
+ * subliminal.
  */
 export function Membrane({
   geometry,
   wire,
   outline,
   emphasis,
-  thickness = 0.25,
-  transmission = 0.62,
+  thickness = 0.12,
+  transmission = 0.96,
 }: {
   geometry: THREE.BufferGeometry;
   wire: THREE.BufferGeometry;
@@ -49,19 +49,19 @@ export function Membrane({
           opacity={1}
           transmission={transmission}
           thickness={thickness}
-          roughness={0.22}
+          roughness={0.07}
           metalness={0}
-          ior={1.35}
-          clearcoat={0.35}
-          clearcoatRoughness={0.2}
-          specularIntensity={0.8}
-          emissive={EMISSIVE}
-          emissiveIntensity={0.14 * dim}
+          ior={1.45}
+          clearcoat={0.7}
+          clearcoatRoughness={0.06}
+          specularIntensity={1}
+          iridescence={0.22}
+          iridescenceIOR={1.3}
           attenuationColor={ATTEN}
-          attenuationDistance={0.5}
+          attenuationDistance={0.28}
           side={THREE.DoubleSide}
           flatShading={false}
-          depthWrite
+          depthWrite={false}
         />
       </mesh>
       <mesh geometry={wire} scale={1.0015}>
@@ -69,7 +69,7 @@ export function Membrane({
           color={MESH}
           wireframe
           transparent
-          opacity={0.07 * dim}
+          opacity={0.022 * dim}
           depthWrite={false}
           side={THREE.DoubleSide}
         />
@@ -79,7 +79,7 @@ export function Membrane({
           <lineBasicMaterial
             color={CONTOUR}
             transparent
-            opacity={0.24 * dim}
+            opacity={0.1 * dim}
             depthWrite={false}
           />
         </lineSegments>
