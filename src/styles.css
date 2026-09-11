@@ -60,6 +60,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-specimen: var(--specimen);
+  --color-teal: var(--hebra-teal);
+  --color-cobalt: var(--hebra-cobalt);
+  --color-ultraviolet: var(--hebra-ultraviolet);
   --font-display: "Instrument Serif", Georgia, serif;
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
@@ -71,6 +74,10 @@
   /* pale lavender ink (#E8E5F7) */
   --foreground: oklch(0.925 0.019 300);
   --specimen: oklch(0.925 0.019 300);
+  /* fixed HEBRA anatomical accents: bio teal, cobalt, ultraviolet */
+  --hebra-teal: #1ea598;
+  --hebra-cobalt: #25387a;
+  --hebra-ultraviolet: #5950b8;
 
 
   --card: oklch(1 0 0);

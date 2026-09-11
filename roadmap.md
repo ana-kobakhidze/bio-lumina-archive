@@ -1,4 +1,6 @@
 # HEBRA roadmap
 
-- [x] Theming: four exhibition palettes (Void, Vermilion, Bone, Umber) switchable from the header
-- [x] Collection expanded to eight real specimens with scientific records
+- [x] Theming (Void, Vermilion, Bone, Umber, Velvet)
+- [x] Real specimens with 3D reconstructions
+- [x] Exploration flow: landing → region → regional archive → specimen detail
+- [ ] Real photography for photographic-status records

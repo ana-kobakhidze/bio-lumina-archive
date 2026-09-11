@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as IdentityRouteImport } from './routes/identity'
+import { Route as ViewerRouteImport } from './routes/viewer'
+import { Route as ArchiveRegionIdRouteImport } from './routes/archive.$regionId'
 import { Route as SpecimenSlugRouteImport } from './routes/specimen.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -18,9 +21,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContributeRoute = ContributeRouteImport.update({
+  id: '/contribute',
+  path: '/contribute',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IdentityRoute = IdentityRouteImport.update({
   id: '/identity',
   path: '/identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ViewerRoute = ViewerRouteImport.update({
+  id: '/viewer',
+  path: '/viewer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArchiveRegionIdRoute = ArchiveRegionIdRouteImport.update({
+  id: '/archive/$regionId',
+  path: '/archive/$regionId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SpecimenSlugRoute = SpecimenSlugRouteImport.update({
@@ -31,31 +49,62 @@ const SpecimenSlugRoute = SpecimenSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/viewer': typeof ViewerRoute
+  '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/viewer': typeof ViewerRoute
+  '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/viewer': typeof ViewerRoute
+  '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/identity' | '/specimen/$slug'
+  fullPaths:
+    | '/'
+    | '/contribute'
+    | '/identity'
+    | '/viewer'
+    | '/archive/$regionId'
+    | '/specimen/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/identity' | '/specimen/$slug'
-  id: '__root__' | '/' | '/identity' | '/specimen/$slug'
+  to:
+    | '/'
+    | '/contribute'
+    | '/identity'
+    | '/viewer'
+    | '/archive/$regionId'
+    | '/specimen/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/contribute'
+    | '/identity'
+    | '/viewer'
+    | '/archive/$regionId'
+    | '/specimen/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContributeRoute: typeof ContributeRoute
   IdentityRoute: typeof IdentityRoute
+  ViewerRoute: typeof ViewerRoute
+  ArchiveRegionIdRoute: typeof ArchiveRegionIdRoute
   SpecimenSlugRoute: typeof SpecimenSlugRoute
 }
 
@@ -68,11 +117,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contribute': {
+      id: '/contribute'
+      path: '/contribute'
+      fullPath: '/contribute'
+      preLoaderRoute: typeof ContributeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/identity': {
       id: '/identity'
       path: '/identity'
       fullPath: '/identity'
       preLoaderRoute: typeof IdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/viewer': {
+      id: '/viewer'
+      path: '/viewer'
+      fullPath: '/viewer'
+      preLoaderRoute: typeof ViewerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/archive/$regionId': {
+      id: '/archive/$regionId'
+      path: '/archive/$regionId'
+      fullPath: '/archive/$regionId'
+      preLoaderRoute: typeof ArchiveRegionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/specimen/$slug': {
@@ -87,7 +157,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContributeRoute: ContributeRoute,
   IdentityRoute: IdentityRoute,
+  ViewerRoute: ViewerRoute,
+  ArchiveRegionIdRoute: ArchiveRegionIdRoute,
   SpecimenSlugRoute: SpecimenSlugRoute,
 }
 export const routeTree = rootRouteImport
