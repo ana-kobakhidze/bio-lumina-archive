@@ -37,7 +37,7 @@ function SpecimenPage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="flex items-start justify-between px-6 pt-6 md:px-10 md:pt-8">
         <div>
-          <p className="label-micro">Flora, reconstructed</p>
+          <p className="label-micro">DIGITAL HERBARIUM</p>
           <h1 className="mt-1 text-3xl font-medium leading-none tracking-[0.34em] md:text-4xl">
             HEBRA
           </h1>
