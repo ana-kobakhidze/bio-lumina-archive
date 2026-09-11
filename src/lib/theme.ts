@@ -93,6 +93,23 @@ export const THEMES: HebraTheme[] = [
       point: "#5950B8",
     },
   },
+  {
+    id: "velvet",
+    label: "Velvet",
+    swatch: "#4E0722",
+    css: {
+      background: "oklch(0.296 0.116 351.2)",
+      foreground: "oklch(0.920 0.045 345)",
+      specimen: "oklch(0.920 0.045 345)",
+    },
+    scene: {
+      ground: "#4E0722",
+      key: "#9D2A80",
+      fill: "#155D84",
+      rim: "#D03F37",
+      point: "#9D2A80",
+    },
+  },
 ];
 
 export const DEFAULT_THEME: ThemeId = "void";
