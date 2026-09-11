@@ -6,7 +6,7 @@
  * and the scanner lighting), so the page and the specimen never drift apart.
  */
 
-export type ThemeId = "void" | "vermilion" | "bone" | "umber";
+export type ThemeId = "void" | "vermilion" | "bone" | "umber" | "velvet";
 
 export interface HebraTheme {
   id: ThemeId;
