@@ -9,13 +9,13 @@ export const Route = createFileRoute("/viewer")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "HEBRA — The living digital herbarium" },
+      { title: "Specimen viewer — HEBRA" },
       {
         name: "description",
         content:
-          "HEBRA reconstructs plants as interactive translucent specimens. Rotate, dissect and compare Lilium martagon, Galanthus woronowii, Papaver rhoeas and Dionaea muscipula.",
+          "The HEBRA viewer: rotate, dissect and compare reconstructed specimens including Lilium martagon, Galanthus woronowii, Papaver rhoeas and Dionaea muscipula.",
       },
-      { property: "og:title", content: "HEBRA — The living digital herbarium" },
+      { property: "og:title", content: "Specimen viewer — HEBRA" },
       {
         property: "og:description",
         content:
