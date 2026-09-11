@@ -245,7 +245,7 @@ export const CROCUS: FlowerMorphology = {
  */
 export const FRITILLARIA: FlowerMorphology = {
   receptacle: { radius: 0.06, height: 0.08 },
-  stem: { length: 0.45, radius: 0.013, flare: 1.2, flutes: 4 },
+  stem: { length: 0.22, radius: 0.015, flare: 1.2, flutes: 4 },
   inner: whorl(
     3,
     {

@@ -1,4 +1,4 @@
 # HEBRA roadmap
 
-- [ ] Theming: switchable palettes incl. vermilion #F03800 ground, driven by design-system tokens
-- [ ] Expand Collection with more real plant specimens (silhouettes, structures, scientific data)
+- [x] Theming: four exhibition palettes (Void, Vermilion, Bone, Umber) switchable from the header
+- [x] Collection expanded to eight real specimens with scientific records
