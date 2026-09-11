@@ -43,6 +43,7 @@ function SpecimenMissing() {
 
 function SpecimenRecordPage() {
   const { slug } = Route.useParams();
+  const router = useRouter();
   const species = speciesBySlug(slug)!;
   const [active, setActive] = useState<PartId>("whole");
   const r = species.record;
