@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as IdentityRouteImport } from './routes/identity'
 import { Route as SpecimenSlugRouteImport } from './routes/specimen.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContributeRoute = ContributeRouteImport.update({
+  id: '/contribute',
+  path: '/contribute',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IdentityRoute = IdentityRouteImport.update({
@@ -31,30 +37,34 @@ const SpecimenSlugRoute = SpecimenSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/identity' | '/specimen/$slug'
+  fullPaths: '/' | '/contribute' | '/identity' | '/specimen/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/identity' | '/specimen/$slug'
-  id: '__root__' | '/' | '/identity' | '/specimen/$slug'
+  to: '/' | '/contribute' | '/identity' | '/specimen/$slug'
+  id: '__root__' | '/' | '/contribute' | '/identity' | '/specimen/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContributeRoute: typeof ContributeRoute
   IdentityRoute: typeof IdentityRoute
   SpecimenSlugRoute: typeof SpecimenSlugRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contribute': {
+      id: '/contribute'
+      path: '/contribute'
+      fullPath: '/contribute'
+      preLoaderRoute: typeof ContributeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/identity': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContributeRoute: ContributeRoute,
   IdentityRoute: IdentityRoute,
   SpecimenSlugRoute: SpecimenSlugRoute,
 }
