@@ -161,9 +161,137 @@ export const PAPAVER: FlowerMorphology = {
   stamens: { count: 22, height: 0.13, spread: 0.075 },
 };
 
+
+/**
+ * Gentiana verna — spring gentian. A short salverform tube opening into five
+ * flat, broadly ovate lobes held almost horizontally above a basal rosette.
+ */
+export const GENTIANA: FlowerMorphology = {
+  receptacle: { radius: 0.055, height: 0.16 },
+  stem: { length: 0.5, radius: 0.012, flare: 1.15, flutes: 4 },
+  inner: [],
+  outer: whorl(
+    5,
+    {
+      length: 0.3,
+      width: 0.15,
+      out: 0.85,
+      rise: 0.2,
+      curl: 0.06,
+      cup: 0.2,
+      twist: 0.06,
+      sweep: 0.04,
+      tipRound: 0.5,
+      attach: 0.028,
+      tilt: -0.02,
+    },
+    0,
+    31,
+  ),
+  basal: [],
+  stamens: { count: 5, height: 0.07, spread: 0.022 },
+};
+
+/**
+ * Crocus speciosus — autumn crocus. Six upright tepals in two whorls forming a
+ * deep goblet, carried on a long white perianth tube with no true stem.
+ */
+export const CROCUS: FlowerMorphology = {
+  receptacle: { radius: 0.05, height: 0.1 },
+  stem: { length: 0.55, radius: 0.017, flare: 1.1, flutes: 3 },
+  inner: whorl(
+    3,
+    {
+      length: 0.42,
+      width: 0.105,
+      out: 0.2,
+      rise: 0.95,
+      curl: 0.1,
+      cup: 0.5,
+      twist: 0.05,
+      sweep: 0.02,
+      tipRound: 0.52,
+      attach: 0.02,
+      tilt: 0.08,
+    },
+    1.05,
+    37,
+  ),
+  outer: whorl(
+    3,
+    {
+      length: 0.48,
+      width: 0.12,
+      out: 0.26,
+      rise: 0.93,
+      curl: 0.14,
+      cup: 0.46,
+      twist: 0.06,
+      sweep: 0.03,
+      tipRound: 0.5,
+      attach: 0.03,
+      tilt: 0.12,
+    },
+    0,
+    41,
+  ),
+  basal: [],
+  stamens: { count: 3, height: 0.24, spread: 0.02 },
+};
+
+/**
+ * Fritillaria meleagris — snake's-head fritillary. A single nodding bell of
+ * six broad tepals, barely flared at the mouth, on a slender arching stem.
+ */
+export const FRITILLARIA: FlowerMorphology = {
+  receptacle: { radius: 0.06, height: 0.08 },
+  stem: { length: 0.95, radius: 0.012, flare: 1.2, flutes: 4 },
+  inner: whorl(
+    3,
+    {
+      length: 0.38,
+      width: 0.115,
+      out: 0.22,
+      rise: 0.92,
+      curl: 0.22,
+      cup: 0.62,
+      twist: 0.04,
+      sweep: 0.02,
+      tipRound: 0.55,
+      attach: 0.024,
+      tilt: 0.06,
+    },
+    1.05,
+    47,
+  ),
+  outer: whorl(
+    3,
+    {
+      length: 0.4,
+      width: 0.125,
+      out: 0.26,
+      rise: 0.9,
+      curl: 0.26,
+      cup: 0.6,
+      twist: 0.05,
+      sweep: 0.03,
+      tipRound: 0.52,
+      attach: 0.032,
+      tilt: 0.09,
+    },
+    0,
+    53,
+  ),
+  basal: [],
+  stamens: { count: 6, height: 0.2, spread: 0.022 },
+};
+
 export const MORPHOLOGY = {
   astromirabilis: FLOWER,
   lilium: LILIUM,
   galanthus: GALANTHUS,
   papaver: PAPAVER,
+  gentiana: GENTIANA,
+  crocus: CROCUS,
+  fritillaria: FRITILLARIA,
 } as const;
