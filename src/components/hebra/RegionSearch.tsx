@@ -46,7 +46,8 @@ export function RegionSearch({
   return (
     <div ref={box} className="relative w-full">
       <div className="ai-input-shell">
-        <div className="ai-input-inner flex items-center px-4 py-3 md:px-5 md:py-4">
+        <div className="ai-input-inner flex items-center px-5 py-3.5 md:px-6 md:py-4">
+
           <input
             value={q}
             autoFocus={autoFocus}
@@ -100,14 +101,14 @@ export function RegionSearch({
       {open && results.length > 0 && (
         <ul
           id="region-suggestions"
-          className="absolute left-0 right-0 top-full z-20 mt-1 border border-specimen/25 bg-background"
+          className="hebra-panel hebra-rise absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden bg-background/95"
         >
           {results.map((r, i) => (
             <li key={r.id}>
               <button
                 onMouseEnter={() => setCursor(i)}
                 onClick={() => choose(r)}
-                className={`flex w-full items-baseline justify-between gap-4 border-b border-specimen/15 px-4 py-3 text-left transition-colors ${
+                className={`hebra-transition flex w-full items-baseline justify-between gap-4 px-5 py-3 text-left ${
                   i === cursor ? "bg-specimen/10" : ""
                 }`}
               >
@@ -121,6 +122,7 @@ export function RegionSearch({
           ))}
         </ul>
       )}
+
     </div>
   );
 }
