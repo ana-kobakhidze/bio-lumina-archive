@@ -283,7 +283,7 @@
       from 0deg,
       color-mix(in oklab, var(--hebra-teal) 90%, white) 0deg,
       color-mix(in oklab, var(--hebra-ultraviolet) 70%, white) 80deg,
-      var(--hebra-cobalt) 150deg,
+      color-mix(in oklab, var(--hebra-cobalt) 55%, white) 150deg,
       color-mix(in oklab, var(--hebra-teal) 85%, white) 240deg,
       color-mix(in oklab, var(--hebra-ultraviolet) 75%, white) 330deg,
       color-mix(in oklab, var(--hebra-teal) 90%, white) 360deg
