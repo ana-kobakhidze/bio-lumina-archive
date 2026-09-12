@@ -277,19 +277,21 @@
   &::before {
     content: "";
     position: absolute;
-    inset: -40%;
+    inset: -60%;
     z-index: 0;
     background: conic-gradient(
       from 0deg,
-      var(--hebra-teal) 0deg,
-      var(--hebra-ultraviolet) 90deg,
-      var(--hebra-cobalt) 180deg,
-      var(--hebra-teal) 270deg,
-      var(--hebra-ultraviolet) 360deg
+      color-mix(in oklab, var(--hebra-teal) 90%, white) 0deg,
+      color-mix(in oklab, var(--hebra-ultraviolet) 70%, white) 80deg,
+      var(--hebra-cobalt) 150deg,
+      color-mix(in oklab, var(--hebra-teal) 85%, white) 240deg,
+      color-mix(in oklab, var(--hebra-ultraviolet) 75%, white) 330deg,
+      color-mix(in oklab, var(--hebra-teal) 90%, white) 360deg
     );
     animation: ai-border-spin 7s linear infinite;
-    opacity: 0.8;
+    opacity: 0.95;
   }
+
 }
 
 @utility ai-input-inner {
