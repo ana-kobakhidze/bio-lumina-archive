@@ -31,7 +31,7 @@ function CardBody({ s }: { s: Specimen }) {
         <p className="label-micro mt-3 opacity-60">{s.family}</p>
 
         <span className="label-micro mt-4 inline-block opacity-0 transition-opacity group-hover:opacity-100">
-          {s.speciesSlug ? "Open specimen →" : "Record pending"}
+          {s.speciesSlug ? "Open specimen →" : "Open viewer →"}
         </span>
       </div>
     </>
@@ -45,9 +45,9 @@ export function ArchiveCard({ specimen }: { specimen: Specimen }) {
 
   if (!specimen.speciesSlug) {
     return (
-      <article className={`${cls} opacity-70`} aria-label={specimen.scientificName}>
+      <Link to="/viewer" className={cls} aria-label={specimen.scientificName}>
         <CardBody s={specimen} />
-      </article>
+      </Link>
     );
   }
 
