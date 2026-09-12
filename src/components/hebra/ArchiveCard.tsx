@@ -31,7 +31,7 @@ function CardBody({ s }: { s: Specimen }) {
         <p className="label-micro mt-3 opacity-60">{s.family}</p>
 
         <span className="label-micro mt-4 inline-block opacity-0 transition-opacity group-hover:opacity-100">
-          {s.speciesSlug ? "Open specimen →" : "Record pending"}
+          {s.speciesSlug ? "Open specimen →" : "Open viewer →"}
         </span>
       </div>
     </>
