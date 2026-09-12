@@ -55,11 +55,12 @@ export function ThemeSwitch({ className = "" }: { className?: string }) {
             aria-label={`${t.label} theme`}
             aria-pressed={t.id === theme.id}
             title={t.label}
-            className={`size-4 border transition-transform ${
+            className={`hebra-transition size-4 rounded-full border ${
               t.id === theme.id
-                ? "scale-110 border-specimen"
-                : "border-specimen/35 hover:border-specimen/70"
+                ? "scale-125 border-specimen"
+                : "border-specimen/35 hover:scale-110 hover:border-specimen/70"
             }`}
+
             style={{ backgroundColor: t.swatch }}
           />
         ))}

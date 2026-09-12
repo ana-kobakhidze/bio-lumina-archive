@@ -23,22 +23,25 @@ export const Route = createFileRoute("/contribute")({
 
 function ContributePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-specimen/20 px-6 py-5 md:px-10">
-        <Link to="/" className="label-micro">
+    <div className="hebra-ambient min-h-screen overflow-hidden bg-background text-foreground">
+      <header className="hebra-rise border-b border-specimen/15 px-6 py-5 md:px-10">
+        <Link to="/" className="hebra-chip hebra-transition label-micro hover:bg-specimen/10">
           ← HEBRA
         </Link>
       </header>
-      <main className="mx-auto max-w-xl px-6 py-20">
+      <main className="hebra-rise mx-auto max-w-xl px-6 py-20 [animation-delay:100ms]">
         <h1 className="font-display text-4xl italic leading-none">Contribute a specimen</h1>
         <p className="mt-4 text-sm leading-relaxed opacity-75">
           HEBRA grows from field records. Send the scientific name, the place of collection and any
           imagery you hold; accepted material enters the archive as a photographic record and is
           queued for three-dimensional reconstruction.
         </p>
-        <p className="label-micro mt-8">Submissions</p>
-        <p className="mt-2 font-display text-2xl italic">archive@hebra.example</p>
+        <div className="hebra-panel mt-10 p-6">
+          <p className="label-micro">Submissions</p>
+          <p className="mt-2 font-display text-2xl italic">archive@hebra.example</p>
+        </div>
       </main>
+
     </div>
   );
 }
