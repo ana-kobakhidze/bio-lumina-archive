@@ -45,9 +45,9 @@ export function ArchiveCard({ specimen }: { specimen: Specimen }) {
 
   if (!specimen.speciesSlug) {
     return (
-      <article className={`${cls} opacity-70`} aria-label={specimen.scientificName}>
+      <Link to="/viewer" className={cls} aria-label={specimen.scientificName}>
         <CardBody s={specimen} />
-      </article>
+      </Link>
     );
   }
 
