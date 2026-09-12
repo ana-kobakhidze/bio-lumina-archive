@@ -74,14 +74,15 @@ function Chip({
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={`label-micro border px-3 py-1.5 transition-colors ${
+      className={`hebra-chip label-micro ${
         active
           ? "border-specimen/70 bg-specimen/10 opacity-100"
-          : "border-specimen/20 opacity-55 hover:opacity-100"
+          : "opacity-55 hover:bg-specimen/5 hover:opacity-100"
       }`}
     >
       {label}
     </button>
+
   );
 }
 

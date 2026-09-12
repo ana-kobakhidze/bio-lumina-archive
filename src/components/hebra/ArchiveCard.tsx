@@ -11,26 +11,26 @@ const STATUS_LABEL: Record<Specimen["status"], string> = {
 function CardBody({ s }: { s: Specimen }) {
   return (
     <>
-      <div className="relative border-b border-specimen/20 bg-specimen/[0.03] transition-colors group-hover:bg-specimen/[0.07]">
+      <div className="hebra-transition relative overflow-hidden rounded-t-[calc(var(--radius)-1px)] border-b border-specimen/15 bg-specimen/[0.03] group-hover:bg-specimen/[0.08]">
         <ScanPlate form={s.form} seed={s.hebraId} />
-        <span className="label-micro absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
+        <span className="hebra-transition label-micro absolute right-3 top-3 opacity-0 group-hover:opacity-100">
           ✛ scan
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-baseline justify-between gap-3">
-          <span className="label-micro transition-colors group-hover:text-[color:var(--hebra-teal)]">
+          <span className="hebra-transition label-micro group-hover:text-[color:var(--hebra-teal)]">
             {s.hebraId}
           </span>
-          <span className="label-micro opacity-60">{STATUS_LABEL[s.status]}</span>
+          <span className="hebra-chip label-micro py-1 opacity-60">{STATUS_LABEL[s.status]}</span>
         </div>
 
         <h3 className="mt-3 font-display text-xl italic leading-tight">{s.scientificName}</h3>
         {s.commonName && <p className="label-micro mt-1">{s.commonName}</p>}
         <p className="label-micro mt-3 opacity-60">{s.family}</p>
 
-        <span className="label-micro mt-4 inline-block opacity-0 transition-opacity group-hover:opacity-100">
+        <span className="hebra-transition label-micro mt-4 inline-block -translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
           {s.speciesSlug ? "Open specimen →" : "Open viewer →"}
         </span>
       </div>
@@ -38,10 +38,9 @@ function CardBody({ s }: { s: Specimen }) {
   );
 }
 
-/** Archived specimen card. Square corners, no shadow, no product styling. */
+/** Archived specimen card: soft rounded panel, ambient hover lift. */
 export function ArchiveCard({ specimen }: { specimen: Specimen }) {
-  const cls =
-    "group flex h-full flex-col border border-specimen/20 transition-colors hover:border-specimen/60";
+  const cls = "hebra-panel hebra-panel-hover group flex h-full flex-col overflow-hidden";
 
   if (!specimen.speciesSlug) {
     return (
@@ -57,3 +56,4 @@ export function ArchiveCard({ specimen }: { specimen: Specimen }) {
     </Link>
   );
 }
+
