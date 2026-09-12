@@ -63,8 +63,8 @@
   --color-teal: var(--hebra-teal);
   --color-cobalt: var(--hebra-cobalt);
   --color-ultraviolet: var(--hebra-ultraviolet);
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Comfortaa", "Quicksand", ui-rounded, system-ui, sans-serif;
+  --font-sans: "Quicksand", ui-rounded, ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
