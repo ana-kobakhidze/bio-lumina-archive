@@ -68,7 +68,8 @@
 }
 
 :root {
-  --radius: 0rem;
+  --radius: 0.875rem;
+
   /* HEBRA void (#0C0827) */
   --background: oklch(0.153 0.055 291);
   /* pale lavender ink (#E8E5F7) */
@@ -176,34 +177,128 @@
   opacity: 0.75;
 }
 
-/* AI-style animated rectangular input border */
+/* ---- HEBRA motion + light system -------------------------------------- */
+
+@theme inline {
+  --ease-hebra: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility hebra-transition {
+  transition-property: color, background-color, border-color, opacity, transform, box-shadow,
+    filter;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Ambient gradient lights behind any section */
+@utility hebra-ambient {
+  position: relative;
+  isolation: isolate;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 9999px;
+    filter: blur(90px);
+    pointer-events: none;
+  }
+
+  &::before {
+    inset: -12% 30% 45% -18%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in oklab, var(--hebra-ultraviolet) 60%, transparent),
+      transparent 70%
+    );
+    opacity: 0.5;
+    animation: hebra-drift 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+
+  &::after {
+    inset: 35% -20% -15% 40%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in oklab, var(--hebra-teal) 55%, transparent),
+      transparent 70%
+    );
+    opacity: 0.34;
+    animation: hebra-drift 22s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate-reverse;
+  }
+}
+
+/* Soft rounded surface used for cards, panels and popovers */
+@utility hebra-panel {
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in oklab, var(--specimen) 18%, transparent);
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, var(--specimen) 6%, transparent),
+    transparent 60%
+  );
+  backdrop-filter: blur(8px);
+  transition:
+    border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility hebra-panel-hover {
+  &:hover {
+    border-color: color-mix(in oklab, var(--specimen) 45%, transparent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 50px -28px color-mix(in oklab, var(--hebra-ultraviolet) 90%, transparent);
+  }
+}
+
+/* Gemini-style pill control */
+@utility hebra-chip {
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--specimen) 18%, transparent);
+  padding: 0.375rem 0.875rem;
+  transition:
+    background-color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility hebra-rise {
+  animation: hebra-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* AI-style animated input border, Gemini pill geometry */
 @utility ai-input-shell {
   position: relative;
   overflow: hidden;
   background: transparent;
+  border-radius: 9999px;
 
   &::before {
     content: "";
     position: absolute;
-    inset: 0;
+    inset: -60%;
     z-index: 0;
     background: conic-gradient(
       from 0deg,
-      var(--hebra-teal) 0deg,
-      var(--hebra-ultraviolet) 90deg,
-      var(--hebra-cobalt) 180deg,
-      var(--hebra-teal) 270deg,
-      var(--hebra-ultraviolet) 360deg
+      color-mix(in oklab, var(--hebra-teal) 90%, white) 0deg,
+      color-mix(in oklab, var(--hebra-ultraviolet) 70%, white) 80deg,
+      color-mix(in oklab, var(--hebra-cobalt) 55%, white) 150deg,
+      color-mix(in oklab, var(--hebra-teal) 85%, white) 240deg,
+      color-mix(in oklab, var(--hebra-ultraviolet) 75%, white) 330deg,
+      color-mix(in oklab, var(--hebra-teal) 90%, white) 360deg
     );
-    animation: ai-border-spin 6s linear infinite;
-    opacity: 0.75;
+    animation: ai-border-spin 7s linear infinite;
+    opacity: 0.95;
   }
+
 }
 
 @utility ai-input-inner {
   position: relative;
   z-index: 10;
-  margin: 2px;
+  margin: 1.5px;
+  border-radius: 9999px;
   background-color: var(--color-background);
 }
 
@@ -212,3 +307,34 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes hebra-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, -5%, 0) scale(1.18);
+  }
+}
+
+@keyframes hebra-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

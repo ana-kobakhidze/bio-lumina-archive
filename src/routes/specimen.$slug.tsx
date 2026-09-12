@@ -68,15 +68,18 @@ function SpecimenRecordPage() {
   const others = SPECIES.filter((s) => s.id !== species.id);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="flex items-start justify-between border-b border-specimen/20 px-6 py-5 md:px-10">
-        <button onClick={() => router.history.back()} className="label-micro">
+    <div className="hebra-ambient min-h-screen overflow-hidden bg-background text-foreground">
+      <header className="hebra-rise flex items-start justify-between border-b border-specimen/15 px-6 py-5 md:px-10">
+        <button
+          onClick={() => router.history.back()}
+          className="hebra-chip hebra-transition label-micro hover:bg-specimen/10"
+        >
           ← Back to the archive
         </button>
         <p className="label-micro text-right">{r.hebra}</p>
       </header>
 
-      <main className="px-6 pb-16 pt-8 md:px-10">
+      <main className="hebra-rise px-6 pb-16 pt-8 md:px-10 [animation-delay:100ms]">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div>
             <p className="label-micro">Specimen card</p>
@@ -90,7 +93,7 @@ function SpecimenRecordPage() {
             <SpecimenStage
               species={species}
               active={active}
-              className="mt-8 min-h-[52vh] border border-specimen/15 md:min-h-[62vh]"
+              className="hebra-panel mt-8 min-h-[52vh] overflow-hidden md:min-h-[62vh]"
             />
 
             <nav aria-label="Botanical parts" className="mt-4 flex flex-wrap gap-2">
@@ -99,16 +102,17 @@ function SpecimenRecordPage() {
                   key={p.id}
                   onClick={() => setActive(p.id)}
                   aria-current={active === p.id}
-                  className={`label-micro border px-3 py-1.5 transition-colors ${
+                  className={`hebra-chip label-micro ${
                     active === p.id
                       ? "border-specimen/70 bg-specimen/10 opacity-100"
-                      : "border-specimen/25 opacity-60 hover:opacity-100"
+                      : "opacity-60 hover:bg-specimen/5 hover:opacity-100"
                   }`}
                 >
                   {p.label}
                 </button>
               ))}
             </nav>
+
 
             <section className="mt-12 max-w-2xl">
               <h2 className="label-micro">Description</h2>

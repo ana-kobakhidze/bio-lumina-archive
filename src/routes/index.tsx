@@ -31,31 +31,31 @@ function Landing() {
   const suggested = SUGGESTED.map((id) => REGIONS.find((r) => r.id === id)!).filter(Boolean);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="flex items-start justify-between px-6 pt-6 md:px-10 md:pt-8">
+    <div className="hebra-ambient flex min-h-screen flex-col overflow-hidden bg-background text-foreground">
+      <header className="hebra-rise flex items-start justify-between px-6 pt-6 md:px-10 md:pt-8">
         <div>
-          <p className="text-xl font-medium leading-none tracking-[0.34em]">HEBRA</p>
+          <p className="font-display text-xl font-medium leading-none tracking-[0.34em]">HEBRA</p>
           <p className="label-micro mt-2">The living digital herbarium</p>
         </div>
         <ThemeSwitch className="justify-end" />
       </header>
 
       <main className="flex flex-1 items-center justify-center px-6">
-        <div className="w-full max-w-xl py-24">
+        <div className="hebra-rise w-full max-w-xl py-24 [animation-delay:120ms]">
           <p className="label-micro mb-3 text-center tracking-[0.22em]">
             Where would you like to explore?
           </p>
 
           <RegionSearch autoFocus />
 
-          <ul className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <ul className="mt-6 flex flex-wrap justify-center gap-2">
             {suggested.map((r) => (
               <li key={r.id}>
                 <Link
                   to="/archive/$regionId"
                   params={{ regionId: r.id }}
                   search={{ q: "", form: "all", family: "all", status: "all" }}
-                  className="label-micro opacity-40 transition-opacity hover:opacity-100"
+                  className="hebra-chip label-micro inline-block opacity-50 hover:bg-specimen/10 hover:opacity-100"
                 >
                   {r.name}
                 </Link>
@@ -65,14 +65,18 @@ function Landing() {
         </div>
       </main>
 
-      <footer className="flex items-center justify-between px-6 pb-6 md:px-10 md:pb-8">
-        <Link to="/contribute" className="label-micro opacity-60 hover:opacity-100">
+      <footer className="hebra-rise flex items-center justify-between px-6 pb-6 md:px-10 md:pb-8 [animation-delay:240ms]">
+        <Link
+          to="/contribute"
+          className="hebra-transition label-micro opacity-60 hover:opacity-100"
+        >
           + Contribute a specimen
         </Link>
-        <Link to="/identity" className="label-micro opacity-35 hover:opacity-100">
+        <Link to="/identity" className="hebra-transition label-micro opacity-35 hover:opacity-100">
           Identity
         </Link>
       </footer>
     </div>
+
   );
 }
