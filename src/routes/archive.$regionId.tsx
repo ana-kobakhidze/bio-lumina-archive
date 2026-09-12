@@ -101,19 +101,20 @@ function RegionalArchive() {
     navigate({ to: ".", search: (prev) => ({ ...prev, ...patch }), replace: true });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-specimen/20 px-6 py-5 md:px-10">
+    <div className="hebra-ambient min-h-screen overflow-hidden bg-background text-foreground">
+      <header className="hebra-rise border-b border-specimen/15 px-6 py-5 md:px-10">
         <div className="flex items-start justify-between gap-6">
           <div>
-            <Link to="/" className="label-micro">
+            <Link to="/" className="hebra-transition label-micro hover:opacity-100">
               HEBRA
             </Link>
             <div className="mt-2 flex items-baseline gap-3">
               <button
                 onClick={() => setSwitching((s) => !s)}
                 aria-expanded={switching}
-                className="text-2xl font-medium uppercase leading-none tracking-[0.28em] md:text-3xl"
+                className="hebra-transition font-display text-2xl font-medium uppercase leading-none tracking-[0.28em] md:text-3xl"
               >
+
                 {region.name} <span className="text-base opacity-60">⌄</span>
               </button>
             </div>
@@ -124,28 +125,32 @@ function RegionalArchive() {
           </div>
           <div className="hidden md:block">
             <ThemeSwitch className="justify-end" />
-            <Link to="/contribute" className="label-micro mt-3 block text-right opacity-60 hover:opacity-100">
+            <Link
+              to="/contribute"
+              className="hebra-transition label-micro mt-3 block text-right opacity-60 hover:opacity-100"
+            >
               + Contribute a specimen
             </Link>
           </div>
         </div>
 
         {switching && (
-          <div className="mt-6 max-w-xl">
+          <div className="hebra-rise mt-6 max-w-xl">
             <p className="label-micro mb-2">Switch region</p>
             <RegionSearch onSelected={() => setSwitching(false)} />
           </div>
         )}
       </header>
 
-      <main className="px-6 py-8 md:px-10">
+      <main className="hebra-rise px-6 py-8 md:px-10 [animation-delay:100ms]">
         <input
           value={search.q}
           onChange={(e) => set({ q: e.target.value })}
           placeholder={`Search within ${region.name}...`}
           aria-label={`Search within ${region.name}`}
-          className="w-full max-w-xl border-b border-specimen/30 bg-transparent pb-2 font-display text-xl italic outline-none placeholder:font-sans placeholder:text-[12px] placeholder:uppercase placeholder:not-italic placeholder:tracking-[0.2em] placeholder:text-foreground/40 focus:border-specimen"
+          className="hebra-transition w-full max-w-xl rounded-full border border-specimen/20 bg-specimen/[0.04] px-5 py-3 font-display text-lg italic outline-none placeholder:font-sans placeholder:text-[12px] placeholder:uppercase placeholder:not-italic placeholder:tracking-[0.2em] placeholder:text-foreground/40 focus:border-specimen/60 focus:bg-specimen/[0.07]"
         />
+
 
         <div className="mt-6 space-y-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -178,7 +183,7 @@ function RegionalArchive() {
               value={search.family}
               onChange={(e) => set({ family: e.target.value })}
               aria-label="Filter by family"
-              className="label-micro border border-specimen/20 bg-transparent px-3 py-1.5 outline-none"
+              className="hebra-chip label-micro bg-transparent outline-none"
             >
               <option value="all">All families</option>
               {families.map((f) => (
