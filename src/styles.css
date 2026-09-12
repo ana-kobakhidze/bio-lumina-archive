@@ -203,7 +203,7 @@
 @utility ai-input-inner {
   position: relative;
   z-index: 10;
-  margin: 1px;
+  margin: 2px;
   background-color: var(--color-background);
 }
 
