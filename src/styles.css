@@ -175,3 +175,40 @@
   text-transform: uppercase;
   opacity: 0.75;
 }
+
+/* AI-style animated rectangular input border */
+@utility ai-input-shell {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: conic-gradient(
+      from 0deg,
+      var(--hebra-teal) 0deg,
+      var(--hebra-ultraviolet) 90deg,
+      var(--hebra-cobalt) 180deg,
+      var(--hebra-teal) 270deg,
+      var(--hebra-ultraviolet) 360deg
+    );
+    animation: ai-border-spin 6s linear infinite;
+    opacity: 0.75;
+  }
+}
+
+@utility ai-input-inner {
+  position: relative;
+  z-index: 10;
+  margin: 2px;
+  background-color: var(--color-background);
+}
+
+@keyframes ai-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

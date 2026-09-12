@@ -45,37 +45,57 @@ export function RegionSearch({
 
   return (
     <div ref={box} className="relative w-full">
-      <input
-        value={q}
-        autoFocus={autoFocus}
-        onChange={(e) => {
-          setQ(e.target.value);
-          setOpen(true);
-          setCursor(0);
-        }}
-        onFocus={() => setOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            setOpen(true);
-            setCursor((c) => Math.min(c + 1, results.length - 1));
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            setCursor((c) => Math.max(c - 1, 0));
-          } else if (e.key === "Enter") {
-            e.preventDefault();
-            choose(results[cursor]);
-          } else if (e.key === "Escape") {
-            setOpen(false);
-          }
-        }}
-        placeholder={placeholder}
-        aria-label="Search a region"
-        role="combobox"
-        aria-expanded={open}
-        aria-controls="region-suggestions"
-        className="w-full border-b border-specimen/40 bg-transparent pb-3 font-display text-2xl italic text-foreground outline-none transition-colors placeholder:not-italic placeholder:font-sans placeholder:text-[13px] placeholder:tracking-[0.2em] placeholder:uppercase placeholder:text-foreground/40 focus:border-specimen md:text-3xl"
-      />
+      <div className="ai-input-shell">
+        <div className="ai-input-inner flex items-center px-4 py-3 md:px-5 md:py-4">
+          <input
+            value={q}
+            autoFocus={autoFocus}
+            onChange={(e) => {
+              setQ(e.target.value);
+              setOpen(true);
+              setCursor(0);
+            }}
+            onFocus={() => setOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setOpen(true);
+                setCursor((c) => Math.min(c + 1, results.length - 1));
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setCursor((c) => Math.max(c - 1, 0));
+              } else if (e.key === "Enter") {
+                e.preventDefault();
+                choose(results[cursor]);
+              } else if (e.key === "Escape") {
+                setOpen(false);
+              }
+            }}
+            placeholder={placeholder}
+            aria-label="Search a region"
+            role="combobox"
+            aria-expanded={open}
+            aria-controls="region-suggestions"
+            className="flex-1 bg-transparent font-sans text-sm text-foreground outline-none placeholder:text-foreground/40 md:text-base"
+          />
+          <svg
+            aria-hidden="true"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            className="ml-3 shrink-0 text-foreground/50"
+          >
+            <path
+              d="M3 8h10M10 5l3 3-3 3"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="square"
+              strokeLinejoin="miter"
+            />
+          </svg>
+        </div>
+      </div>
 
       {open && results.length > 0 && (
         <ul

@@ -41,23 +41,21 @@ function Landing() {
       </header>
 
       <main className="flex flex-1 items-center justify-center px-6">
-        <div className="w-full max-w-2xl py-24">
-          <h1 className="text-center font-display text-3xl italic leading-tight md:text-5xl">
+        <div className="w-full max-w-xl py-24">
+          <p className="label-micro mb-3 text-center tracking-[0.22em]">
             Where would you like to explore?
-          </h1>
+          </p>
 
-          <div className="mt-12">
-            <RegionSearch autoFocus />
-          </div>
+          <RegionSearch autoFocus />
 
-          <ul className="mt-6 flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <ul className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
             {suggested.map((r) => (
               <li key={r.id}>
                 <Link
                   to="/archive/$regionId"
                   params={{ regionId: r.id }}
                   search={{ q: "", form: "all", family: "all", status: "all" }}
-                  className="label-micro opacity-45 transition-opacity hover:opacity-100"
+                  className="label-micro opacity-40 transition-opacity hover:opacity-100"
                 >
                   {r.name}
                 </Link>
