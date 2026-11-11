@@ -149,3 +149,39 @@ export const lookupKey = createServerFn({ method: "GET" })
 
 export const kewUrl = (name: string) =>
   `https://powo.science.kew.org/results?q=${encodeURIComponent(name)}`;
+
+export const resultsSearch = createServerFn({ method: "GET" })
+  .inputValidator((d: { q: string; rank: string; page: number }) => ({
+    q: String(d.q ?? "").slice(0, 80),
+    rank: ["FAMILY", "GENUS", "SPECIES"].includes(d.rank) ? d.rank : "",
+    page: Math.max(0, Math.min(50, Math.floor(Number(d.page) || 0))),
+  }))
+  .handler(async ({ data }) => {
+    const per = 20;
+    const r = await get<{ count: number; results: RawTaxon[] }>(
+      `/species/search?q=${encodeURIComponent(data.q)}&highertaxonKey=${PLANTAE}&datasetKey=d7dddbf4-2cf0-4f39-9b2a-bb099caae36c&status=ACCEPTED${data.rank ? `&rank=${data.rank}` : ""}&limit=${per}&offset=${data.page * per}`,
+    );
+    return {
+      total: r?.count ?? 0,
+      plants: (r?.results ?? []).map((t) => ({ ...summary(t), rank: (t.rank ?? "").toLowerCase() })),
+      hasMore: (r?.results?.length ?? 0) === per,
+      error: r ? null : "The plant database is not responding. Try again shortly.",
+    };
+  });
+
+const FEATURED = ["Basella alba", "Delonix regia", "Digitalis purpurea", "Nymphaea alba", "Quercus robur", "Rosa canina"];
+
+export const featuredPlants = createServerFn({ method: "GET" }).handler(async () => {
+  const out = await Promise.all(
+    FEATURED.map(async (name) => {
+      const m = await get<{ usageKey?: number; family?: string; scientificName?: string }>(`/species/match?name=${encodeURIComponent(name)}&kingdom=Plantae`);
+      if (!m?.usageKey) return null;
+      const occ = await get<{ results: { media?: { identifier?: string }[] }[] }>(
+        `/occurrence/search?taxonKey=${m.usageKey}&mediaType=StillImage&limit=3`,
+      );
+      const image = (occ?.results ?? []).flatMap((o) => o.media ?? []).find((x) => x.identifier)?.identifier ?? null;
+      return { key: m.usageKey, name, full: m.scientificName ?? name, family: m.family ?? "", image };
+    }),
+  );
+  return out.filter((x): x is NonNullable<typeof x> => x !== null);
+});

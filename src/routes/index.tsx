@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { KewHeader } from "@/components/kew/KewHeader";
 import { PlantSearch } from "@/components/kew/PlantSearch";
+import { useQuery } from "@tanstack/react-query";
+import { featuredPlants } from "@/lib/gbif.functions";
 import { REGIONS } from "@/lib/archive";
 import { REGION_IMAGES } from "@/lib/region-images";
 import heroImg from "@/assets/hero-glasshouse.jpg";
@@ -27,83 +29,88 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
+function Featured() {
+  const { data = [], isLoading } = useQuery({ queryKey: ["featured"], queryFn: () => featuredPlants(), staleTime: 3600_000 });
+  return (
+    <section className="mx-auto max-w-6xl px-5 pt-14">
+      <div className="flex items-end justify-between gap-4">
+        <h2 className="text-3xl font-light">Featured plants</h2>
+        <Link to="/results" search={{ q: "", rank: "", page: 0 }} className="text-sm hover:text-[color:var(--kew-green)]">View all plants</Link>
+      </div>
+      <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {isLoading && Array.from({ length: 3 }).map((_, i) => <li key={i} className="h-80 animate-pulse bg-muted" />)}
+        {data.map((p) => (
+          <li key={p.key}>
+            <Link to="/plant/$key" params={{ key: String(p.key) }} className="group block border kew-rule hover:shadow-lg">
+              <div className="aspect-[4/3] overflow-hidden bg-muted">
+                {p.image && <img src={p.image} alt={p.name} loading="lazy" className="hebra-transition h-full w-full object-cover group-hover:scale-105" />}
+              </div>
+              <div className="p-4">
+                <span className="text-xs font-medium uppercase tracking-widest opacity-55">Species</span>
+                <h3 className="mt-1 text-lg text-[color:var(--kew-green)]"><i>{p.name}</i></h3>
+                <p className="mt-1 text-sm opacity-70">{p.full} · {p.family}</p>
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Landing() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <KewHeader />
-      <section className="relative isolate overflow-hidden">
-        <img
-          src={heroImg}
-          alt="Palm house with tropical palms and ferns"
-          width={1920}
-          height={912}
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 -z-10 kew-hero-shade" />
-        <div className="mx-auto max-w-6xl px-5 py-20 md:py-32">
-          <h1 className="max-w-2xl text-4xl font-semibold text-[color:var(--kew-green-foreground)] md:text-6xl">
-            Plants of the World
-          </h1>
-          <p className="mt-4 max-w-xl text-lg text-[color:var(--kew-green-foreground)] opacity-90">
-            Search the world's accepted plant names, their distribution, synonyms and photographs.
+      <section className="relative isolate flex min-h-[calc(100vh-4rem)] items-center justify-center overflow-hidden">
+        <img src={heroImg} alt="Palm house with tropical palms and ferns" width={1920} height={912} className="absolute inset-0 -z-10 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 kew-hero-dark" />
+        <div className="w-full max-w-3xl px-5 text-center text-[color:var(--kew-green-foreground)]">
+          <h1 className="text-4xl font-light md:text-6xl">Welcome to Plants of the World Online</h1>
+          <p className="mt-4 text-lg font-light opacity-90">
+            Browse the world's accepted plant names, distributions, synonyms and photographs
           </p>
-          <div className="mt-8 max-w-2xl rounded-lg bg-background p-2 shadow-2xl">
-            <PlantSearch />
-          </div>
+          <div className="mt-8"><PlantSearch /></div>
         </div>
+        <p className="absolute bottom-6 right-6 text-right text-sm text-[color:var(--kew-green-foreground)] opacity-85">
+          Featured: <i>Victoria amazonica</i><br />HEBRA palm house
+        </p>
       </section>
+
+      <Featured />
 
       <main className="mx-auto max-w-6xl px-5 py-16">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-semibold">Browse by region</h2>
+          <h2 className="text-3xl font-light">Browse by region</h2>
           <span className="text-sm opacity-60">{REGIONS.length} regional floras</span>
         </div>
-        <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {REGIONS.map((r, i) => (
-            <li key={r.id} className={i === 0 ? "sm:col-span-2 lg:col-span-2" : ""}>
-              <Link
-                to="/archive/$regionId"
-                params={{ regionId: r.id }}
-                search={{ q: "", page: 0 }}
-                className="group relative block h-64 overflow-hidden rounded-lg"
-              >
-                <img
-                  src={REGION_IMAGES[r.id]}
-                  alt={`${r.name} landscape`}
-                  loading="lazy"
-                  width={944}
-                  height={704}
-                  className="hebra-transition h-full w-full object-cover group-hover:scale-105"
-                />
+        <ul className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {REGIONS.map((r) => (
+            <li key={r.id}>
+              <Link to="/archive/$regionId" params={{ regionId: r.id }} search={{ q: "", page: 0 }} className="group relative block h-56 overflow-hidden">
+                <img src={REGION_IMAGES[r.id]} alt={`${r.name} landscape`} loading="lazy" width={944} height={704} className="hebra-transition h-full w-full object-cover group-hover:scale-105" />
                 <div className="absolute inset-0 kew-card-shade" />
                 <div className="absolute inset-x-0 bottom-0 p-5 text-[color:var(--kew-green-foreground)]">
-                  <h3 className="text-xl font-semibold">{r.name}</h3>
+                  <h3 className="text-xl">{r.name}</h3>
                   <p className="mt-1 line-clamp-2 text-sm opacity-85">{r.description}</p>
-                  <span className="hebra-transition mt-2 inline-block text-sm font-semibold opacity-0 group-hover:opacity-100">
-                    Explore flora →
-                  </span>
                 </div>
               </Link>
             </li>
           ))}
         </ul>
-
-        <div className="mt-14 grid gap-5 md:grid-cols-2">
-          <Link to="/viewer" className="kew-bar group rounded-lg p-8">
-            <h3 className="text-xl font-semibold">3D specimen viewer</h3>
-            <p className="mt-2 opacity-85">Rotate and dissect reconstructed plants up close.</p>
-            <span className="mt-4 inline-block font-semibold">Open viewer →</span>
-          </Link>
-          <Link to="/contribute" className="group rounded-lg border kew-rule p-8 hover:bg-muted">
-            <h3 className="text-xl font-semibold">Contribute a specimen</h3>
-            <p className="mt-2 opacity-75">Share photographs or scans to grow the archive.</p>
-            <span className="mt-4 inline-block font-semibold text-[color:var(--kew-green)]">Get started →</span>
-          </Link>
-        </div>
-        <p className="mt-10 text-xs opacity-55">
-          Names and distributions from the World Checklist of Vascular Plants via GBIF.
-        </p>
       </main>
+
+      <footer className="kew-bar">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-10 text-sm md:grid-cols-3">
+          <div><p className="text-lg tracking-[0.15em]">HEBRA</p><p className="mt-2 opacity-80">The living digital herbarium.</p></div>
+          <ul className="space-y-1.5 opacity-90">
+            <li><Link to="/results" search={{ q: "", rank: "", page: 0 }}>Search plants</Link></li>
+            <li><Link to="/viewer">3D specimen viewer</Link></li>
+            <li><Link to="/contribute">Contribute a specimen</Link></li>
+          </ul>
+          <p className="opacity-75">Names and distributions from the World Checklist of Vascular Plants via GBIF.</p>
+        </div>
+      </footer>
     </div>
   );
 }

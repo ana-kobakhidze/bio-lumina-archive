@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as IdentityRouteImport } from './routes/identity'
+import { Route as ResultsRouteImport } from './routes/results'
 import { Route as ViewerRouteImport } from './routes/viewer'
 import { Route as ArchiveRegionIdRouteImport } from './routes/archive.$regionId'
 import { Route as PlantKeyRouteImport } from './routes/plant.$key'
@@ -30,6 +31,11 @@ const ContributeRoute = ContributeRouteImport.update({
 const IdentityRoute = IdentityRouteImport.update({
   id: '/identity',
   path: '/identity',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ViewerRoute = ViewerRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/results': typeof ResultsRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/plant/$key': typeof PlantKeyRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/results': typeof ResultsRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/plant/$key': typeof PlantKeyRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/contribute': typeof ContributeRoute
   '/identity': typeof IdentityRoute
+  '/results': typeof ResultsRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
   '/plant/$key': typeof PlantKeyRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contribute'
     | '/identity'
+    | '/results'
     | '/viewer'
     | '/archive/$regionId'
     | '/plant/$key'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contribute'
     | '/identity'
+    | '/results'
     | '/viewer'
     | '/archive/$regionId'
     | '/plant/$key'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contribute'
     | '/identity'
+    | '/results'
     | '/viewer'
     | '/archive/$regionId'
     | '/plant/$key'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContributeRoute: typeof ContributeRoute
   IdentityRoute: typeof IdentityRoute
+  ResultsRoute: typeof ResultsRoute
   ViewerRoute: typeof ViewerRoute
   ArchiveRegionIdRoute: typeof ArchiveRegionIdRoute
   PlantKeyRoute: typeof PlantKeyRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/identity'
       fullPath: '/identity'
       preLoaderRoute: typeof IdentityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/viewer': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContributeRoute: ContributeRoute,
   IdentityRoute: IdentityRoute,
+  ResultsRoute: ResultsRoute,
   ViewerRoute: ViewerRoute,
   ArchiveRegionIdRoute: ArchiveRegionIdRoute,
   PlantKeyRoute: PlantKeyRoute,

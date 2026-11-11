@@ -1,16 +1,40 @@
 import { Link } from "@tanstack/react-router";
 import { ThemeSwitch } from "@/components/hebra/ThemeProvider";
 
-/** Plain green top bar in the style of Plants of the World Online. */
+const NAV = [
+  { to: "/", label: "Home" },
+  { to: "/results", label: "Data" },
+  { to: "/viewer", label: "3D viewer" },
+  { to: "/contribute", label: "Contribute" },
+] as const;
+
+/** White top bar laid out like Plants of the World Online. */
 export function KewHeader() {
   return (
-    <header className="kew-bar">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3">
-        <Link to="/" className="flex items-baseline gap-3">
-          <span className="text-lg font-bold tracking-[0.2em]">HEBRA</span>
-          <span className="hidden text-sm opacity-80 sm:inline">Plants of the world, digitised</span>
+    <header className="sticky top-0 z-30 border-b kew-rule bg-background">
+      <div className="flex h-16 items-center justify-between gap-4 px-5 md:px-8">
+        <Link to="/" className="flex items-center gap-3">
+          <span className="text-2xl font-light tracking-[0.15em]">HEBRA</span>
+          <span className="h-9 w-px bg-[color:var(--kew-green)]" />
+          <span className="text-sm leading-tight text-[color:var(--kew-green)]">
+            Plants of the<br />World Online
+          </span>
         </Link>
-        <ThemeSwitch className="opacity-90" />
+        <nav className="flex items-center gap-5 text-sm font-medium uppercase tracking-wide">
+          {NAV.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              search={n.to === "/results" ? { q: "", rank: "", page: 0 } : undefined}
+              activeOptions={{ exact: true, includeSearch: false }}
+              activeProps={{ className: "text-[color:var(--kew-green)]" }}
+              className="hidden hover:text-[color:var(--kew-green)] md:inline"
+            >
+              {n.label}
+            </Link>
+          ))}
+          <ThemeSwitch className="opacity-90" />
+        </nav>
       </div>
     </header>
   );

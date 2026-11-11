@@ -63,8 +63,8 @@
   --color-teal: var(--hebra-teal);
   --color-cobalt: var(--hebra-cobalt);
   --color-ultraviolet: var(--hebra-ultraviolet);
-  --font-display: "Source Sans 3", system-ui, sans-serif;
-  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Roboto", system-ui, sans-serif;
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -364,4 +364,7 @@
 }
 @utility kew-card-shade {
   background: linear-gradient(to top, color-mix(in oklab, black 75%, transparent), transparent 65%);
+}
+@utility kew-hero-dark {
+  background: linear-gradient(to bottom, color-mix(in oklab, black 55%, transparent), color-mix(in oklab, black 35%, transparent) 50%, color-mix(in oklab, black 65%, transparent));
 }
