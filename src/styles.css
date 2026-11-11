@@ -358,3 +358,10 @@
   font-size: 11px;
   letter-spacing: 0.06em;
 }
+
+@utility kew-hero-shade {
+  background: linear-gradient(100deg, color-mix(in oklab, var(--kew-green) 88%, black) 0%, color-mix(in oklab, var(--kew-green) 45%, transparent) 55%, transparent 100%);
+}
+@utility kew-card-shade {
+  background: linear-gradient(to top, color-mix(in oklab, black 75%, transparent), transparent 65%);
+}
