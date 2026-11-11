@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- Real plant data comes from the GBIF API (carries Kew's WCVP) via server functions in src/lib/gbif.functions.ts; Kew POWO itself blocks automated access, so only link to it.

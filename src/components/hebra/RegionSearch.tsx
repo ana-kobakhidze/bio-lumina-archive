@@ -39,7 +39,7 @@ export function RegionSearch({
     navigate({
       to: "/archive/$regionId",
       params: { regionId: region.id },
-      search: { q: "", form: "all", family: "all", status: "all" },
+      search: { q: "", page: 0 },
     });
   };
 

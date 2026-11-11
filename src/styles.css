@@ -63,8 +63,8 @@
   --color-teal: var(--hebra-teal);
   --color-cobalt: var(--hebra-cobalt);
   --color-ultraviolet: var(--hebra-ultraviolet);
-  --font-display: "Comfortaa", "Quicksand", ui-rounded, system-ui, sans-serif;
-  --font-sans: "Quicksand", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Source Sans 3", system-ui, sans-serif;
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -77,6 +77,9 @@
   --specimen: oklch(0.925 0.019 300);
   /* fixed HEBRA anatomical accents: bio teal, cobalt, ultraviolet */
   --hebra-teal: #1ea598;
+  --kew-green: oklch(0.36 0.06 145);
+  --kew-green-foreground: oklch(0.98 0 0);
+  --kew-rule: oklch(0.9 0.005 150);
   --hebra-cobalt: #25387a;
   --hebra-ultraviolet: #5950b8;
 
@@ -338,3 +341,20 @@
   }
 }
 
+
+/* ---- Kew (Plants of the World Online) look ---------------------------- */
+@utility kew-bar {
+  background: var(--kew-green);
+  color: var(--kew-green-foreground);
+}
+@utility kew-rule {
+  border-color: var(--kew-rule);
+}
+[data-hebra-theme="kew"] .hebra-ambient::before,
+[data-hebra-theme="kew"] .hebra-ambient::after {
+  display: none;
+}
+[data-hebra-theme="kew"] .label-micro {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}

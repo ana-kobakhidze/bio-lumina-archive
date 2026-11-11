@@ -19,6 +19,8 @@ export interface Region {
   /** archive statistics, editorial */
   speciesCount: number;
   familyCount: number;
+  /** ISO country codes used to query real occurrence data */
+  countries: string[];
 }
 
 export type SpecimenForm =
@@ -49,6 +51,7 @@ export interface Specimen {
 export const REGIONS: Region[] = [
   {
     id: "caucasus",
+    countries: ["GE", "AM", "AZ"],
     name: "Caucasus",
     type: "botanical-region",
     description: "Georgia · Armenia · Azerbaijan · Southern Russia",
@@ -57,6 +60,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "georgia",
+    countries: ["GE"],
     name: "Georgia",
     type: "country",
     description: "Caucasus",
@@ -65,6 +69,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "mediterranean",
+    countries: ["IT", "GR", "ES", "CY", "MT", "HR"],
     name: "Mediterranean",
     type: "botanical-region",
     description: "Southern Europe · North Africa · Western Asia",
@@ -73,6 +78,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "alps",
+    countries: ["CH", "AT", "LI", "SI"],
     name: "Alps",
     type: "natural-region",
     description: "Central European high range",
@@ -81,6 +87,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "japan",
+    countries: ["JP"],
     name: "Japan",
     type: "country",
     description: "East Asian archipelago",
@@ -89,6 +96,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "amazon-basin",
+    countries: ["BR", "PE", "EC", "CO"],
     name: "Amazon Basin",
     type: "ecosystem",
     description: "Lowland humid tropical forest",
@@ -97,6 +105,7 @@ export const REGIONS: Region[] = [
   },
   {
     id: "south-africa",
+    countries: ["ZA"],
     name: "South Africa",
     type: "country",
     description: "Cape floristic region · Karoo",
@@ -142,86 +151,7 @@ const FROM_SPECIES: Entry[] = SPECIES.map((s) => {
   };
 });
 
-function e(
-  hebraId: string,
-  scientificName: string,
-  commonName: string,
-  family: string,
-  regionIds: string[],
-  form: SpecimenForm,
-  status: SpecimenStatus,
-): Entry {
-  return {
-    hebraId,
-    scientificName,
-    commonName,
-    family,
-    genus: scientificName.split(" ")[0]!,
-    regionIds,
-    form,
-    status,
-  };
-}
-
-const CATALOGUE: Entry[] = [
-  // Caucasus / Georgia
-  e("HEBRA / 000142", "Rhododendron caucasicum", "Caucasian rhododendron", "Ericaceae", ["caucasus", "georgia"], "shrub", "photographic"),
-  e("HEBRA / 000151", "Betula litwinowii", "Litwinow's birch", "Betulaceae", ["caucasus", "georgia"], "tree", "photographic"),
-  e("HEBRA / 000160", "Campanula mirabilis", "Wondrous bellflower", "Campanulaceae", ["caucasus", "georgia"], "herb", "processing"),
-  e("HEBRA / 000168", "Primula juliae", "Julia's primrose", "Primulaceae", ["caucasus", "georgia"], "herb", "photographic"),
-  e("HEBRA / 000174", "Quercus imeretina", "Imeretian oak", "Fagaceae", ["caucasus", "georgia"], "tree", "photographic"),
-  e("HEBRA / 000181", "Vitis vinifera subsp. sylvestris", "Wild grapevine", "Vitaceae", ["caucasus", "georgia"], "vine", "photographic"),
-  e("HEBRA / 000190", "Dryopteris caucasica", "Caucasian buckler fern", "Dryopteridaceae", ["caucasus", "georgia"], "fern", "processing"),
-  e("HEBRA / 000198", "Pinguicula caucasica", "Caucasian butterwort", "Lentibulariaceae", ["caucasus"], "carnivorous", "photographic"),
-  e("HEBRA / 000203", "Nymphaea alba", "White water lily", "Nymphaeaceae", ["caucasus", "georgia", "mediterranean"], "aquatic", "photographic"),
-  e("HEBRA / 000211", "Paeonia caucasica", "Caucasian peony", "Paeoniaceae", ["caucasus", "georgia"], "herb", "processing"),
-  e("HEBRA / 000219", "Rhamnus imeretina", "Imeretian buckthorn", "Rhamnaceae", ["caucasus", "georgia"], "shrub", "photographic"),
-
-  // Mediterranean
-  e("HEBRA / 000240", "Olea europaea", "Olive", "Oleaceae", ["mediterranean"], "tree", "photographic"),
-  e("HEBRA / 000247", "Cistus creticus", "Rock rose", "Cistaceae", ["mediterranean"], "shrub", "photographic"),
-  e("HEBRA / 000253", "Ophrys apifera", "Bee orchid", "Orchidaceae", ["mediterranean"], "herb", "processing"),
-  e("HEBRA / 000261", "Quercus ilex", "Holm oak", "Fagaceae", ["mediterranean"], "tree", "photographic"),
-  e("HEBRA / 000266", "Drosophyllum lusitanicum", "Portuguese sundew", "Drosophyllaceae", ["mediterranean"], "carnivorous", "processing"),
-  e("HEBRA / 000272", "Smilax aspera", "Rough bindweed", "Smilacaceae", ["mediterranean"], "vine", "photographic"),
-  e("HEBRA / 000279", "Asplenium ceterach", "Rustyback fern", "Aspleniaceae", ["mediterranean"], "fern", "photographic"),
-  e("HEBRA / 000284", "Lavandula stoechas", "French lavender", "Lamiaceae", ["mediterranean"], "shrub", "photographic"),
-
-  // Alps
-  e("HEBRA / 000301", "Leontopodium alpinum", "Edelweiss", "Asteraceae", ["alps"], "herb", "photographic"),
-  e("HEBRA / 000308", "Pinus cembra", "Swiss stone pine", "Pinaceae", ["alps"], "tree", "photographic"),
-  e("HEBRA / 000314", "Rhododendron ferrugineum", "Alpenrose", "Ericaceae", ["alps"], "shrub", "processing"),
-  e("HEBRA / 000320", "Pinguicula alpina", "Alpine butterwort", "Lentibulariaceae", ["alps"], "carnivorous", "photographic"),
-
-  // Japan
-  e("HEBRA / 000340", "Prunus serrulata", "Japanese cherry", "Rosaceae", ["japan"], "tree", "photographic"),
-  e("HEBRA / 000346", "Acer palmatum", "Japanese maple", "Sapindaceae", ["japan"], "tree", "photographic"),
-  e("HEBRA / 000352", "Camellia japonica", "Camellia", "Theaceae", ["japan"], "shrub", "photographic"),
-  e("HEBRA / 000359", "Wisteria floribunda", "Japanese wisteria", "Fabaceae", ["japan"], "vine", "processing"),
-  e("HEBRA / 000364", "Osmunda japonica", "Asian royal fern", "Osmundaceae", ["japan"], "fern", "photographic"),
-  e("HEBRA / 000371", "Nelumbo nucifera", "Sacred lotus", "Nelumbonaceae", ["japan"], "aquatic", "photographic"),
-  e("HEBRA / 000377", "Drosera rotundifolia", "Round-leaved sundew", "Droseraceae", ["japan"], "carnivorous", "processing"),
-  e("HEBRA / 000383", "Iris ensata", "Japanese water iris", "Iridaceae", ["japan"], "herb", "photographic"),
-  e("HEBRA / 000389", "Cryptomeria japonica", "Sugi", "Cupressaceae", ["japan"], "tree", "photographic"),
-
-  // Amazon Basin
-  e("HEBRA / 000410", "Victoria amazonica", "Giant water lily", "Nymphaeaceae", ["amazon-basin"], "aquatic", "photographic"),
-  e("HEBRA / 000417", "Bertholletia excelsa", "Brazil nut tree", "Lecythidaceae", ["amazon-basin"], "tree", "photographic"),
-  e("HEBRA / 000423", "Heliconia rostrata", "Hanging lobster claw", "Heliconiaceae", ["amazon-basin"], "herb", "processing"),
-  e("HEBRA / 000431", "Cattleya violacea", "Amazon cattleya", "Orchidaceae", ["amazon-basin"], "herb", "photographic"),
-  e("HEBRA / 000438", "Utricularia foliosa", "Leafy bladderwort", "Lentibulariaceae", ["amazon-basin"], "carnivorous", "photographic"),
-  e("HEBRA / 000444", "Bauhinia guianensis", "Monkey ladder vine", "Fabaceae", ["amazon-basin"], "vine", "processing"),
-  e("HEBRA / 000450", "Ceiba pentandra", "Kapok", "Malvaceae", ["amazon-basin"], "tree", "photographic"),
-  e("HEBRA / 000456", "Adiantum latifolium", "Broadleaf maidenhair", "Pteridaceae", ["amazon-basin"], "fern", "photographic"),
-
-  // South Africa
-  e("HEBRA / 000470", "Protea cynaroides", "King protea", "Proteaceae", ["south-africa"], "shrub", "photographic"),
-  e("HEBRA / 000476", "Strelitzia reginae", "Bird of paradise", "Strelitziaceae", ["south-africa"], "herb", "photographic"),
-  e("HEBRA / 000482", "Roridula gorgonias", "Gorgon's dewstick", "Roridulaceae", ["south-africa"], "carnivorous", "processing"),
-  e("HEBRA / 000488", "Erica cerinthoides", "Fire heath", "Ericaceae", ["south-africa"], "shrub", "photographic"),
-];
-
-export const SPECIMENS: Specimen[] = [...FROM_SPECIES, ...CATALOGUE].map((s, i) => ({
+export const SPECIMENS: Specimen[] = FROM_SPECIES.map((s, i) => ({
   ...s,
   id: `${s.hebraId.replace(/\D/g, "")}-${i}`,
 }));

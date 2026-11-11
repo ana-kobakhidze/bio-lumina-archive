@@ -14,6 +14,7 @@ import { Route as ContributeRouteImport } from './routes/contribute'
 import { Route as IdentityRouteImport } from './routes/identity'
 import { Route as ViewerRouteImport } from './routes/viewer'
 import { Route as ArchiveRegionIdRouteImport } from './routes/archive.$regionId'
+import { Route as PlantKeyRouteImport } from './routes/plant.$key'
 import { Route as SpecimenSlugRouteImport } from './routes/specimen.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const ArchiveRegionIdRoute = ArchiveRegionIdRouteImport.update({
   path: '/archive/$regionId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlantKeyRoute = PlantKeyRouteImport.update({
+  id: '/plant/$key',
+  path: '/plant/$key',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpecimenSlugRoute = SpecimenSlugRouteImport.update({
   id: '/specimen/$slug',
   path: '/specimen/$slug',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/identity': typeof IdentityRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
+  '/plant/$key': typeof PlantKeyRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/identity': typeof IdentityRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
+  '/plant/$key': typeof PlantKeyRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/identity': typeof IdentityRoute
   '/viewer': typeof ViewerRoute
   '/archive/$regionId': typeof ArchiveRegionIdRoute
+  '/plant/$key': typeof PlantKeyRoute
   '/specimen/$slug': typeof SpecimenSlugRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/identity'
     | '/viewer'
     | '/archive/$regionId'
+    | '/plant/$key'
     | '/specimen/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/identity'
     | '/viewer'
     | '/archive/$regionId'
+    | '/plant/$key'
     | '/specimen/$slug'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/identity'
     | '/viewer'
     | '/archive/$regionId'
+    | '/plant/$key'
     | '/specimen/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   IdentityRoute: typeof IdentityRoute
   ViewerRoute: typeof ViewerRoute
   ArchiveRegionIdRoute: typeof ArchiveRegionIdRoute
+  PlantKeyRoute: typeof PlantKeyRoute
   SpecimenSlugRoute: typeof SpecimenSlugRoute
 }
 
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArchiveRegionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/plant/$key': {
+      id: '/plant/$key'
+      path: '/plant/$key'
+      fullPath: '/plant/$key'
+      preLoaderRoute: typeof PlantKeyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/specimen/$slug': {
       id: '/specimen/$slug'
       path: '/specimen/$slug'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   IdentityRoute: IdentityRoute,
   ViewerRoute: ViewerRoute,
   ArchiveRegionIdRoute: ArchiveRegionIdRoute,
+  PlantKeyRoute: PlantKeyRoute,
   SpecimenSlugRoute: SpecimenSlugRoute,
 }
 export const routeTree = rootRouteImport

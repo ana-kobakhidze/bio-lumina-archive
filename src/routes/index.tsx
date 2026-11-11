@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { RegionSearch } from "@/components/hebra/RegionSearch";
-import { ThemeSwitch } from "@/components/hebra/ThemeProvider";
+import { KewHeader } from "@/components/kew/KewHeader";
+import { PlantSearch } from "@/components/kew/PlantSearch";
 import { REGIONS } from "@/lib/archive";
-
-const SUGGESTED = ["caucasus", "mediterranean", "amazon-basin", "japan", "alps"];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,55 +26,43 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
-  const suggested = SUGGESTED.map((id) => REGIONS.find((r) => r.id === id)!).filter(Boolean);
-
   return (
-    <div className="hebra-ambient flex min-h-screen flex-col overflow-hidden bg-background text-foreground">
-      <header className="hebra-rise flex items-start justify-between px-6 pt-6 md:px-10 md:pt-8">
-        <div>
-          <p className="font-display text-xl font-medium leading-none tracking-[0.34em]">HEBRA</p>
-          <p className="label-micro mt-2">The living digital herbarium</p>
+    <div className="min-h-screen bg-background text-foreground">
+      <KewHeader />
+      <main className="mx-auto max-w-3xl px-5 py-16 md:py-24">
+        <h1 className="text-3xl font-semibold md:text-4xl">Plants of the World</h1>
+        <p className="mt-3 max-w-xl opacity-75">
+          Search the world's accepted plant names, their distribution, synonyms and photographs.
+        </p>
+        <div className="mt-8">
+          <PlantSearch />
         </div>
-        <ThemeSwitch className="justify-end" />
-      </header>
 
-      <main className="flex flex-1 items-center justify-center px-6">
-        <div className="hebra-rise w-full max-w-xl py-24 [animation-delay:120ms]">
-          <p className="label-micro mb-3 text-center tracking-[0.22em]">
-            Where would you like to explore?
-          </p>
+        <h2 className="mt-14 border-b kew-rule pb-2 text-lg font-semibold">Browse by region</h2>
+        <ul className="mt-2 divide-y kew-rule">
+          {REGIONS.map((r) => (
+            <li key={r.id}>
+              <Link
+                to="/archive/$regionId"
+                params={{ regionId: r.id }}
+                search={{ q: "", page: 0 }}
+                className="flex items-baseline justify-between gap-4 py-3 hover:text-[color:var(--kew-green)]"
+              >
+                <span className="font-semibold">{r.name}</span>
+                <span className="text-sm opacity-60">{r.description}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
 
-          <RegionSearch autoFocus />
-
-          <ul className="mt-6 flex flex-wrap justify-center gap-2">
-            {suggested.map((r) => (
-              <li key={r.id}>
-                <Link
-                  to="/archive/$regionId"
-                  params={{ regionId: r.id }}
-                  search={{ q: "", form: "all", family: "all", status: "all" }}
-                  className="hebra-chip label-micro inline-block opacity-50 hover:bg-specimen/10 hover:opacity-100"
-                >
-                  {r.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-12 flex gap-6 text-sm">
+          <Link to="/viewer" className="underline">3D specimen viewer</Link>
+          <Link to="/contribute" className="underline">Contribute a specimen</Link>
         </div>
+        <p className="mt-10 text-xs opacity-55">
+          Names and distributions from the World Checklist of Vascular Plants via GBIF.
+        </p>
       </main>
-
-      <footer className="hebra-rise flex items-center justify-between px-6 pb-6 md:px-10 md:pb-8 [animation-delay:240ms]">
-        <Link
-          to="/contribute"
-          className="hebra-transition label-micro opacity-60 hover:opacity-100"
-        >
-          + Contribute a specimen
-        </Link>
-        <Link to="/identity" className="hebra-transition label-micro opacity-35 hover:opacity-100">
-          Identity
-        </Link>
-      </footer>
     </div>
-
   );
 }
