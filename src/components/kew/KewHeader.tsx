@@ -25,7 +25,7 @@ export function KewHeader() {
             <Link
               key={n.to}
               to={n.to}
-              search={n.to === "/results" ? { q: "", rank: "", page: 0 } : undefined}
+              {...(n.to === "/results" ? { search: { q: "", rank: "", page: 0 } } : {})}
               activeOptions={{ exact: true, includeSearch: false }}
               activeProps={{ className: "text-[color:var(--kew-green)]" }}
               className="hidden hover:text-[color:var(--kew-green)] md:inline"
