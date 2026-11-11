@@ -1,3 +1,33 @@
+# HEBRA — The Living Digital Herbarium
+
+HEBRA is an interactive digital herbarium for searching plant records, browsing regional flora, and exploring procedural 3D specimens.
+
+## Try it
+
+[Open the live demo](https://bio-lumina-archive.lovable.app/). Search for *Victoria amazonica*, browse Georgia’s flora, or open the specimen viewer to rotate, zoom, and select plant parts.
+
+## How it works
+
+React and TypeScript power the interface. TanStack Start server functions query GBIF for plant records. The archive credits the World Checklist of Vascular Plants via GBIF. The viewer uses Three.js and React Three Fiber. The project was scaffolded with Lovable.
+
+## Run locally
+
+Install Bun, then run:
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+```
+
+Use `bun run build` and `bun run lint` for local checks.
+
+## Project status
+
+The contribution page displays a placeholder email address.
+
+<details>
+<summary>Original design brief</summary>
+
 # Lumina Flora Archive
 
 We are building the 3D specimen experience for a Digital Botanical Specimen Library.
@@ -296,3 +326,5 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+</details>
