@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { ArchiveCard } from "@/components/hebra/ArchiveCard";
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/archive/$regionId")({
     q: typeof search["q"] === "string" ? search["q"] : "",
     page: Math.max(0, Math.floor(Number(search["page"]) || 0)),
   }),
-  loaderDeps: ({ search }) => ({ page: search.page }),
+  loaderDeps: ({ search }: { search: ArchiveSearch }) => ({ page: search.page }),
   loader: ({ params, deps, context }) => {
     const region = regionById(params.regionId);
     if (!region) throw notFound();
@@ -57,13 +58,13 @@ export const Route = createFileRoute("/archive/$regionId")({
   component: RegionalArchive,
 });
 
-function ArchiveError({ error }: { error: Error }) {
+function ArchiveError({ error }: ErrorComponentProps) {
   const router = useRouter();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <KewHeader />
       <div className="mx-auto max-w-6xl px-5 py-16">
-        <p>Plant records could not load: {error.message}</p>
+        <p>Plant records could not load: {error instanceof Error ? error.message : String(error)}</p>
         <button onClick={() => router.invalidate()} className="mt-4 underline">Try again</button>
       </div>
     </div>

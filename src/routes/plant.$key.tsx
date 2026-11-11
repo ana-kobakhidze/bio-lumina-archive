@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { KewHeader } from "@/components/kew/KewHeader";
@@ -19,7 +20,8 @@ export const Route = createFileRoute("/plant/$key")({
     if (!d) throw notFound();
     return { name: d.name, family: d.family };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData: raw }) => {
+    const loaderData = raw as { name: string; family: string } | undefined;
     const title = loaderData ? `${loaderData.name} — HEBRA` : "Plant — HEBRA";
     const description = loaderData
       ? `${loaderData.name} (${loaderData.family}): accepted name, distribution, synonyms and photographs.`
@@ -47,13 +49,13 @@ export const Route = createFileRoute("/plant/$key")({
   component: PlantPage,
 });
 
-function PlantError({ error }: { error: Error }) {
+function PlantError({ error }: ErrorComponentProps) {
   const router = useRouter();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <KewHeader />
       <div className="mx-auto max-w-5xl px-5 py-16">
-        <p>This plant could not load: {error.message}</p>
+        <p>This plant could not load: {error instanceof Error ? error.message : String(error)}</p>
         <button onClick={() => router.invalidate()} className="mt-4 underline">Try again</button>
       </div>
     </div>
