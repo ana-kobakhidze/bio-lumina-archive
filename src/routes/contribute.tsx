@@ -7,12 +7,12 @@ export const Route = createFileRoute("/contribute")({
       {
         name: "description",
         content:
-          "Submit a plant to the HEBRA digital herbarium: scientific name, region of collection and imagery for reconstruction.",
+          "Specimen submissions are currently closed.",
       },
       { property: "og:title", content: "Contribute a specimen — HEBRA" },
       {
         property: "og:description",
-        content: "Submit a plant to the HEBRA digital herbarium for reconstruction.",
+        content: "Specimen submissions are currently closed.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,14 +32,8 @@ function ContributePage() {
       <main className="hebra-rise mx-auto max-w-xl px-6 py-20 [animation-delay:100ms]">
         <h1 className="font-display text-4xl italic leading-none">Contribute a specimen</h1>
         <p className="mt-4 text-sm leading-relaxed opacity-75">
-          HEBRA grows from field records. Send the scientific name, the place of collection and any
-          imagery you hold; accepted material enters the archive as a photographic record and is
-          queued for three-dimensional reconstruction.
+          Specimen submissions are currently closed.
         </p>
-        <div className="hebra-panel mt-10 p-6">
-          <p className="label-micro">Submissions</p>
-          <p className="mt-2 font-display text-2xl italic">archive@hebra.example</p>
-        </div>
       </main>
 
     </div>

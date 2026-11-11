@@ -106,7 +106,6 @@ function Landing() {
           <ul className="space-y-1.5 opacity-90">
             <li><Link to="/results" search={{ q: "", rank: "", page: 0 }}>Search plants</Link></li>
             <li><Link to="/viewer">3D specimen viewer</Link></li>
-            <li><Link to="/contribute">Contribute a specimen</Link></li>
           </ul>
           <p className="opacity-75">Names and distributions from the World Checklist of Vascular Plants via GBIF.</p>
         </div>

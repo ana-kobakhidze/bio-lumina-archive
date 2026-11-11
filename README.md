@@ -23,7 +23,7 @@ Use `bun run build` and `bun run lint` for local checks.
 
 ## Project status
 
-The contribution page displays a placeholder email address.
+Specimen submissions are currently closed.
 
 <details>
 <summary>Original design brief</summary>

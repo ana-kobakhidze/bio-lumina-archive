@@ -5,7 +5,6 @@ const NAV = [
   { to: "/", label: "Home" },
   { to: "/results", label: "Data" },
   { to: "/viewer", label: "3D viewer" },
-  { to: "/contribute", label: "Contribute" },
 ] as const;
 
 /** White top bar laid out like Plants of the World Online. */
